@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dip-course-project"
+version = "0.1.0"
+description = "Reproducible digital image processing course experiments"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+  "numpy>=1.24,<3",
+  "Pillow>=10,<13",
+  "scikit-image>=0.22,<0.27",
+]
+
+[project.optional-dependencies]
+train = [
+  "torch>=2.1",
+  "lpips>=0.1.4",
+]
+dev = [
+  "pytest>=8,<10",
+  "ruff>=0.8",
+]
+
+[project.scripts]
+dip-audit = "dip_course.cli.audit_dataset:main"
+dip-discover = "dip_course.cli.discover_pairs:main"
+dip-official-split = "dip_course.cli.official_split:main"
+dip-split = "dip_course.cli.split_manifest:main"
+dip-classical = "dip_course.cli.run_classical:main"
+dip-tune-classical = "dip_course.cli.tune_classical:main"
+dip-tune-auto-classical = "dip_course.cli.tune_auto_classical:main"
+dip-prepare-gt-cache = "dip_course.cli.prepare_gt_cache:main"
+dip-train = "dip_course.cli.train_enhancement:main"
+dip-infer = "dip_course.cli.infer_enhancement:main"
+dip-visualize = "dip_course.cli.visualize_comparison:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+pythonpath = ["src"]
