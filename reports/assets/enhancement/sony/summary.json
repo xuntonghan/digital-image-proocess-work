@@ -1,1 +1,12 @@
-{}
+{
+  "method": "raw_to_rgb_unet",
+  "checkpoint": "checkpoints/enhancement/sony/best.pt",
+  "count": 87,
+  "device": "cuda",
+  "psnr_mean": 17.05167976435181,
+  "ssim_mean": 0.6332456896873726,
+  "lpips_mean": 0.6963726994635044,
+  "inference_seconds_mean": 0.11830760337326718,
+  "tile_size": 256,
+  "overlap": 32
+}
