@@ -1,1 +1,12 @@
-{}
+{
+  "method": "raw_to_rgb_unet",
+  "checkpoint": "checkpoints/enhancement/canon/best.pt",
+  "count": 76,
+  "device": "cuda",
+  "psnr_mean": 16.123392398524608,
+  "ssim_mean": 0.6220375366116825,
+  "lpips_mean": 0.6379940200008845,
+  "inference_seconds_mean": 0.12046484972693418,
+  "tile_size": 256,
+  "overlap": 32
+}
