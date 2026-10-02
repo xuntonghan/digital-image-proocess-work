@@ -1,0 +1,36 @@
+{
+  "valid": true,
+  "official_repo": "<SIED_OFFICIAL_REPO>",
+  "official_commit": "fb7af94ac831e91c647415bf1ca0b1a75931833a",
+  "official_train_path": "data/train_sony_0.001.txt",
+  "official_train_sha256": "9c8c9af90d7df50899640651ccd562f43ecc2c39490316c342614586e565b5ab",
+  "official_test_path": "data/test_sony_0.001.txt",
+  "official_test_sha256": "ad5db136383519e83480ec1e384f8d634a9abadce994fbc3edbc56e1306ef18a",
+  "course_manifest": "manifests/source/sony_all.txt",
+  "course_manifest_sha256": "ea62153f02ff3b6aa65979c4f6f89261a31652bc5a1d1d0aef8af150cd4c9120",
+  "seed": 20260930,
+  "validation_ratio_within_official_train": 0.1,
+  "counts": {
+    "train": 822,
+    "val": 91,
+    "test": 87
+  },
+  "course_total": 1000,
+  "official_train_mapped": 913,
+  "official_test_mapped": 87,
+  "disjoint": true,
+  "outputs": {
+    "train": {
+      "path": "manifests/enhancement/sony_train.txt",
+      "sha256": "939f4d4d3db24447a96e96ba5705d76dca2daaca636fa0c851b490430f4b50fc"
+    },
+    "val": {
+      "path": "manifests/enhancement/sony_val.txt",
+      "sha256": "24558995839bfeb24e988e4c92a18e3ac875b0163d9dd695dc7974a81803c44e"
+    },
+    "test": {
+      "path": "manifests/enhancement/sony_test.txt",
+      "sha256": "30b4b709f4326e6f17bbcb2f8a9a4cf7e4d7548eff9fcdc122e4d7fbe8359fd3"
+    }
+  }
+}

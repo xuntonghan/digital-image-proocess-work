@@ -1,1 +1,2 @@
-# Directory initialization
+0.0001/6.raw gt/6.jpg
+0.0001/8.raw gt/8.jpg
