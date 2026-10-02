@@ -1,2 +1,8 @@
-0.0001/6.raw gt/6.jpg
-0.0001/8.raw gt/8.jpg
+0.0001/958.raw gt/958.jpg
+0.0001/105.raw gt/105.jpg
+0.0001/664.raw gt/664.jpg
+0.0001/982.raw gt/982.jpg
+0.0001/177.raw gt/177.jpg
+0.0001/71.raw gt/71.jpg
+0.0001/182.raw gt/182.jpg
+0.0001/53.raw gt/53.jpg

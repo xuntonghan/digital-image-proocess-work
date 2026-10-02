@@ -30,6 +30,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--manifest", required=True)
     parser.add_argument("--output", required=True)
     parser.add_argument("--prediction-dir")
+    parser.add_argument(
+        "--reference-prediction-dir",
+        help="Optional earlier-model predictions for a direct before/after comparison",
+    )
     parser.add_argument("--count", type=int, default=4)
     parser.add_argument("--width", type=int, default=3840)
     parser.add_argument("--height", type=int, default=2160)
@@ -78,8 +82,12 @@ def main() -> None:
     records = read_pair_manifest(args.data_root, args.manifest)[: args.count]
     panel_height = round(args.panel_width * args.height / args.width)
     headers = ["Input RAW preview", "Classical baseline"]
+    if args.reference_prediction_dir:
+        headers.append("Previous model")
     if args.prediction_dir:
-        headers.append("ML enhancement")
+        headers.append(
+            "Improved model" if args.reference_prediction_dir else "ML enhancement"
+        )
     headers.append("Ground truth")
     header_height = 38
     row_label_width = 90
@@ -100,6 +108,11 @@ def main() -> None:
         )
 
     prediction_dir = Path(args.prediction_dir) if args.prediction_dir else None
+    reference_prediction_dir = (
+        Path(args.reference_prediction_dir)
+        if args.reference_prediction_dir
+        else None
+    )
     for row, record in enumerate(records):
         normalized = normalize_raw(read_raw_uint16(record.low_raw, spec), spec)
         demosaiced = demosaic_rggb(normalized)
@@ -125,6 +138,14 @@ def main() -> None:
                 white_balance=tuple(args.white_balance),
             )
         panels = [preview, baseline]
+        if reference_prediction_dir:
+            with Image.open(
+                find_prediction(reference_prediction_dir, record.key)
+            ) as prediction_image:
+                panels.append(
+                    np.asarray(prediction_image.convert("RGB"), dtype=np.float32)
+                    / 255.0
+                )
         if prediction_dir:
             with Image.open(
                 find_prediction(prediction_dir, record.key)
@@ -163,6 +184,11 @@ def main() -> None:
             ),
         },
         "prediction_dir": str(prediction_dir.resolve()) if prediction_dir else None,
+        "reference_prediction_dir": (
+            str(reference_prediction_dir.resolve())
+            if reference_prediction_dir
+            else None
+        ),
     }
     write_json(output.with_suffix(".json"), metadata)
     print(json.dumps(metadata, ensure_ascii=False, indent=2))

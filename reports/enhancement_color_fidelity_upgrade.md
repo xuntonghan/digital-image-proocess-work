@@ -1,0 +1,80 @@
+# SIED 增强的色彩保真升级
+
+更新日期：2026-10-03
+
+## 1. 重新诊断
+
+原 Residual U-Net 在 PSNR、SSIM 和 LPIPS 上优于自动传统 ISP，但这不等于主观质量全面更好。对比图显示两类问题：
+
+- 色调偏暖、整体欠饱和，高饱和商品标签、红色尾灯和蓝色车牌明显变灰；
+- 亮部裁剪与全局曝光失败，其中 Canon ID 35 和 Sony ID 61 是明显异常样本；
+- 小批量 BatchNorm 会混合不同场景的亮度与相机统计；
+- 将已打包的 Bayer 四通道直接做 90° 旋转，会破坏 CFA 子像素的几何关系。SIED 官方数据加强只使用水平和垂直翻转。
+
+新增的颜色评价使问题可以被单独检验。在从验证集选取的 8+8 张色彩门禁上，旧模型的平均 ΔE2000 仍优于传统 ISP（Canon 10.19 vs 14.02；Sony 11.70 vs 17.04），说明它并非在所有场景的颜色都更差；但其亮度与高饱和色的失败仍很明显。例如 Canon ID 958 的亮度 MAE 为 10.84，传统 ISP 为 4.89；Sony ID 619 的饱和度 MAE 为 0.411，传统 ISP 为 0.267。因此不能用 PSNR/SSIM 或一个平均色差掩盖局部的偏色、去饱和与过曝。
+
+## 2. 论文与官方实现核对
+
+### SIED / ICCV 2025
+
+SIED 论文明确指出，单网络直接混合“去噪”和“RAW 到 sRGB”容易产生域歧义、模糊细节和颜色失真。其方法使用自适应亮度校正模块（AICM）和软直方图颜色一致性损失。官方代码与预训练权重已核对：Canon `0.0001` 和 Sony `0.001` 均有对应权重，每个约 2.43 GB。
+
+- 论文：<https://openaccess.thecvf.com/content/ICCV2025/html/Jiang_Learning_to_See_in_the_Extremely_Dark_ICCV_2025_paper.html>
+- 官方代码：<https://github.com/JianghaiSCU/SIED>
+
+### DNF / CVPR 2023 Highlight
+
+DNF 将 RAW 去噪与颜色校正解耦，并用特征回馈避免多阶段的信息损失。当前课程子集没有 DNF/SIED 训练所需的正常曝光 RAW 中间监督，因此不盲目照搬完整多阶段训练，而是采用其“亮度/颜色任务解耦”原则。
+
+- 论文：<https://openaccess.thecvf.com/content/CVPR2023/html/Jin_DNF_Decouple_and_Feedback_Network_for_Seeing_in_the_Dark_CVPR_2023_paper.html>
+- 官方代码：<https://github.com/Srameo/DNF>
+
+### HVI-CIDNet / CVPR 2025
+
+HVI 将色相表示为极坐标平面上的水平/垂直分量，消除 HSV 在红色附近的不连续，并将极暗区域的色度压缩，降低暗部色噪对训练的干扰。已调用官方 GitHub 与 Hugging Face `Fediory/HVI-CIDNet-Sony-Total-Dark` 权重进行本地小样实验。直接将该 sRGB 模型串接在本项目 ISP 之后会严重过曝，说明跨数据集预训练后处理不可取；本项目只移植其有论文依据的 HVI 表示和双分支思想。
+
+- 论文：<https://openaccess.thecvf.com/content/CVPR2025/html/Yan_HVI_A_New_Color_Space_for_Low-light_Image_Enhancement_CVPR_2025_paper.html>
+- 官方代码：<https://github.com/Fediory/HVI-CIDNet>
+- 官方 Hugging Face 权重：<https://huggingface.co/Fediory/HVI-CIDNet-Sony-Total-Dark>
+
+## 3. 已实现的升级
+
+1. 数据增强只保留水平/垂直翻转，删除不正确的 Bayer 90° 旋转。
+2. 新配置使用无归一化残差 U-Net，避免 BatchNorm 混合极暗场景的曝光统计。
+3. 瓶颈层增加全局池化的自适应亮度调制，初始为恒等映射，防止一开始扰乱重建。
+4. 输出头分为 HVI 色度两通道和亮度一通道，再可微地转回 sRGB。
+5. 损失为 RGB L1、SSIM、YCbCr 色度、HVI L1、有界 Jensen–Shannon 软直方图、拉普拉斯边缘和全局颜色均值/对比度组合。
+6. 训练增加 EMA、余弦学习率、梯度裁剪，默认使用 512 RAW patch 和累积 batch 4。
+7. 推理评价新增 ΔE2000、亮度 MAE、饱和度 MAE 和环形色相误差。
+8. Canon/Sony 各从验证集选 8 张覆盖中性墙面、高饱和商品、车辆、绿植与复杂室内灯光的视觉门禁集，不再只看测试集前几张。
+
+9. 增加 SIED 作者 Stage-2 模型适配器。适配器固定作者仓库提交 `fb7af94`，自动从检查点选择 EMA 权重，并绕过作者 `sample()` 中会额外编码 GT RGB 的实现；预测分支只读取低照 RAW，GT 在预测结束后才用于评价。
+10. 官方模型采用论文一致的 1000 个扩散时间步和 20 步 DDIM 采样。4090 可直接完成 3840×2160 全分辨率推理，不需要可能引入接缝的分块扩散。
+
+## 4. Canon 色彩门禁结果
+
+相同的 8 张 Canon 验证门禁图、相同全分辨率指标下，作者 SIED EMA 权重相对课程原 Residual U-Net 的结果如下：
+
+| 方法 | PSNR↑ | SSIM↑ | ΔE2000↓ | 亮度 MAE↓ | 饱和度 MAE↓ | 色相误差↓ |
+|---|---:|---:|---:|---:|---:|---:|
+| 原 Residual U-Net | 20.702 | 0.7862 | 10.187 | 7.004 | 0.1061 | 36.25° |
+| 本项目 LUT 微调最佳试验 | 20.986 | 0.7917 | 9.748 | 6.834 | 0.0902 | 34.74° |
+| SIED 官方 EMA，单次 DDIM | 23.104 | 0.8352 | 7.255 | 8.030 | 0.0410 | 14.16° |
+| SIED 官方 EMA，三次采样平均 | **24.739** | **0.8462** | **5.754** | **6.151** | **0.0393** | **13.53°** |
+
+SIED 的提升不是只增加锐度：红色招牌、紫色洗衣液标签与商店灯带都恢复到接近参考图的色相。三次采样平均相对原模型把平均色相误差降低约 63%，平均 ΔE2000 降低约 44%，且亮度 MAE 也低于 LUT 微调。ID 958、664 仍有欠曝光，因此这项局限必须在报告中保留，不能用验证图的答案做逐图曝光补偿。
+
+最终对比图为 `reports/assets/enhancement/canon_official/visual_gate_comparison.png`，列顺序是低照 RAW 预览、传统 ISP、原模型、SIED 改进模型和 GT。门禁逐图结果与汇总分别保存在同目录的 `visual_gate_metrics.csv`、`visual_gate_summary.json`；冻结方案的官方测试结果保存为 `test_metrics.csv`、`test_summary.json`。
+
+## 5. 正式训练放行条件
+
+正式权重必须同时满足：
+
+- 验证集平均 ΔE2000、饱和度 MAE 和亮度 MAE 优于旧模型；
+- PSNR/SSIM 不能用明显退化换取表面鲜艳；
+- 16 张视觉门禁图不得出现整体暖黄、大面积过曝、彩色变灰或图块接缝；
+- 只使用训练/验证集选权重；权重冻结后才在官方测试集报告一次结果，不根据测试结果回头调参。
+
+本机与云端全部 41 项自动测试已通过。Canon 已完成多组 5,000 步以内的颜色微调消融；冻结后的 SIED 官方 EMA 权重已通过 8 张视觉门禁，随后才在官方测试划分上做一次最终评价。Sony 仍需下载与 `0.001` 曝光档匹配的作者权重后按同一流程复现。
+
+最终 Canon 官方测试集共 76 张，三次采样平均得到 PSNR `22.1700 dB`、SSIM `0.7817`、ΔE2000 `7.9642`、亮度 MAE `7.8672`、饱和度 MAE `0.0665`、色相误差 `24.76°`。相对原 Residual U-Net 官方测试结果，PSNR 提升 `6.0466 dB`，SSIM 提升 `0.1597`。

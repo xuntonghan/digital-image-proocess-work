@@ -1,0 +1,21 @@
+{
+  "method": "official_sied_iccv2025_stage2",
+  "checkpoint": "/root/autodl-tmp/cv-homework/official_sied/canon_0.0001.pt",
+  "weight_source": "ema:ema_model.",
+  "blind_inference": true,
+  "count": 8,
+  "device": "cuda",
+  "precision": "fp16",
+  "sampling_steps": 20,
+  "seed": 3407,
+  "ensemble_size": 3,
+  "psnr_mean": 24.739053377976173,
+  "ssim_mean": 0.8461637124419212,
+  "delta_e2000_mean": 5.753828386903801,
+  "delta_e2000_p95_mean": 10.179187178611755,
+  "lightness_mae_mean": 6.151035413146019,
+  "saturation_mae_mean": 0.03930993634276092,
+  "hue_error_degrees_mean": 13.529416460092346,
+  "lpips_mean": null,
+  "inference_seconds_mean": 1.092259012395516
+}

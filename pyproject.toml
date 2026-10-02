@@ -19,6 +19,13 @@ train = [
   "torch>=2.1",
   "lpips>=0.1.4",
 ]
+sied = [
+  "torch>=2.1",
+  "accelerate>=0.15",
+  "einops>=0.6",
+  "ema-pytorch>=0.4.8",
+  "tqdm>=4.64",
+]
 dev = [
   "pytest>=8,<10",
   "ruff>=0.8",
@@ -35,6 +42,7 @@ dip-tune-auto-classical = "dip_course.cli.tune_auto_classical:main"
 dip-prepare-gt-cache = "dip_course.cli.prepare_gt_cache:main"
 dip-train = "dip_course.cli.train_enhancement:main"
 dip-infer = "dip_course.cli.infer_enhancement:main"
+dip-infer-official-sied = "dip_course.cli.infer_official_sied:main"
 dip-visualize = "dip_course.cli.visualize_comparison:main"
 
 [tool.setuptools]

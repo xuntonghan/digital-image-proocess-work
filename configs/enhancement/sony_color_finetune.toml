@@ -1,0 +1,44 @@
+[experiment]
+name = "sied_sony_0001_color_finetune"
+
+[dataset]
+width = 3840
+height = 2160
+black_level = 512
+white_level = 16383
+bayer_pattern = "RGGB"
+patch_size = 512
+augment = true
+
+[model]
+in_channels = 4
+out_channels = 3
+base_channels = 32
+depth = 4
+normalization = "batch"
+output_space = "rgb"
+illumination_conditioning = true
+hvi_density = 0.2
+
+[training]
+batch_size = 1
+num_workers = 4
+learning_rate = 0.00002
+weight_decay = 0.00001
+max_steps = 10000
+validation_interval = 1000
+checkpoint_interval = 2000
+gradient_accumulation = 4
+ssim_weight = 0.2
+chroma_weight = 0.25
+hvi_weight = 0.35
+histogram_weight = 0.1
+edge_weight = 0.05
+color_moment_weight = 0.2
+ema_decay = 0.99
+scheduler = "cosine"
+min_learning_rate = 0.000002
+max_grad_norm = 1.0
+seed = 20260930
+amp = true
+output_dir = "checkpoints/enhancement/sony_color_finetune"

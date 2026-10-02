@@ -16,6 +16,8 @@
 - 验证集驱动的自动曝光/灰世界白平衡传统基线；
 - RAW patch 内存映射及可选 GT 缓存，避免云端重复读取整张4K图；
 - Canon 与 Sony 的独立 4090 训练配置。
+- ICCV 2025 SIED 作者预训练权重的盲推理适配器：只以低照 RAW 生成结果，GT 仅在预测完成后参与评价；
+- ΔE2000、亮度 MAE、饱和度 MAE、环形色相误差及前后五列对比图。
 
 项目不包含课程原始数据、模型权重或完整中间输出。它们分别放在 `data/`、`checkpoints/` 和 `outputs/`，这些目录不会提交到 Git。为便于验收，仓库保留最终逐图指标、汇总指标和 Canon/Sony 代表性四列对比图，见 `reports/assets/enhancement/`。
 
@@ -36,6 +38,12 @@ pytest
 ```bash
 python -m pip install '.[train,dev]'
 pytest
+```
+
+调用 SIED 作者模型时只安装最小依赖，不安装其混合了旧 CUDA、TensorFlow 与旧 NumPy 的完整 `requirements.txt`：
+
+```bash
+python -m pip install '.[sied]'
 ```
 
 ## 数据清单
@@ -112,5 +120,22 @@ dip-infer \
 ```
 
 输出目录包含增强图像、逐图指标 `metrics.csv` 和汇总 `summary.json`。
+
+## ICCV 2025 SIED 官方模型
+
+将作者仓库固定到已验证提交 `fb7af94ac831e91c647415bf1ca0b1a75931833a`，并使用与数据曝光档匹配的 `canon_0.0001.pt`。适配命令绕过作者 `sample()` 中不必要的 GT RGB 编码分支，因此推理输入严格只有低照 RAW：
+
+```bash
+dip-infer-official-sied \
+  --official-repo /path/to/SIED \
+  --checkpoint /path/to/canon_0.0001.pt \
+  --data-root /path/to/SIED_dataset \
+  --manifest manifests/enhancement/canon_test.txt \
+  --output-dir outputs/official_sied_canon \
+  --device cuda --precision fp16 --sampling-steps 20 \
+  --ensemble-size 3 --seed 3407
+```
+
+检查点优先读取 EMA 权重。最终方案对三次独立 DDIM 输出做像素平均；第一个样本与 `--ensemble-size 1` 使用相同种子，便于公平消融。随机种子、集成数、精度、采样步数和实际权重来源均写入 `summary.json`。在 RTX 4090 上可以直接处理 3840×2160 图像，无需分块。
 
 最终实验结论见 `reports/enhancement_final_report.md`，本机基线记录见 `reports/enhancement_local_baseline.md`，完整4090执行顺序见 `cloud/runbook.md`。

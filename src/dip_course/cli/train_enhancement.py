@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import math
 import platform
@@ -41,7 +42,36 @@ def build_parser() -> argparse.ArgumentParser:
         "--gt-cache-dir",
         help="Optional directory made by dip-prepare-gt-cache for faster random crops",
     )
-    parser.add_argument("--resume")
+    checkpoint_group = parser.add_mutually_exclusive_group()
+    checkpoint_group.add_argument("--resume")
+    checkpoint_group.add_argument(
+        "--init-checkpoint",
+        help=(
+            "Warm-start compatible model weights without restoring optimizer, "
+            "scheduler, or step state"
+        ),
+    )
+    parser.add_argument(
+        "--freeze-batch-norm",
+        action="store_true",
+        help="Keep pretrained BatchNorm running statistics fixed during fine-tuning",
+    )
+    tuning_group = parser.add_mutually_exclusive_group()
+    tuning_group.add_argument(
+        "--color-head-only",
+        action="store_true",
+        help="Train only the RGB output head and illumination-conditioning module",
+    )
+    tuning_group.add_argument(
+        "--color-lut-only",
+        action="store_true",
+        help="Train only the scene-adaptive 3D LUT color refinement module",
+    )
+    tuning_group.add_argument(
+        "--decoder-color-only",
+        action="store_true",
+        help="Train the decoder, RGB head, illumination module, and color LUT",
+    )
     parser.add_argument("--require-cuda", action="store_true")
     return parser
 
@@ -53,13 +83,28 @@ def save_checkpoint(path: Path, payload: dict[str, object]) -> None:
     temporary.replace(path)
 
 
+@torch.no_grad()
+def update_ema(
+    ema_model: torch.nn.Module, model: torch.nn.Module, decay: float
+) -> None:
+    online_parameters = dict(model.named_parameters())
+    for name, parameter in ema_model.named_parameters():
+        parameter.lerp_(online_parameters[name].detach(), 1.0 - decay)
+    online_buffers = dict(model.named_buffers())
+    for name, buffer in ema_model.named_buffers():
+        buffer.copy_(online_buffers[name])
+
+
 @torch.inference_mode()
 def validate(
     model: torch.nn.Module,
     loader: DataLoader,
     criterion: EnhancementLoss,
     device: torch.device,
+    *,
+    freeze_batch_norm: bool = False,
 ) -> dict[str, float]:
+    was_training = model.training
     model.eval()
     losses: list[float] = []
     psnrs: list[float] = []
@@ -74,12 +119,20 @@ def validate(
         losses.append(float(loss.item()))
         psnrs.extend(float(value) for value in psnr.cpu())
         ssims.append(float(ssim_index(prediction, target).item()))
-    model.train()
+    model.train(was_training)
+    if was_training and freeze_batch_norm:
+        freeze_batch_norm_statistics(model)
     return {
         "val_loss": sum(losses) / len(losses),
         "val_psnr": sum(psnrs) / len(psnrs),
         "val_ssim": sum(ssims) / len(ssims),
     }
+
+
+def freeze_batch_norm_statistics(model: torch.nn.Module) -> None:
+    for module in model.modules():
+        if isinstance(module, torch.nn.modules.batchnorm._BatchNorm):
+            module.eval()
 
 
 def main() -> None:
@@ -106,6 +159,8 @@ def main() -> None:
         patch_size=config.dataset.patch_size,
         augment=config.dataset.augment,
         gt_cache_dir=args.gt_cache_dir,
+        color_aware_probability=config.dataset.color_aware_probability,
+        color_aware_candidates=config.dataset.color_aware_candidates,
     )
     val_dataset = SIEDPairDataset(
         data_root=args.data_root,
@@ -144,21 +199,82 @@ def main() -> None:
             f"patch_size must be divisible by {model.input_multiple} for model depth "
             f"{config.model.depth}"
         )
-    criterion = EnhancementLoss(training.ssim_weight, training.chroma_weight)
+    initialization: dict[str, object] | None = None
+    if args.init_checkpoint:
+        initial_checkpoint = torch.load(
+            args.init_checkpoint, map_location=device, weights_only=False
+        )
+        initial_state = initial_checkpoint.get("model", initial_checkpoint)
+        if not isinstance(initial_state, dict):
+            raise TypeError("Initialization checkpoint does not contain model weights")
+        incompatible = model.load_state_dict(initial_state, strict=False)
+        initialization = {
+            "checkpoint": str(Path(args.init_checkpoint).resolve()),
+            "source_global_step": initial_checkpoint.get("global_step"),
+            "missing_keys": list(incompatible.missing_keys),
+            "unexpected_keys": list(incompatible.unexpected_keys),
+        }
+        print(json.dumps({"warm_start": initialization}, ensure_ascii=False, indent=2))
+    if args.color_head_only:
+        if config.model.output_space != "rgb":
+            raise ValueError("--color-head-only requires an RGB-output model")
+        for name, parameter in model.named_parameters():
+            parameter.requires_grad_(
+                name.startswith(("head.", "illumination."))
+            )
+    if args.color_lut_only:
+        if not config.model.color_lut_refinement:
+            raise ValueError("--color-lut-only requires model.color_lut_refinement")
+        for name, parameter in model.named_parameters():
+            parameter.requires_grad_(name.startswith("color_refinement."))
+    if args.decoder_color_only:
+        if config.model.output_space != "rgb":
+            raise ValueError("--decoder-color-only requires an RGB-output model")
+        for name, parameter in model.named_parameters():
+            parameter.requires_grad_(
+                name.startswith(
+                    ("up_blocks.", "head.", "illumination.", "color_refinement.")
+                )
+            )
+    criterion = EnhancementLoss(
+        ssim_weight=training.ssim_weight,
+        chroma_weight=training.chroma_weight,
+        hvi_weight=training.hvi_weight,
+        histogram_weight=training.histogram_weight,
+        edge_weight=training.edge_weight,
+        color_moment_weight=training.color_moment_weight,
+        hue_weight=training.hue_weight,
+        saturation_weight=training.saturation_weight,
+        hvi_density=config.model.hvi_density,
+    )
+    trainable_parameters = [
+        parameter for parameter in model.parameters() if parameter.requires_grad
+    ]
     optimizer = torch.optim.AdamW(
-        model.parameters(),
+        trainable_parameters,
         lr=training.learning_rate,
         weight_decay=training.weight_decay,
     )
+    scheduler: torch.optim.lr_scheduler.LRScheduler | None = None
+    if training.scheduler == "cosine":
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+            optimizer, T_max=max_steps, eta_min=training.min_learning_rate
+        )
     scaler = torch.cuda.amp.GradScaler(enabled=use_amp)
+    ema_model = copy.deepcopy(model).eval()
+    for parameter in ema_model.parameters():
+        parameter.requires_grad_(False)
     global_step = 0
     best_loss = math.inf
 
     if args.resume:
         checkpoint = torch.load(args.resume, map_location=device, weights_only=False)
-        model.load_state_dict(checkpoint["model"])
+        model.load_state_dict(checkpoint.get("online_model", checkpoint["model"]))
+        ema_model.load_state_dict(checkpoint.get("ema_model", checkpoint["model"]))
         optimizer.load_state_dict(checkpoint["optimizer"])
         scaler.load_state_dict(checkpoint["scaler"])
+        if scheduler is not None and checkpoint.get("scheduler") is not None:
+            scheduler.load_state_dict(checkpoint["scheduler"])
         global_step = int(checkpoint["global_step"])
         best_loss = float(checkpoint.get("best_loss", math.inf))
 
@@ -181,12 +297,19 @@ def main() -> None:
         "gt_cache_dir": (
             str(Path(args.gt_cache_dir).resolve()) if args.gt_cache_dir else None
         ),
+        "initialization": initialization,
+        "freeze_batch_norm": args.freeze_batch_norm,
+        "color_head_only": args.color_head_only,
+        "color_lut_only": args.color_lut_only,
+        "decoder_color_only": args.decoder_color_only,
     }
     write_json(output_dir / "run_environment.json", environment)
     print(json.dumps(environment, ensure_ascii=False, indent=2))
 
     log_path = output_dir / "training_log.jsonl"
     model.train()
+    if args.freeze_batch_norm:
+        freeze_batch_norm_statistics(model)
     optimizer.zero_grad(set_to_none=True)
     micro_step = 0
 
@@ -205,9 +328,20 @@ def main() -> None:
             if micro_step % training.gradient_accumulation:
                 continue
 
+            if training.max_grad_norm > 0:
+                scaler.unscale_(optimizer)
+                torch.nn.utils.clip_grad_norm_(
+                    trainable_parameters, training.max_grad_norm
+                )
             scaler.step(optimizer)
             scaler.update()
             optimizer.zero_grad(set_to_none=True)
+            if scheduler is not None:
+                scheduler.step()
+            if training.ema_decay > 0:
+                update_ema(ema_model, model, training.ema_decay)
+            else:
+                ema_model.load_state_dict(model.state_dict())
             global_step += 1
             row: dict[str, object] = {
                 "step": global_step,
@@ -215,6 +349,13 @@ def main() -> None:
                 "train_l1": float(components["l1"].item()),
                 "train_ssim": float(components["ssim"].item()),
                 "train_chroma": float(components["chroma"].item()),
+                "train_hvi": float(components["hvi"].item()),
+                "train_histogram": float(components["histogram"].item()),
+                "train_edge": float(components["edge"].item()),
+                "train_color_moments": float(components["color_moments"].item()),
+                "train_hue": float(components["hue"].item()),
+                "train_saturation": float(components["saturation"].item()),
+                "learning_rate": float(optimizer.param_groups[0]["lr"]),
                 "time_unix": time.time(),
             }
 
@@ -222,16 +363,27 @@ def main() -> None:
                 global_step == 1 or global_step % training.validation_interval == 0
             )
             if should_validate:
-                validation = validate(model, val_loader, criterion, device)
+                validation = validate(
+                    ema_model,
+                    val_loader,
+                    criterion,
+                    device,
+                    freeze_batch_norm=args.freeze_batch_norm,
+                )
                 row.update(validation)
                 if validation["val_loss"] < best_loss:
                     best_loss = validation["val_loss"]
                     save_checkpoint(
                         output_dir / "best.pt",
                         {
-                            "model": model.state_dict(),
+                            "model": ema_model.state_dict(),
+                            "online_model": model.state_dict(),
+                            "ema_model": ema_model.state_dict(),
                             "optimizer": optimizer.state_dict(),
                             "scaler": scaler.state_dict(),
+                            "scheduler": (
+                                scheduler.state_dict() if scheduler is not None else None
+                            ),
                             "global_step": global_step,
                             "best_loss": best_loss,
                             "model_config": model_config,
@@ -251,9 +403,14 @@ def main() -> None:
                 save_checkpoint(
                     output_dir / f"step_{global_step:07d}.pt",
                     {
-                        "model": model.state_dict(),
+                        "model": ema_model.state_dict(),
+                        "online_model": model.state_dict(),
+                        "ema_model": ema_model.state_dict(),
                         "optimizer": optimizer.state_dict(),
                         "scaler": scaler.state_dict(),
+                        "scheduler": (
+                            scheduler.state_dict() if scheduler is not None else None
+                        ),
                         "global_step": global_step,
                         "best_loss": best_loss,
                         "model_config": model_config,

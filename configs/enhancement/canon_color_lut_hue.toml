@@ -1,0 +1,49 @@
+[experiment]
+name = "sied_canon_00001_adaptive_color_lut_hue"
+
+[dataset]
+width = 3840
+height = 2160
+black_level = 512
+white_level = 16383
+bayer_pattern = "RGGB"
+patch_size = 512
+augment = true
+
+[model]
+in_channels = 4
+out_channels = 3
+base_channels = 32
+depth = 4
+normalization = "batch"
+output_space = "rgb"
+illumination_conditioning = true
+hvi_density = 0.2
+color_lut_refinement = true
+color_lut_size = 17
+color_lut_basis = 4
+
+[training]
+batch_size = 1
+num_workers = 4
+learning_rate = 0.0005
+weight_decay = 0.000001
+max_steps = 1500
+validation_interval = 500
+checkpoint_interval = 500
+gradient_accumulation = 1
+ssim_weight = 0.1
+chroma_weight = 0.5
+hvi_weight = 0.4
+histogram_weight = 0.1
+edge_weight = 0.0
+color_moment_weight = 0.2
+hue_weight = 0.5
+saturation_weight = 0.3
+ema_decay = 0.98
+scheduler = "cosine"
+min_learning_rate = 0.00002
+max_grad_norm = 1.0
+seed = 20260930
+amp = true
+output_dir = "checkpoints/enhancement/canon_color_lut_hue"

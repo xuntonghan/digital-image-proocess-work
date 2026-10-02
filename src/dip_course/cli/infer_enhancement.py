@@ -21,7 +21,12 @@ from dip_course.io import (
     read_pair_manifest,
     save_rgb,
 )
-from dip_course.metrics import LPIPSMetric, psnr_rgb, ssim_rgb
+from dip_course.metrics import (
+    LPIPSMetric,
+    color_fidelity_metrics,
+    psnr_rgb,
+    ssim_rgb,
+)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -104,6 +109,7 @@ def main() -> None:
             "ssim": ssim_rgb(prediction, target),
             "inference_seconds": elapsed,
         }
+        row.update(color_fidelity_metrics(prediction, target))
         if lpips_metric is not None:
             row["lpips"] = lpips_metric(prediction, target)
         rows.append(row)
@@ -121,6 +127,21 @@ def main() -> None:
         "device": str(device),
         "psnr_mean": finite_mean([float(row["psnr"]) for row in rows]),
         "ssim_mean": finite_mean([float(row["ssim"]) for row in rows]),
+        "delta_e2000_mean": finite_mean(
+            [float(row["delta_e2000_mean"]) for row in rows]
+        ),
+        "delta_e2000_p95_mean": finite_mean(
+            [float(row["delta_e2000_p95"]) for row in rows]
+        ),
+        "lightness_mae_mean": finite_mean(
+            [float(row["lightness_mae"]) for row in rows]
+        ),
+        "saturation_mae_mean": finite_mean(
+            [float(row["saturation_mae"]) for row in rows]
+        ),
+        "hue_error_degrees_mean": finite_mean(
+            [float(row["hue_error_degrees"]) for row in rows]
+        ),
         "lpips_mean": (
             finite_mean([float(row["lpips"]) for row in rows]) if lpips_metric else None
         ),

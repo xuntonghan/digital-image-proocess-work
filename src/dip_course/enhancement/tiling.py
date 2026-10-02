@@ -40,6 +40,10 @@ def predict_tiled(
         packed_raw = F.pad(packed_raw, (0, pad_width, 0, pad_height), mode=mode)
 
     height, width = packed_raw.shape[-2:]
+    scene_context = None
+    context_function = getattr(model, "compute_scene_context", None)
+    if callable(context_function):
+        scene_context = context_function(packed_raw)
     output = torch.zeros(
         (1, 3, height * 2, width * 2), device=packed_raw.device, dtype=torch.float32
     )
@@ -55,7 +59,10 @@ def predict_tiled(
     for top in tile_starts(height, tile_size, overlap):
         for left in tile_starts(width, tile_size, overlap):
             tile = packed_raw[:, :, top : top + tile_size, left : left + tile_size]
-            prediction = model(tile).float()
+            if scene_context is None:
+                prediction = model(tile).float()
+            else:
+                prediction = model(tile, scene_context=scene_context).float()
             out_top, out_left = top * 2, left * 2
             out_bottom, out_right = out_top + tile_size * 2, out_left + tile_size * 2
             output[:, :, out_top:out_bottom, out_left:out_right] += prediction * feather

@@ -75,3 +75,48 @@ Sony 使用 `sony.toml`、`sony_train.txt`、`sony_val.txt` 和 `sony_gt`。放�
 - 对比验证损失、验证 PSNR/SSIM 和样图。如果5000步内指标回落，直接使用 `best.pt` 早停；只有仍持续改善时才续训到 50,000 步。
 
 完整训练不得在 100 步冒烟或 5000 步试验失败时继续。后续推理使用官方测试清单和 1000 张全量清单；原始尺寸计算 PSNR、SSIM、LPIPS，并下载 CSV、JSON、样图和 checkpoint 后再关机。
+
+## 第五阶段：色彩保真升级
+
+旧模型存在色调偏移与亮部过曝，新试验使用 HVI 色彩/亮度解耦、全局 RAW 统计条件、无 BatchNorm 网络、EMA 和颜色一致性损失。先运行 100 步冒烟，再分别运行 5000 步：
+
+```bash
+dip-train \
+  --config configs/enhancement/canon_color_faithful.toml \
+  --data-root /root/autodl-tmp/cv-homework/data/SIED_dataset \
+  --train-manifest manifests/enhancement/canon_train.txt \
+  --val-manifest manifests/enhancement/canon_val.txt \
+  --gt-cache-dir /root/autodl-tmp/cv-homework/cache/canon_gt \
+  --output-dir /root/autodl-tmp/cv-homework/runs/canon_color_faithful_5000 \
+  --max-steps 5000 --require-cuda
+
+dip-train \
+  --config configs/enhancement/sony_color_faithful.toml \
+  --data-root /root/autodl-tmp/cv-homework/data/SIED_dataset \
+  --train-manifest manifests/enhancement/sony_train.txt \
+  --val-manifest manifests/enhancement/sony_val.txt \
+  --gt-cache-dir /root/autodl-tmp/cv-homework/cache/sony_gt \
+  --output-dir /root/autodl-tmp/cv-homework/runs/sony_color_faithful_5000 \
+  --max-steps 5000 --require-cuda
+```
+
+两个 5000 步试验都必须在对应 `*_visual_gate.txt` 上输出八张对比图，并与旧模型及传统 ISP 同时比较 ΔE2000、亮度 MAE、饱和度 MAE、色相误差、PSNR 和 SSIM。只有颜色指标和视觉门禁同时通过，才续训到 30,000 步。
+
+## 第六阶段：SIED 官方强基线与最终替换方案
+
+只安装作者代码实际推理所需的最小依赖，并将官方仓库固定到提交 `fb7af94ac831e91c647415bf1ca0b1a75931833a`。不要安装作者完整 `requirements.txt`，否则会把当前 PyTorch/CUDA 环境降级到旧版本。
+
+```bash
+python -m pip install '.[sied]'
+
+dip-infer-official-sied \
+  --official-repo /root/autodl-tmp/cv-homework/third_party/SIED-official \
+  --checkpoint /root/autodl-tmp/cv-homework/official_sied/canon_0.0001.pt \
+  --data-root /root/autodl-tmp/cv-homework/data/SIED_dataset \
+  --manifest manifests/enhancement/canon_test.txt \
+  --output-dir /root/autodl-tmp/cv-homework/outputs/official_sied/canon_test \
+  --device cuda --precision fp16 --sampling-steps 20 \
+  --ensemble-size 3 --seed 3407
+```
+
+本项目的适配器直接调用作者 Stage-2 EMA 网络的低照 RAW 分支，不向网络传入 GT RGB；参考图只在预测完成后读取并计算指标。最终方案平均三次独立 DDIM 预测以降低随机性；验证门禁显示它同时改善 PSNR、SSIM、ΔE2000、亮度和色相指标。最终汇报必须保留 `summary.json` 中的 `blind_inference: true`、`weight_source`、`ensemble_size`、采样步数和随机种子，以证明比较可复现且没有答案泄漏。

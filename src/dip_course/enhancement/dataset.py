@@ -23,6 +23,8 @@ class SIEDPairDataset(Dataset):
         patch_size: int = 256,
         augment: bool = True,
         gt_cache_dir: str | Path | None = None,
+        color_aware_probability: float = 0.0,
+        color_aware_candidates: int = 4,
     ) -> None:
         if patch_size <= 0:
             raise ValueError("patch_size must be positive")
@@ -31,6 +33,14 @@ class SIEDPairDataset(Dataset):
         self.patch_size = patch_size
         self.augment = augment
         self.gt_cache_dir = Path(gt_cache_dir) if gt_cache_dir is not None else None
+        if not 0.0 <= color_aware_probability <= 1.0:
+            raise ValueError("color_aware_probability must be in [0, 1]")
+        if color_aware_candidates <= 0:
+            raise ValueError("color_aware_candidates must be positive")
+        if color_aware_probability > 0.0 and self.gt_cache_dir is None:
+            raise ValueError("color-aware cropping requires a GT cache")
+        self.color_aware_probability = color_aware_probability
+        self.color_aware_candidates = color_aware_candidates
 
     def __len__(self) -> int:
         return len(self.records)
@@ -51,9 +61,40 @@ class SIEDPairDataset(Dataset):
                 f"patch_size {size} exceeds packed RAW dimensions {packed_height}x{packed_width}"
             )
 
+        cached: np.ndarray | None = None
+        if self.gt_cache_dir is not None:
+            cache_path = self.gt_cache_dir / f"{record.key}.npy"
+            if not cache_path.is_file():
+                raise FileNotFoundError(f"Missing GT cache entry: {cache_path}")
+            cached = np.load(cache_path, mmap_mode="r", allow_pickle=False)
+            expected_target = (self.raw_spec.height, self.raw_spec.width, 3)
+            if cached.shape != expected_target or cached.dtype != np.uint8:
+                raise ValueError(
+                    f"Invalid GT cache {cache_path}: shape={cached.shape}, "
+                    f"dtype={cached.dtype}; expected {expected_target} uint8"
+                )
+
         if self.augment:
-            top = random.randint(0, packed_height - size)
-            left = random.randint(0, packed_width - size)
+            if (
+                cached is not None
+                and random.random() < self.color_aware_probability
+            ):
+                candidates = [
+                    (
+                        random.randint(0, packed_height - size),
+                        random.randint(0, packed_width - size),
+                    )
+                    for _ in range(self.color_aware_candidates)
+                ]
+                top, left = max(
+                    candidates,
+                    key=lambda position: self._color_score(
+                        cached, position[0], position[1], size
+                    ),
+                )
+            else:
+                top = random.randint(0, packed_height - size)
+                left = random.randint(0, packed_width - size)
         else:
             top = (packed_height - size) // 2
             left = (packed_width - size) // 2
@@ -92,16 +133,7 @@ class SIEDPairDataset(Dataset):
                     np.asarray(image.crop(box).convert("RGB"), dtype=np.float32) / 255.0
                 )
         else:
-            cache_path = self.gt_cache_dir / f"{record.key}.npy"
-            if not cache_path.is_file():
-                raise FileNotFoundError(f"Missing GT cache entry: {cache_path}")
-            cached = np.load(cache_path, mmap_mode="r", allow_pickle=False)
-            expected_target = (self.raw_spec.height, self.raw_spec.width, 3)
-            if cached.shape != expected_target or cached.dtype != np.uint8:
-                raise ValueError(
-                    f"Invalid GT cache {cache_path}: shape={cached.shape}, "
-                    f"dtype={cached.dtype}; expected {expected_target} uint8"
-                )
+            assert cached is not None
             rgb_patch = (
                 np.asarray(cached[box[1] : box[3], box[0] : box[2], :]).astype(
                     np.float32
@@ -117,13 +149,29 @@ class SIEDPairDataset(Dataset):
             if random.random() < 0.5:
                 raw_patch = raw_patch[:, ::-1, :]
                 rgb_patch = rgb_patch[:, ::-1, :]
-            rotations = random.randint(0, 3)
-            if rotations:
-                raw_patch = np.rot90(raw_patch, rotations, axes=(1, 2))
-                rgb_patch = np.rot90(rgb_patch, rotations, axes=(1, 2))
+            # Do not rotate packed Bayer planes without also transforming the
+            # CFA offsets. The official SIED loader uses only horizontal and
+            # vertical flips; naive 90-degree rotations teach contradictory
+            # sub-pixel geometry and visibly soften color edges.
 
         return {
             "raw": torch.from_numpy(np.ascontiguousarray(raw_patch)).float(),
             "target": torch.from_numpy(np.ascontiguousarray(rgb_patch)).float(),
             "key": record.key,
         }
+
+    @staticmethod
+    def _color_score(
+        target: np.ndarray, top: int, left: int, size: int
+    ) -> float:
+        """Approximate colorful-pixel coverage using a sparse GT crop."""
+        stride = max(1, size // 32)
+        sample = target[
+            top * 2 : (top + size) * 2 : stride,
+            left * 2 : (left + size) * 2 : stride,
+            :,
+        ].astype(np.float32)
+        maximum = sample.max(axis=2)
+        minimum = sample.min(axis=2)
+        saturation = (maximum - minimum) / np.maximum(maximum, 1.0)
+        return float(np.mean(saturation * saturation, dtype=np.float64))

@@ -51,6 +51,68 @@ def ssim_rgb(
     )
 
 
+def _resize_for_color_metrics(
+    image: np.ndarray, *, max_side: int
+) -> np.ndarray:
+    if max(image.shape[:2]) <= max_side:
+        return image
+    from skimage.transform import resize
+
+    scale = max_side / max(image.shape[:2])
+    shape = (max(1, round(image.shape[0] * scale)), max(1, round(image.shape[1] * scale)))
+    return resize(
+        image,
+        shape,
+        order=1,
+        preserve_range=True,
+        anti_aliasing=True,
+    ).astype(np.float32)
+
+
+def color_fidelity_metrics(
+    prediction: np.ndarray, target: np.ndarray, *, max_side: int = 960
+) -> dict[str, float]:
+    """Measure perceptual color, saturation, hue, and lightness agreement.
+
+    CIEDE2000 is evaluated on a bounded-resolution copy to make full 4K test
+    evaluation practical. Spatial fidelity remains covered by full-resolution
+    PSNR and SSIM.
+    """
+    prediction, target = _validate_pair(prediction, target)
+    if max_side <= 0:
+        raise ValueError("max_side must be positive")
+    prediction = _resize_for_color_metrics(prediction, max_side=max_side)
+    target = _resize_for_color_metrics(target, max_side=max_side)
+
+    from skimage.color import deltaE_ciede2000, rgb2hsv, rgb2lab
+
+    prediction_lab = rgb2lab(np.clip(prediction, 0.0, 1.0))
+    target_lab = rgb2lab(np.clip(target, 0.0, 1.0))
+    delta_e = deltaE_ciede2000(prediction_lab, target_lab)
+
+    prediction_hsv = rgb2hsv(np.clip(prediction, 0.0, 1.0))
+    target_hsv = rgb2hsv(np.clip(target, 0.0, 1.0))
+    hue_distance = np.abs(prediction_hsv[..., 0] - target_hsv[..., 0])
+    hue_distance = np.minimum(hue_distance, 1.0 - hue_distance)
+    chromatic_mask = (target_hsv[..., 1] >= 0.1) & (target_hsv[..., 2] >= 0.05)
+    hue_error = (
+        float(np.mean(hue_distance[chromatic_mask], dtype=np.float64) * 360.0)
+        if np.any(chromatic_mask)
+        else 0.0
+    )
+    return {
+        "delta_e2000_mean": float(np.mean(delta_e, dtype=np.float64)),
+        "delta_e2000_p95": float(np.percentile(delta_e, 95.0)),
+        "lightness_mae": float(
+            np.mean(np.abs(prediction_lab[..., 0] - target_lab[..., 0]))
+        ),
+        "saturation_mae": float(
+            np.mean(np.abs(prediction_hsv[..., 1] - target_hsv[..., 1]))
+        ),
+        "hue_error_degrees": hue_error,
+    }
+
+
 class LPIPSMetric:
     """Reusable LPIPS evaluator. Importing this class does not require torch until construction."""
 
