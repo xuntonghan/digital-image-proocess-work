@@ -1,1 +1,1 @@
-# Directory initialization
+"""Command-line entry points."""
