@@ -1,0 +1,19 @@
+{
+  "valid": true,
+  "manifest": "manifests/source/sony_all.txt",
+  "data_root": "<DATA_ROOT>",
+  "pairs_declared": 1000,
+  "pairs_checked": 1000,
+  "duplicate_pairs": 0,
+  "checked_bytes": 18653873890,
+  "raw_spec": {
+    "width": 3840,
+    "height": 2160,
+    "black_level": 512,
+    "white_level": 16383,
+    "expected_raw_bytes": 16588800
+  },
+  "error_count": 0,
+  "errors": [],
+  "errors_truncated": false
+}

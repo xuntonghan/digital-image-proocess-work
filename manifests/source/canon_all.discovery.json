@@ -1,1 +1,11 @@
-{}
+{
+  "valid": true,
+  "data_root": "<DATA_ROOT>",
+  "raw_dir": "<DATA_ROOT>/0.0001",
+  "gt_dir": "<DATA_ROOT>/gt",
+  "pair_count": 1000,
+  "manifest": "manifests/source/canon_all.txt",
+  "manifest_sha256": "d8631c12a21e85cbfc770ab1c6ebeb28090a5d63a29d36c15b66888eb8d3aa30",
+  "first_key": "1",
+  "last_key": "1000"
+}

@@ -1,0 +1,11 @@
+{
+  "valid": true,
+  "data_root": "<DATA_ROOT>",
+  "raw_dir": "<DATA_ROOT>/0.001",
+  "gt_dir": "<DATA_ROOT>/gt 2",
+  "pair_count": 1000,
+  "manifest": "manifests/source/sony_all.txt",
+  "manifest_sha256": "ea62153f02ff3b6aa65979c4f6f89261a31652bc5a1d1d0aef8af150cd4c9120",
+  "first_key": "1",
+  "last_key": "1000"
+}
