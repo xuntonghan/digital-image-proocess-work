@@ -1,1 +1,15 @@
-{}
+{
+  "method": "classical_rggb_auto_gray_world",
+  "count": 76,
+  "psnr_mean": 13.739991172726688,
+  "ssim_mean": 0.13553438507216542,
+  "lpips_mean": 0.9163697534485867,
+  "parameters": {
+    "gamma": 2.0,
+    "exposure": null,
+    "white_balance": null,
+    "auto_percentile": 98.0,
+    "auto_target": 0.9,
+    "auto_white_balance_power": 1.0
+  }
+}
