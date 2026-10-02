@@ -1,1 +1,1 @@
-# Directory initialization
+"""Low-light RAW enhancement algorithms."""
