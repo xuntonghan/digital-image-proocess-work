@@ -159,10 +159,23 @@ dip-train-sied-refiner \
 
 推理时在原 SIED 命令上增加 `--refiner-checkpoint /path/to/best.pt`。精修器只能使用训练集学习，通过验证门控后才允许在官方测试集报告一次冻结结果。
 
-## Kodak 图像压缩准备
+## Kodak 图像压缩
 
 课件入口仓库将 Kodak 数据指向 `MohamedBakrAli/Kodak-Lossless-True-Color-Image-Suite`。本项目已固定上游提交，24 张 PNG 放在不提交到 Git 的 `data/compression/kodak/`；来源、图像规格和逐文件 SHA256 见 `manifests/compression/`。
 
-压缩阶段将在同一组 24 张图上完成图像读取、压缩、解压缩，并统一计算压缩率、PSNR、SSIM、压缩时间和解压缩时间。
+标准 JPEG 基线已完成图像读取、压缩、解压缩和全量评价：
 
-最终实验结论见 `reports/enhancement_final_report.md`，本机基线记录见 `reports/enhancement_local_baseline.md`，完整4090执行顺序见 `cloud/runbook.md`。
+```bash
+dip-compress-benchmark \
+  --data-dir data/compression/kodak \
+  --output-dir outputs/compression/jpeg_baseline \
+  --qualities 30 50 70 90 \
+  --subsampling 420 \
+  --repeats 7 --warmup 2
+```
+
+命令会生成 96 个 JPEG、96 个解压 PNG、逐图 `metrics.csv`、汇总 `summary.json` 和代表图 `comparison.png`。汇总同时报告相对原 PNG 与原始 RGB 像素的压缩比、bpp、PSNR、SSIM 以及编码/解码时间，避免不同压缩比口径混用。
+
+本机全量结果中，Q70 达到 10.535× PNG 文件压缩比、1.239 bpp、33.917 dB PSNR 和 0.9259 SSIM，是当前默认的质量/体积折中点。完整分析见 `reports/compression_jpeg_baseline.md`。
+
+图像增强最终结论见 `reports/enhancement_final_report.md`，压缩基线见 `reports/compression_jpeg_baseline.md`，完整4090执行顺序见 `cloud/runbook.md`。

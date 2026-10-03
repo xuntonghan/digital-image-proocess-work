@@ -45,6 +45,7 @@ dip-infer = "dip_course.cli.infer_enhancement:main"
 dip-infer-official-sied = "dip_course.cli.infer_official_sied:main"
 dip-train-sied-refiner = "dip_course.cli.train_sied_refiner:main"
 dip-visualize = "dip_course.cli.visualize_comparison:main"
+dip-compress-benchmark = "dip_course.cli.benchmark_compression:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

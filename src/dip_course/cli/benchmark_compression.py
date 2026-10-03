@@ -1,0 +1,212 @@
+from __future__ import annotations
+
+import argparse
+import csv
+import hashlib
+import json
+import platform
+import statistics
+import time
+from dataclasses import asdict
+from pathlib import Path
+
+from PIL import Image
+from PIL import __version__ as pillow_version
+
+from dip_course.cli._common import write_json
+from dip_course.compression.jpeg import JPEGSettings, benchmark_jpeg
+from dip_course.compression.visualize import build_compression_grid
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Benchmark JPEG compression on the Kodak image suite"
+    )
+    parser.add_argument("--data-dir", required=True)
+    parser.add_argument("--output-dir", required=True)
+    parser.add_argument(
+        "--qualities",
+        type=int,
+        nargs="+",
+        default=(30, 50, 70, 90),
+    )
+    parser.add_argument(
+        "--subsampling",
+        choices=("444", "422", "420"),
+        default="420",
+    )
+    parser.add_argument("--optimize", action="store_true")
+    parser.add_argument("--progressive", action="store_true")
+    parser.add_argument("--repeats", type=int, default=5)
+    parser.add_argument("--warmup", type=int, default=1)
+    parser.add_argument("--expected-count", type=int, default=24)
+    parser.add_argument(
+        "--visualize-keys",
+        default="01,04,13,23,24",
+        help="Comma-separated Kodak image stems for the comparison grid",
+    )
+    return parser
+
+
+def _finite_mean(rows: list[dict[str, object]], key: str) -> float:
+    return statistics.fmean(float(row[key]) for row in rows)
+
+
+def _input_manifest_sha256(paths: list[Path]) -> str:
+    aggregate = hashlib.sha256()
+    for path in paths:
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        aggregate.update(f"{digest}  {path.name}\n".encode())
+    return aggregate.hexdigest()
+
+
+def _write_csv(path: Path, rows: list[dict[str, object]]) -> None:
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    with temporary.open("w", newline="", encoding="utf-8") as stream:
+        writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+    temporary.replace(path)
+
+
+def main() -> None:
+    args = build_parser().parse_args()
+    if args.repeats <= 0 or args.warmup < 0:
+        raise ValueError("repeats must be positive and warmup non-negative")
+    if len(set(args.qualities)) != len(args.qualities):
+        raise ValueError("qualities must not contain duplicates")
+    settings = [
+        JPEGSettings(
+            quality=quality,
+            subsampling=args.subsampling,
+            optimize=args.optimize,
+            progressive=args.progressive,
+        )
+        for quality in sorted(args.qualities)
+    ]
+
+    data_dir = Path(args.data_dir)
+    images = sorted(data_dir.glob("*.png"))
+    if not images:
+        raise FileNotFoundError(f"No PNG images found in {data_dir}")
+    if args.expected_count > 0 and len(images) != args.expected_count:
+        raise ValueError(
+            f"Expected {args.expected_count} PNG images, found {len(images)}"
+        )
+
+    output_dir = Path(args.output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    rows: list[dict[str, object]] = []
+    original_paths: dict[str, Path] = {}
+    decoded_paths: dict[int, dict[str, Path]] = {
+        setting.quality: {} for setting in settings
+    }
+
+    for image_path in images:
+        read_started = time.perf_counter_ns()
+        with Image.open(image_path) as source:
+            if source.mode != "RGB":
+                raise ValueError(
+                    f"Expected true-color RGB input at {image_path}, got {source.mode}"
+                )
+            image = source.copy()
+        read_ms = (time.perf_counter_ns() - read_started) / 1_000_000.0
+        key = image_path.stem
+        original_paths[key] = image_path
+
+        for setting in settings:
+            result, payload, decoded = benchmark_jpeg(
+                image,
+                source_file_bytes=image_path.stat().st_size,
+                settings=setting,
+                repeats=args.repeats,
+                warmup=args.warmup,
+            )
+            encoded_path = output_dir / "encoded" / f"q{setting.quality}" / f"{key}.jpg"
+            decoded_path = output_dir / "decoded" / f"q{setting.quality}" / f"{key}.png"
+            encoded_path.parent.mkdir(parents=True, exist_ok=True)
+            decoded_path.parent.mkdir(parents=True, exist_ok=True)
+            encoded_path.write_bytes(payload)
+            decoded.save(decoded_path)
+            decoded_paths[setting.quality][key] = decoded_path
+            row: dict[str, object] = {
+                "key": key,
+                "quality": setting.quality,
+                "subsampling": setting.subsampling,
+                "optimize": setting.optimize,
+                "progressive": setting.progressive,
+                "source": str(image_path.relative_to(data_dir)),
+                "encoded": str(encoded_path.relative_to(output_dir)),
+                "decoded": str(decoded_path.relative_to(output_dir)),
+                "read_ms": read_ms,
+                **asdict(result),
+            }
+            rows.append(row)
+            print(json.dumps(row, ensure_ascii=False), flush=True)
+
+    _write_csv(output_dir / "metrics.csv", rows)
+    summaries: list[dict[str, object]] = []
+    for setting in settings:
+        quality_rows = [row for row in rows if row["quality"] == setting.quality]
+        source_total = sum(int(row["source_file_bytes"]) for row in quality_rows)
+        raw_total = sum(int(row["raw_rgb_bytes"]) for row in quality_rows)
+        compressed_total = sum(int(row["compressed_bytes"]) for row in quality_rows)
+        summaries.append(
+            {
+                "quality": setting.quality,
+                "subsampling": setting.subsampling,
+                "optimize": setting.optimize,
+                "progressive": setting.progressive,
+                "count": len(quality_rows),
+                "source_file_bytes_total": source_total,
+                "raw_rgb_bytes_total": raw_total,
+                "compressed_bytes_total": compressed_total,
+                "file_compression_ratio": source_total / compressed_total,
+                "raw_compression_ratio": raw_total / compressed_total,
+                "file_space_saving_percent": (
+                    1.0 - compressed_total / source_total
+                )
+                * 100.0,
+                "bits_per_pixel_mean": _finite_mean(
+                    quality_rows, "bits_per_pixel"
+                ),
+                "psnr_mean": _finite_mean(quality_rows, "psnr"),
+                "ssim_mean": _finite_mean(quality_rows, "ssim"),
+                "read_ms_mean": _finite_mean(quality_rows, "read_ms"),
+                "encode_ms_mean": _finite_mean(quality_rows, "encode_ms"),
+                "decode_ms_mean": _finite_mean(quality_rows, "decode_ms"),
+            }
+        )
+
+    keys = [key.strip() for key in args.visualize_keys.split(",") if key.strip()]
+    visualization = output_dir / "comparison.png"
+    build_compression_grid(
+        originals=original_paths,
+        decoded_by_quality=decoded_paths,
+        keys=keys,
+        output=visualization,
+    )
+    summary = {
+        "method": "pillow_libjpeg_jpeg_baseline",
+        "data_dir": str(data_dir),
+        "input_count": len(images),
+        "input_manifest_sha256": _input_manifest_sha256(images),
+        "python": platform.python_version(),
+        "pillow": pillow_version,
+        "repeats": args.repeats,
+        "warmup": args.warmup,
+        "timing_scope": "codec only; excludes metric computation and output-file writes",
+        "compression_ratio_definitions": {
+            "file": "sum(original PNG bytes) / sum(compressed JPEG bytes)",
+            "raw": "sum(width * height * 3 bytes) / sum(compressed JPEG bytes)",
+        },
+        "visualization": str(visualization.relative_to(output_dir)),
+        "visualization_keys": keys,
+        "qualities": summaries,
+    }
+    write_json(output_dir / "summary.json", summary)
+    print(json.dumps(summary, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()
