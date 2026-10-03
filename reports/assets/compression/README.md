@@ -8,3 +8,5 @@
 
 完整 JPEG 与解压 PNG 共 192 个文件，保存在不纳入 Git 的
 `outputs/compression/jpeg_baseline/`，可通过仓库命令一键重建。
+
+`dctc_v1/` 保存本项目自研 JPEG-like 编码器的对应结果，除逐图数据、汇总和重建对比外，还包含与 libjpeg 的 PSNR/bpp、SSIM/bpp 率失真曲线。完整 `.dctc` 码流与解压 PNG 位于不纳入 Git 的 `outputs/compression/dctc_v1/`。

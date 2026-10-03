@@ -1,0 +1,141 @@
+{
+  "method": "coursework_dctc_v1",
+  "algorithm": [
+    "RGB to YCbCr",
+    "chroma subsampling 420",
+    "8x8 orthonormal DCT",
+    "JPEG quality-scaled quantization",
+    "zigzag scan",
+    "DC differential and AC zero-run coding",
+    "zlib DEFLATE entropy coding"
+  ],
+  "data_dir": "data/compression/kodak",
+  "input_count": 24,
+  "input_manifest_sha256": "b2194c51cff99d6f3cc14fa73c0a805817b1e705abc02cf94f89165cc5e6bcc5",
+  "python": "3.12.14",
+  "numpy": "2.5.3",
+  "pillow": "12.3.0",
+  "repeats": 3,
+  "warmup": 1,
+  "timing_scope": "codec only; excludes metric computation and output-file writes",
+  "compression_ratio_definitions": {
+    "file": "sum(original PNG bytes) / sum(compressed DCTC bytes)",
+    "raw": "sum(width * height * 3 bytes) / sum(compressed DCTC bytes)"
+  },
+  "baseline_summary": "reports/assets/compression/jpeg_baseline/summary.json",
+  "visualization": "comparison.png",
+  "rate_distortion_plot": "rate_distortion.png",
+  "visualization_keys": [
+    "01",
+    "04",
+    "13",
+    "23",
+    "24"
+  ],
+  "qualities": [
+    {
+      "quality": 30,
+      "subsampling": "420",
+      "entropy_level": 9,
+      "count": 24,
+      "source_file_bytes_total": 15394305,
+      "raw_rgb_bytes_total": 28311552,
+      "compressed_bytes_total": 839354,
+      "file_compression_ratio": 18.340658411111402,
+      "raw_compression_ratio": 33.730168677339954,
+      "file_space_saving_percent": 94.54763303702246,
+      "bits_per_pixel_mean": 0.7115292019314237,
+      "psnr_mean": 30.36819400867935,
+      "ssim_mean": 0.8614659110705057,
+      "read_ms_mean": 6.031491458333334,
+      "encode_ms_mean": 42.447237791666666,
+      "decode_ms_mean": 37.982776,
+      "libjpeg_delta": {
+        "compressed_bytes": 61031,
+        "bits_per_pixel": 0.05173661973741328,
+        "psnr_db": -0.12327867946446247,
+        "ssim": -0.0036406666040420532,
+        "encode_time_ratio": 82.42266118570465,
+        "decode_time_ratio": 76.10983086938472
+      }
+    },
+    {
+      "quality": 50,
+      "subsampling": "420",
+      "entropy_level": 9,
+      "count": 24,
+      "source_file_bytes_total": 15394305,
+      "raw_rgb_bytes_total": 28311552,
+      "compressed_bytes_total": 1216482,
+      "file_compression_ratio": 12.654774176683256,
+      "raw_compression_ratio": 23.273301207909366,
+      "file_space_saving_percent": 92.09784397541819,
+      "bits_per_pixel_mean": 1.0312245686848958,
+      "psnr_mean": 32.02747516919221,
+      "ssim_mean": 0.8968271563450495,
+      "read_ms_mean": 6.031491458333334,
+      "encode_ms_mean": 54.18089749999999,
+      "decode_ms_mean": 50.78602945833333,
+      "libjpeg_delta": {
+        "compressed_bytes": 148286,
+        "bits_per_pixel": 0.12570359971788192,
+        "psnr_db": -0.1463403467649158,
+        "ssim": -0.002823837101459503,
+        "encode_time_ratio": 99.21159250004769,
+        "decode_time_ratio": 87.13568073888966
+      }
+    },
+    {
+      "quality": 70,
+      "subsampling": "420",
+      "entropy_level": 9,
+      "count": 24,
+      "source_file_bytes_total": 15394305,
+      "raw_rgb_bytes_total": 28311552,
+      "compressed_bytes_total": 1717193,
+      "file_compression_ratio": 8.964807683236538,
+      "raw_compression_ratio": 16.4871112332743,
+      "file_space_saving_percent": 88.84527102717531,
+      "bits_per_pixel_mean": 1.4556825425889757,
+      "psnr_mean": 33.740347955177846,
+      "ssim_mean": 0.9236710419257482,
+      "read_ms_mean": 6.031491458333334,
+      "encode_ms_mean": 68.19093404166667,
+      "decode_ms_mean": 66.85132466666667,
+      "libjpeg_delta": {
+        "compressed_bytes": 255895,
+        "bits_per_pixel": 0.21692487928602433,
+        "psnr_db": -0.17639995173895784,
+        "ssim": -0.0022367189327875403,
+        "encode_time_ratio": 116.22492178559644,
+        "decode_time_ratio": 98.10437967085666
+      }
+    },
+    {
+      "quality": 90,
+      "subsampling": "420",
+      "entropy_level": 9,
+      "count": 24,
+      "source_file_bytes_total": 15394305,
+      "raw_rgb_bytes_total": 28311552,
+      "compressed_bytes_total": 3336921,
+      "file_compression_ratio": 4.613326177035656,
+      "raw_compression_ratio": 8.484333911411149,
+      "file_space_saving_percent": 78.32366579718928,
+      "bits_per_pixel_mean": 2.8287429809570312,
+      "psnr_mean": 37.67693990776443,
+      "ssim_mean": 0.9620148713390032,
+      "read_ms_mean": 6.031491458333334,
+      "encode_ms_mean": 106.29648083333332,
+      "decode_ms_mean": 116.557489625,
+      "libjpeg_delta": {
+        "compressed_bytes": 569086,
+        "bits_per_pixel": 0.4824201795789933,
+        "psnr_db": -0.35703325368576344,
+        "ssim": -0.0013381441434224817,
+        "encode_time_ratio": 148.28366036314307,
+        "decode_time_ratio": 121.49710635525588
+      }
+    }
+  ]
+}

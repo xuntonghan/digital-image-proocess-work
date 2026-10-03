@@ -12,7 +12,10 @@ from dip_course.compression.jpeg import (
     compress_jpeg,
     decompress_jpeg,
 )
-from dip_course.compression.visualize import build_compression_grid
+from dip_course.compression.visualize import (
+    build_compression_grid,
+    build_rate_distortion_plot,
+)
 
 
 def test_jpeg_round_trip_preserves_dimensions() -> None:
@@ -84,3 +87,30 @@ def test_builds_original_and_quality_comparison_grid(tmp_path: Path) -> None:
 
     with Image.open(output) as grid:
         assert grid.size == (258, 118)
+
+
+def test_builds_rate_distortion_plot(tmp_path: Path) -> None:
+    points = [
+        {
+            "quality": 50,
+            "bits_per_pixel_mean": 0.8,
+            "psnr_mean": 31.0,
+            "ssim_mean": 0.90,
+        },
+        {
+            "quality": 80,
+            "bits_per_pixel_mean": 1.6,
+            "psnr_mean": 36.0,
+            "ssim_mean": 0.96,
+        },
+    ]
+    output = tmp_path / "rate_distortion.png"
+
+    build_rate_distortion_plot(
+        series={"codec-a": points, "codec-b": points},
+        output=output,
+        size=(800, 360),
+    )
+
+    with Image.open(output) as plot:
+        assert plot.size == (800, 360)

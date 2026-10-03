@@ -178,4 +178,20 @@ dip-compress-benchmark \
 
 本机全量结果中，Q70 达到 10.535× PNG 文件压缩比、1.239 bpp、33.917 dB PSNR 和 0.9259 SSIM，是当前默认的质量/体积折中点。完整分析见 `reports/compression_jpeg_baseline.md`。
 
-图像增强最终结论见 `reports/enhancement_final_report.md`，压缩基线见 `reports/compression_jpeg_baseline.md`，完整4090执行顺序见 `cloud/runbook.md`。
+### 自研 DCTC v1 编码器
+
+第二阶段实现了不依赖 JPEG 编码库的自定义 `.dctc` 格式，包含 RGB→YCbCr、4:2:0、8×8 DCT、质量缩放量化、Zigzag、DC 差分、AC 零游程和 DEFLATE 熵编码，并配有独立解码器：
+
+```bash
+dip-dct-benchmark \
+  --data-dir data/compression/kodak \
+  --output-dir outputs/compression/dctc_v1 \
+  --qualities 30 50 70 90 \
+  --subsampling 420 --entropy-level 9 \
+  --repeats 3 --warmup 1 \
+  --baseline-summary reports/assets/compression/jpeg_baseline/summary.json
+```
+
+DCTC Q70 在 Kodak 24 图上达到 8.965× PNG 文件压缩比、1.456 bpp、33.740 dB PSNR 和 0.9237 SSIM。它的率失真表现接近但仍弱于成熟 libjpeg，完整结构、结果和差异分析见 `reports/compression_dctc_v1.md`。
+
+图像增强最终结论见 `reports/enhancement_final_report.md`，压缩实验见 `reports/compression_jpeg_baseline.md` 和 `reports/compression_dctc_v1.md`，完整4090执行顺序见 `cloud/runbook.md`。
