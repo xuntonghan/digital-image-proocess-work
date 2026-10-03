@@ -1,0 +1,23 @@
+{
+  "course_entry_repository": "https://github.com/wenwang123/Digital-Image-Processing",
+  "course_entry_commit": "0526662fd0671f3f05b9b43f280d20e8e2c4046b",
+  "source_repository": "https://github.com/MohamedBakrAli/Kodak-Lossless-True-Color-Image-Suite",
+  "source_commit": "dd2e1105fe8d9afe1120cd7e4c0e5e41f509a81b",
+  "source_subdirectory": "PhotoCD_PCD0992",
+  "local_directory": "data/compression/kodak",
+  "prepared_on": "2026-10-03",
+  "file_count": 24,
+  "total_bytes": 15394305,
+  "format": "PNG",
+  "png_bit_depth": 8,
+  "png_color_type": 2,
+  "color_mode": "RGB",
+  "channels": 3,
+  "interlaced": false,
+  "dimensions": {
+    "768x512": 18,
+    "512x768": 6
+  },
+  "sha256_manifest": "kodak.sha256",
+  "sha256_manifest_aggregate": "b2194c51cff99d6f3cc14fa73c0a805817b1e705abc02cf94f89165cc5e6bcc5"
+}

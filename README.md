@@ -19,6 +19,7 @@
 - ICCV 2025 SIED 作者预训练权重的盲推理适配器：只以低照 RAW 生成结果，GT 仅在预测完成后参与评价；
 - 冻结 SIED 后的轻量曝光/色调精修器，支持全场景缓存训练与原尺寸推理；
 - ΔE2000、亮度 MAE、饱和度 MAE、环形色相误差及前后五列对比图。
+- Kodak 24 张无损 RGB 图像的固定上游版本、SHA256 清单与压缩实验数据目录。
 
 项目不包含课程原始数据、模型权重或完整中间输出。它们分别放在 `data/`、`checkpoints/` 和 `outputs/`，这些目录不会提交到 Git。为便于验收，仓库保留最终逐图指标、汇总指标和 Canon/Sony 代表性四列对比图，见 `reports/assets/enhancement/`。
 
@@ -157,5 +158,11 @@ dip-train-sied-refiner \
 ```
 
 推理时在原 SIED 命令上增加 `--refiner-checkpoint /path/to/best.pt`。精修器只能使用训练集学习，通过验证门控后才允许在官方测试集报告一次冻结结果。
+
+## Kodak 图像压缩准备
+
+课件入口仓库将 Kodak 数据指向 `MohamedBakrAli/Kodak-Lossless-True-Color-Image-Suite`。本项目已固定上游提交，24 张 PNG 放在不提交到 Git 的 `data/compression/kodak/`；来源、图像规格和逐文件 SHA256 见 `manifests/compression/`。
+
+压缩阶段将在同一组 24 张图上完成图像读取、压缩、解压缩，并统一计算压缩率、PSNR、SSIM、压缩时间和解压缩时间。
 
 最终实验结论见 `reports/enhancement_final_report.md`，本机基线记录见 `reports/enhancement_local_baseline.md`，完整4090执行顺序见 `cloud/runbook.md`。

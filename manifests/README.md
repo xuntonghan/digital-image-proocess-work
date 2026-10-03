@@ -20,3 +20,7 @@ manifests/test_sony.txt
 ```
 
 如果老师提供官方划分，直接使用官方划分；否则固定随机种子后一次性划分并保存清单，不在每次运行时重新随机划分。
+
+## 图像压缩
+
+Kodak 压缩测试集的上游来源、固定提交、图像规格和 SHA256 清单见 `compression/`。原始 PNG 放在被 Git 忽略的 `data/compression/kodak/`，不与仓库中的实验代码和指标结果混存。
