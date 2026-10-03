@@ -17,6 +17,7 @@
 - RAW patch 内存映射及可选 GT 缓存，避免云端重复读取整张4K图；
 - Canon 与 Sony 的独立 4090 训练配置。
 - ICCV 2025 SIED 作者预训练权重的盲推理适配器：只以低照 RAW 生成结果，GT 仅在预测完成后参与评价；
+- 冻结 SIED 后的轻量曝光/色调精修器，支持全场景缓存训练与原尺寸推理；
 - ΔE2000、亮度 MAE、饱和度 MAE、环形色相误差及前后五列对比图。
 
 项目不包含课程原始数据、模型权重或完整中间输出。它们分别放在 `data/`、`checkpoints/` 和 `outputs/`，这些目录不会提交到 Git。为便于验收，仓库保留最终逐图指标、汇总指标和 Canon/Sony 代表性四列对比图，见 `reports/assets/enhancement/`。
@@ -137,5 +138,24 @@ dip-infer-official-sied \
 ```
 
 检查点优先读取 EMA 权重。最终方案对三次独立 DDIM 输出做像素平均；第一个样本与 `--ensemble-size 1` 使用相同种子，便于公平消融。随机种子、集成数、精度、采样步数和实际权重来源均写入 `summary.json`。在 RTX 4090 上可以直接处理 3840×2160 图像，无需分块。
+
+### 全场景曝光/色调精修
+
+精修器仅预测受限的全局曝光、伽马、白平衡、3×3 色彩矩阵和平滑局部照度，初始是恒等映射，不生成额外高频细节。先用冻结 SIED 生成训练/验证缓存，再进行 BF16 全场景训练：
+
+```bash
+dip-train-sied-refiner \
+  --official-repo /path/to/SIED \
+  --checkpoint /path/to/canon_0.0001.pt \
+  --data-root /path/to/SIED_dataset \
+  --train-manifest manifests/enhancement/canon_train.txt \
+  --val-manifest manifests/enhancement/canon_visual_gate.txt \
+  --prediction-dir /path/to/cached_sied/images \
+  --output-dir outputs/canon_sied_refiner \
+  --device cuda --precision bf16 --batch-size 8 \
+  --max-steps 1000 --learning-rate 1e-4 --require-cuda
+```
+
+推理时在原 SIED 命令上增加 `--refiner-checkpoint /path/to/best.pt`。精修器只能使用训练集学习，通过验证门控后才允许在官方测试集报告一次冻结结果。
 
 最终实验结论见 `reports/enhancement_final_report.md`，本机基线记录见 `reports/enhancement_local_baseline.md`，完整4090执行顺序见 `cloud/runbook.md`。

@@ -1,0 +1,36 @@
+{
+  "output": "/root/autodl-tmp/cv-homework/outputs/official_sied/canon_gate_refiner_fullscene_bf16/visual_gate_comparison.png",
+  "manifest": "/root/autodl-tmp/cv-homework/project/manifests/enhancement/canon_visual_gate.txt",
+  "keys": [
+    "958",
+    "105",
+    "664",
+    "982",
+    "177",
+    "71",
+    "182",
+    "53"
+  ],
+  "columns": [
+    "Input RAW preview",
+    "Classical baseline",
+    "Previous model",
+    "Improved model",
+    "Ground truth"
+  ],
+  "raw_preview": {
+    "exposure": 1.0,
+    "gamma": 2.0
+  },
+  "classical": {
+    "mode": "auto",
+    "exposure": null,
+    "gamma": 2.0,
+    "white_balance": null,
+    "auto_percentile": 98.0,
+    "auto_target": 0.9,
+    "auto_white_balance_power": 1.0
+  },
+  "prediction_dir": "/root/autodl-tmp/cv-homework/outputs/official_sied/canon_gate_refiner_fullscene_bf16/images",
+  "reference_prediction_dir": "/root/autodl-tmp/cv-homework/outputs/official_sied/canon_gate_baseline_ensemble3/images"
+}

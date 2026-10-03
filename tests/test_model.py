@@ -5,6 +5,7 @@ torch = pytest.importorskip("torch")
 from dip_course.enhancement.color import hvi_to_rgb, rgb_to_hvi
 from dip_course.enhancement.losses import EnhancementLoss
 from dip_course.enhancement.model import AdaptiveColorLUT, RawToRGBUNet
+from dip_course.enhancement.refiner import ExposureColorRefiner, linear_to_srgb
 
 
 def test_model_produces_two_times_larger_rgb() -> None:
@@ -56,6 +57,39 @@ def test_adaptive_color_lut_starts_as_identity() -> None:
     context = torch.rand(2, 8)
     output = refinement(image, context)
     torch.testing.assert_close(output, image, atol=2e-6, rtol=2e-6)
+
+
+def test_exposure_color_refiner_starts_as_identity() -> None:
+    refiner = ExposureColorRefiner(base_channels=8, context_side=32)
+    image = torch.rand(2, 3, 48, 64)
+    output, parameters = refiner(image, return_parameters=True)
+    torch.testing.assert_close(output, image, atol=2e-6, rtol=2e-6)
+    assert tuple(parameters["local_exposure"].shape) == (2, 1, 48, 64)
+
+
+def test_exposure_color_refiner_accepts_full_resolution_shape() -> None:
+    refiner = ExposureColorRefiner(base_channels=8, context_side=32)
+    output = refiner(torch.rand(1, 3, 65, 97))
+    assert tuple(output.shape) == (1, 3, 65, 97)
+    assert torch.all((0.0 <= output) & (output <= 1.0))
+
+
+def test_exposure_color_refiner_trains_from_frozen_inference_output() -> None:
+    refiner = ExposureColorRefiner(base_channels=8, context_side=32)
+    with torch.inference_mode():
+        frozen_output = torch.rand(1, 3, 32, 48)
+    trainable_input = frozen_output.clone()
+    refiner(trainable_input).mean().backward()
+    assert any(parameter.grad is not None for parameter in refiner.parameters())
+
+
+def test_linear_to_srgb_has_finite_gradient_at_black() -> None:
+    image = torch.zeros(1, requires_grad=True)
+
+    linear_to_srgb(image).sum().backward()
+
+    assert image.grad is not None
+    assert torch.isfinite(image.grad).all()
 
 
 def test_model_supports_adaptive_color_lut() -> None:

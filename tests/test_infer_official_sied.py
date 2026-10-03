@@ -7,8 +7,10 @@ from dip_course.cli.infer_official_sied import (
     average_prediction_samples,
     build_parser,
     diffusion_seed,
+    load_refiner,
     select_official_state_dict,
 )
+from dip_course.enhancement.refiner import ExposureColorRefiner
 
 
 def test_averages_inference_tensors_without_inplace_update() -> None:
@@ -37,6 +39,8 @@ def test_ensemble_size_defaults_to_one() -> None:
     )
 
     assert args.ensemble_size == 1
+    assert args.skip_metrics is False
+    assert args.save_max_side == 0
 
 
 def test_first_ensemble_seed_matches_single_sample() -> None:
@@ -71,3 +75,22 @@ def test_falls_back_to_model_weights() -> None:
 def test_rejects_incompatible_checkpoint() -> None:
     with pytest.raises(RuntimeError, match="Could not match"):
         select_official_state_dict({"model": {"wrong": 1}}, {"expected"})
+
+
+def test_loads_exposure_color_refiner_checkpoint(tmp_path) -> None:
+    source = ExposureColorRefiner(base_channels=8, context_side=32)
+    checkpoint = tmp_path / "refiner.pt"
+    torch.save(
+        {
+            "model": source.state_dict(),
+            "model_config": {"base_channels": 8, "context_side": 32},
+            "global_step": 12,
+        },
+        checkpoint,
+    )
+
+    loaded, metadata = load_refiner(checkpoint, torch.device("cpu"))
+
+    image = torch.rand(1, 3, 24, 32)
+    torch.testing.assert_close(loaded(image), image, atol=2e-6, rtol=2e-6)
+    assert metadata["global_step"] == 12

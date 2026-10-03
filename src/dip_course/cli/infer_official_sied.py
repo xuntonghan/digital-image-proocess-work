@@ -17,6 +17,7 @@ import torch
 import torch.nn.functional as F
 
 from dip_course.cli._common import choose_torch_device, write_json
+from dip_course.enhancement.refiner import ExposureColorRefiner
 from dip_course.io import (
     RawSpec,
     load_packed_raw,
@@ -52,6 +53,21 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--precision", choices=("fp32", "fp16", "bf16"), default="fp16")
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--lpips", action="store_true")
+    parser.add_argument(
+        "--skip-metrics",
+        action="store_true",
+        help="Cache blind predictions without loading GT or computing metrics",
+    )
+    parser.add_argument(
+        "--save-max-side",
+        type=int,
+        default=0,
+        help="Downsample cached output so its longest side is at most this value",
+    )
+    parser.add_argument(
+        "--refiner-checkpoint",
+        help="Optional exposure/color refiner trained on frozen SIED predictions",
+    )
     return parser
 
 
@@ -155,6 +171,30 @@ def load_official_model(
     return diffusion, source
 
 
+def load_refiner(
+    checkpoint_path: str | Path, device: torch.device
+) -> tuple[ExposureColorRefiner, dict[str, Any]]:
+    checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=True)
+    if not isinstance(checkpoint, Mapping):
+        raise TypeError("Refiner checkpoint root must be a mapping")
+    state = checkpoint.get("model", checkpoint)
+    if not isinstance(state, Mapping):
+        raise TypeError("Refiner checkpoint does not contain model weights")
+    config = checkpoint.get("model_config", {})
+    if not isinstance(config, Mapping):
+        raise TypeError("Refiner model_config must be a mapping")
+    model = ExposureColorRefiner(**dict(config)).to(device)
+    model.load_state_dict(dict(state), strict=True)
+    model.eval()
+    metadata = {
+        "checkpoint": str(Path(checkpoint_path).resolve()),
+        "global_step": checkpoint.get("global_step"),
+        "metrics": checkpoint.get("metrics"),
+        "model_config": dict(config),
+    }
+    return model, metadata
+
+
 def _autocast_context(device: torch.device, precision: str):
     if device.type != "cuda" or precision == "fp32":
         return nullcontext()
@@ -220,6 +260,12 @@ def main() -> None:
         raise ValueError("fp16/bf16 inference requires a CUDA device")
     if args.ensemble_size <= 0:
         raise ValueError("ensemble-size must be positive")
+    if args.save_max_side < 0:
+        raise ValueError("save-max-side must be non-negative")
+    if args.lpips and args.skip_metrics:
+        raise ValueError("--lpips cannot be combined with --skip-metrics")
+    if args.save_max_side and not args.skip_metrics:
+        raise ValueError("--save-max-side is only valid with --skip-metrics")
 
     model, weight_source = load_official_model(
         args.official_repo,
@@ -227,6 +273,10 @@ def main() -> None:
         sampling_steps=args.sampling_steps,
         device=device,
     )
+    refiner: ExposureColorRefiner | None = None
+    refiner_metadata: dict[str, Any] | None = None
+    if args.refiner_checkpoint:
+        refiner, refiner_metadata = load_refiner(args.refiner_checkpoint, device)
     spec = RawSpec(
         width=args.width,
         height=args.height,
@@ -260,27 +310,48 @@ def main() -> None:
             sample = predict_official_sied(model, tensor, precision=args.precision)
             prediction_samples.append(sample)
         prediction_tensor = average_prediction_samples(prediction_samples)
+        if refiner is not None:
+            with torch.inference_mode():
+                prediction_tensor = refiner(prediction_tensor)
         if device.type == "cuda":
             torch.cuda.synchronize()
         elapsed = time.perf_counter() - started
-        prediction = prediction_tensor.squeeze(0).cpu().numpy().transpose(1, 2, 0)
-
-        # The reference is intentionally loaded only after blind prediction.
-        target = load_rgb(record.gt_rgb)
+        saved_tensor = prediction_tensor
+        if args.save_max_side:
+            predicted_height, predicted_width = prediction_tensor.shape[-2:]
+            scale = min(1.0, args.save_max_side / max(predicted_height, predicted_width))
+            if scale < 1.0:
+                saved_tensor = F.interpolate(
+                    prediction_tensor,
+                    size=(
+                        max(1, round(predicted_height * scale)),
+                        max(1, round(predicted_width * scale)),
+                    ),
+                    mode="area",
+                )
+        saved_prediction = saved_tensor.squeeze(0).cpu().numpy().transpose(1, 2, 0)
         output_name = f"{index:04d}_{record.key}.png"
-        save_rgb(image_dir / output_name, prediction)
+        save_rgb(image_dir / output_name, saved_prediction)
         row: dict[str, object] = {
             "index": index,
             "key": record.key,
             "output": str(Path("images") / output_name),
             "seeds": ";".join(str(seed) for seed in seeds),
-            "psnr": psnr_rgb(prediction, target),
-            "ssim": ssim_rgb(prediction, target),
             "inference_seconds": elapsed,
         }
-        row.update(color_fidelity_metrics(prediction, target))
-        if lpips_metric is not None:
-            row["lpips"] = lpips_metric(prediction, target)
+        if not args.skip_metrics:
+            prediction = prediction_tensor.squeeze(0).cpu().numpy().transpose(1, 2, 0)
+            # The reference is intentionally loaded only after blind prediction.
+            target = load_rgb(record.gt_rgb)
+            row.update(
+                {
+                    "psnr": psnr_rgb(prediction, target),
+                    "ssim": ssim_rgb(prediction, target),
+                }
+            )
+            row.update(color_fidelity_metrics(prediction, target))
+            if lpips_metric is not None:
+                row["lpips"] = lpips_metric(prediction, target)
         rows.append(row)
         print(json.dumps(row, ensure_ascii=False), flush=True)
 
@@ -302,22 +373,43 @@ def main() -> None:
         "sampling_steps": args.sampling_steps,
         "seed": args.seed,
         "ensemble_size": args.ensemble_size,
-        "psnr_mean": finite_mean([float(row["psnr"]) for row in rows]),
-        "ssim_mean": finite_mean([float(row["ssim"]) for row in rows]),
-        "delta_e2000_mean": finite_mean(
-            [float(row["delta_e2000_mean"]) for row in rows]
+        "refiner": refiner_metadata,
+        "metrics_evaluated": not args.skip_metrics,
+        "save_max_side": args.save_max_side or None,
+        "psnr_mean": (
+            finite_mean([float(row["psnr"]) for row in rows])
+            if not args.skip_metrics
+            else None
         ),
-        "delta_e2000_p95_mean": finite_mean(
-            [float(row["delta_e2000_p95"]) for row in rows]
+        "ssim_mean": (
+            finite_mean([float(row["ssim"]) for row in rows])
+            if not args.skip_metrics
+            else None
         ),
-        "lightness_mae_mean": finite_mean(
-            [float(row["lightness_mae"]) for row in rows]
+        "delta_e2000_mean": (
+            finite_mean([float(row["delta_e2000_mean"]) for row in rows])
+            if not args.skip_metrics
+            else None
         ),
-        "saturation_mae_mean": finite_mean(
-            [float(row["saturation_mae"]) for row in rows]
+        "delta_e2000_p95_mean": (
+            finite_mean([float(row["delta_e2000_p95"]) for row in rows])
+            if not args.skip_metrics
+            else None
         ),
-        "hue_error_degrees_mean": finite_mean(
-            [float(row["hue_error_degrees"]) for row in rows]
+        "lightness_mae_mean": (
+            finite_mean([float(row["lightness_mae"]) for row in rows])
+            if not args.skip_metrics
+            else None
+        ),
+        "saturation_mae_mean": (
+            finite_mean([float(row["saturation_mae"]) for row in rows])
+            if not args.skip_metrics
+            else None
+        ),
+        "hue_error_degrees_mean": (
+            finite_mean([float(row["hue_error_degrees"]) for row in rows])
+            if not args.skip_metrics
+            else None
         ),
         "lpips_mean": (
             finite_mean([float(row["lpips"]) for row in rows]) if lpips_metric else None

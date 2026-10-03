@@ -6,7 +6,7 @@ from PIL import Image
 
 torch = pytest.importorskip("torch")
 
-from dip_course.enhancement.dataset import SIEDPairDataset
+from dip_course.enhancement.dataset import SIEDPairDataset, SIEDPredictionDataset
 from dip_course.io import RawSpec
 
 
@@ -56,6 +56,43 @@ def test_dataset_reads_uint8_gt_cache(tmp_path: Path) -> None:
     sample = dataset[0]
 
     np.testing.assert_allclose(sample["target"].numpy(), 77 / 255.0)
+
+
+def test_prediction_dataset_pairs_cached_thumbnail_with_resized_gt(
+    tmp_path: Path,
+) -> None:
+    root = tmp_path / "data"
+    root.mkdir()
+    np.zeros((8, 8), dtype=np.uint16).tofile(root / "scene_with_name.raw")
+    target = np.zeros((8, 12, 3), dtype=np.uint8)
+    target[..., 1] = 255
+    Image.fromarray(target).save(root / "target.png")
+    manifest = tmp_path / "pairs.txt"
+    manifest.write_text(
+        "scene_with_name.raw target.png\n",
+        encoding="utf-8",
+    )
+    prediction_dir = tmp_path / "predictions"
+    prediction_dir.mkdir()
+    prediction = np.zeros((4, 6, 3), dtype=np.uint8)
+    prediction[..., 0] = 128
+    Image.fromarray(prediction).save(
+        prediction_dir / "0007_scene_with_name.png"
+    )
+
+    dataset = SIEDPredictionDataset(
+        data_root=root,
+        manifest=manifest,
+        prediction_dir=prediction_dir,
+        augment=False,
+    )
+    sample = dataset[0]
+
+    assert tuple(sample["prediction"].shape) == (3, 4, 6)
+    assert tuple(sample["target"].shape) == (3, 4, 6)
+    assert sample["key"] == "scene_with_name"
+    assert float(sample["prediction"][0].mean()) == pytest.approx(128 / 255.0)
+    assert float(sample["target"][1].mean()) == pytest.approx(1.0)
 
 
 def test_color_aware_crop_prefers_saturated_candidate(

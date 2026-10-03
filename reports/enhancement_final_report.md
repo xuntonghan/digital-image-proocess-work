@@ -44,6 +44,8 @@ L = L1 + 0.2 × (1 - SSIM) + 1.0 × L_chroma
 
 最终 Canon 改进方案调用 SIED ICCV 2025 作者发布的 `canon_0.0001.pt` EMA 权重，模型使用 AICM 和 Stage-2 潜特征扩散，按论文配置执行 20 步 DDIM 采样。作者原 `sample()` 会把 GT RGB 拼入输入并计算一个最终未被预测采用的 GT 特征；本项目适配器直接调用低照 RAW 特征分支与 RGB 解码器，推理时完全不读取 GT。GT 只在预测完成后载入并计算指标，从实现上排除答案泄漏。最终输出平均三次独立 DDIM 预测以降低扩散随机性；种子安排保证每张图的第一个样本与单次推理完全相同。
 
+在冻结 SIED 的基础上，又增加一个恒等初始化的轻量曝光/色调精修器。该模型仅预测受限的全局曝光、伽马、白平衡、3×3 色彩矩阵和平滑局部照度，不改写冻结 SIED 生成的纹理。训练输入是 832 张训练图的 SIED 盲预测缩略图，目标是同尺寸 GT；验证集只用于早停与方案门控。最终使用 BF16、batch size 8、1,000 步训练，并在 4K 推理时对 SIED 三次采样平均结果做一次确定性精修。
+
 ## 3. 训练与模型选择
 
 计算环境为单张 RTX 4090 24GB、PyTorch 2.8.0 + CUDA 12.8。Canon 和 Sony 独立训练，训练过程保存环境、清单哈希、逐步日志和可恢复检查点。
@@ -56,7 +58,8 @@ L = L1 + 0.2 × (1 - SSIM) + 1.0 × L_chroma
 | Canon 大块消融 | 无归一化，512 patch | 1000/2000 步约 13.24 dB，未达放行线，提前停止 |
 | Sony 主模型 | 与 Canon 主模型相同 | 第 2000 步最优：PSNR 21.58 dB、SSIM 0.7624 |
 | Canon 颜色受限微调 | 冻结 BatchNorm；只训练输出头、AICM 或 3D LUT | 8 张门禁最佳 PSNR 20.99 dB、ΔE2000 9.75；色调有改善但仍明显偏灰 |
-| Canon SIED 官方 EMA | 作者 Stage-2 权重；20 步 DDIM；三次预测平均；盲推理适配 | 8 张门禁 PSNR 24.74 dB、ΔE2000 5.75、色相误差 13.53°，作为最终改进方案 |
+| Canon SIED 官方 EMA | 作者 Stage-2 权重；20 步 DDIM；三次预测平均；盲推理适配 | 8 张门禁 PSNR 24.74 dB、ΔE2000 5.75、色相误差 13.53°，作为精修输入基线 |
+| Canon SIED 全场景精修 | 冻结 SIED；受限光度/色调参数；BF16；1,000 步 | 8 张 4K 门禁 PSNR 26.43 dB、ΔE2000 4.98、亮度 MAE 4.98，通过放行线 |
 
 Canon 在 5000 步时验证指标明显回落，Sony 在 2000 步后也未继续改善。因此依据事先规定的验证集早停规则，最终分别采用第 3000 步与第 2000 步的 `best.pt`，没有为了凑足 50,000 步继续过拟合。
 
@@ -68,7 +71,8 @@ Canon 在 5000 步时验证指标明显回落，Sony 在 2000 步后也未继续
 |---|---|---:|---:|---:|---:|
 | 自动传统 ISP | Canon | 76 | 13.7400 | 0.1355 | 0.9164 |
 | Residual U-Net 主模型 | Canon | 76 | 16.1234 | 0.6220 | **0.6380** |
-| SIED 官方 EMA，三次采样平均 | Canon | 76 | **22.1700** | **0.7817** | — |
+| SIED 官方 EMA，三次采样平均 | Canon | 76 | 22.1700 | 0.7817 | — |
+| SIED + 全场景曝光/色调精修 | Canon | 76 | **22.9060** | **0.7861** | — |
 | 自动传统 ISP | Sony | 87 | 14.2986 | 0.1642 | 0.8655 |
 | Residual U-Net 主模型 | Sony | 87 | **17.0517** | **0.6332** | **0.6964** |
 
@@ -77,15 +81,15 @@ Canon 在 5000 步时验证指标明显回落，Sony 在 2000 步后也未继续
 - Canon：PSNR `+2.3834 dB`、SSIM `+0.4865`、LPIPS `-0.2784`；
 - Sony：PSNR `+2.7531 dB`、SSIM `+0.4691`、LPIPS `-0.1691`。
 
-SIED 三次采样平均相对 Canon 原 U-Net 再提升 `6.0466 dB` PSNR 和 `0.1597` SSIM；全测试集 ΔE2000 为 `7.9642`，亮度 MAE 为 `7.8672`，饱和度 MAE 为 `0.0665`，色相误差为 `24.76°`。相对单次 SIED，PSNR/SSIM、平均与 P95 色差、亮度、饱和度和色相七项汇总指标均有改善。SIED 本轮没有重复计算 LPIPS，因此表中留空，不用不同评价流程的数字凑表。
+SIED 三次采样平均相对 Canon 原 U-Net 提升 `6.0466 dB` PSNR 和 `0.1597` SSIM。全场景精修又在同一个 76 张官方测试集上把 PSNR 提高 `0.7360 dB`、SSIM 提高 `0.0044`，平均 ΔE2000 从 `7.9642` 降到 `7.3161`（`-8.14%`），P95 色差从 `13.8625` 降到 `13.1485`（`-5.15%`），亮度 MAE 从 `7.8672` 降到 `6.9437`（`-11.74%`）。饱和度 MAE 从 `0.06654` 微升到 `0.06693`，色相误差从 `24.756°` 微升到 `24.775°`，退化幅度分别为 `0.59%` 和 `0.08%`；报告保留这两项小回摆，不将它们误写为全指标提升。本轮没有重复计算 LPIPS，因此表中留空，不用不同评价流程的数字凑表。
 
-结果说明学习模型在结构保持和感知相似度上明显优于直接放大曝光的传统方法。传统方法会同步放大极暗 RAW 的噪声；原 U-Net 能显著去噪但容易把高饱和颜色变灰；SIED 显著改善了色相和颜色分布，同时仍有少数场景存在整体欠曝光。
+结果说明学习模型在结构保持和感知相似度上明显优于直接放大曝光的传统方法。传统方法会同步放大极暗 RAW 的噪声；原 U-Net 能显著去噪但容易把高饱和颜色变灰；SIED 显著改善了色相和颜色分布；受限的全场景精修进一步改善了整体曝光和平均色差，但仍有少数场景存在欠曝光，且全测试集的饱和度/色相平均值未继续改善。
 
 ## 5. 可视化与异常分析
 
 原报告四列对比图依次为：输入 RAW 预览、自动传统 ISP、学习模型、GT。Canon 示例使用测试集 ID 6/8/10/14；Sony 示例使用 ID 6/13/15/22。可视化表明 Hann 羽化后没有旧版本的横向拼接线，学习模型的噪声显著少于传统方法；同时强灯带附近仍可能过曝，商品颜色有时低于 GT 饱和度。
 
-颜色升级另使用 8 张 Canon 验证门禁图制作五列图：输入 RAW、传统 ISP、原 Residual U-Net、SIED 改进模型、GT。红色招牌和紫色洗衣液标签的色相已明显接近 GT；ID 958、664 仍存在整体欠曝光，这是当前最终模型保留的主要失败类型。
+颜色升级另使用 8 张 Canon 验证门禁图制作五列图：输入 RAW、传统 ISP、SIED 官方 EMA、SIED + 全场景精修、GT。红色招牌和紫色洗衣液标签的色相已明显接近 GT；精修主要继续缩小整体曝光和色差。ID 958、664 仍存在欠曝光，是当前模型保留的主要失败类型。
 
 ### Canon 对比
 
@@ -97,7 +101,7 @@ SIED 三次采样平均相对 Canon 原 U-Net 再提升 `6.0466 dB` PSNR 和 `0.
 
 ### Canon 色彩升级五列对比
 
-![Canon 输入、传统方法、原模型、SIED 改进模型与 GT 对比](assets/enhancement/canon_official/visual_gate_comparison.png)
+![Canon 输入、传统方法、SIED、全场景精修与 GT 对比](assets/enhancement/canon_official_refiner/visual_gate_comparison.png)
 
 逐图指标未被均值隐藏。Canon 最低 PSNR 样本为 ID 35（3.23 dB），Sony 为 ID 61（4.77 dB）；这些极端异常主要表现为整体曝光判断失败。后续可采用全局亮度条件、曝光分组采样、EMA 和更丰富的颜色分布损失继续改善。
 
@@ -108,7 +112,9 @@ SIED 三次采样平均相对 Canon 原 U-Net 再提升 `6.0466 dB` PSNR 和 `0.
 - Canon/Sony 传统基线：`reports/assets/enhancement/canon_classical/`、`sony_classical/`；
 - 四列可视化：`reports/assets/enhancement/canon/comparison.png`、`sony/comparison.png`；
 - Canon 色彩门禁五列图与逐图色彩指标：`reports/assets/enhancement/canon_official/`；
+- Canon 全场景精修的训练日志、门禁图和最终指标：`reports/assets/enhancement/canon_official_refiner/`；
 - Canon SIED 三次采样平均的官方测试逐图与汇总指标：`reports/assets/enhancement/canon_official/test_metrics.csv`、`test_summary.json`；
+- Canon SIED + 全场景精修的官方测试逐图与汇总指标：`reports/assets/enhancement/canon_official_refiner/test_metrics.csv`、`test_summary.json`；
 - 精简推理权重及完整训练日志保存在本机 `checkpoints/` 与 `outputs/`，不提交到 Git；
 - 可复现实验配置：`configs/enhancement/`；
 - 官方训练/验证/测试清单：`manifests/enhancement/`。

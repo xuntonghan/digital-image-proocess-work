@@ -1,0 +1,5 @@
+{
+  "global_step": 1000,
+  "best_val_loss": 0.10577914863824844,
+  "best_checkpoint": "/root/autodl-tmp/cv-homework/runs/canon_sied_refiner_fullscene_bf16_safe/best.pt"
+}

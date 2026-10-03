@@ -11,6 +11,72 @@ from torch.utils.data import Dataset
 from dip_course.io import RawSpec, pack_rggb, read_pair_manifest
 
 
+class SIEDPredictionDataset(Dataset):
+    """Paired cached SIED predictions and full-scene target thumbnails."""
+
+    def __init__(
+        self,
+        *,
+        data_root: str | Path,
+        manifest: str | Path,
+        prediction_dir: str | Path,
+        augment: bool = True,
+    ) -> None:
+        self.records = read_pair_manifest(data_root, manifest)
+        self.augment = augment
+        prediction_root = Path(prediction_dir)
+        self.predictions: dict[str, Path] = {}
+        for path in sorted(prediction_root.glob("*.png")):
+            key = path.stem.split("_", 1)[-1]
+            if key in self.predictions:
+                raise ValueError(
+                    f"Multiple cached SIED predictions for key {key}: "
+                    f"{self.predictions[key]} and {path}"
+                )
+            self.predictions[key] = path
+        missing = [
+            record.key
+            for record in self.records
+            if record.key not in self.predictions
+        ]
+        if missing:
+            preview = ", ".join(missing[:5])
+            raise FileNotFoundError(
+                f"Missing {len(missing)} cached SIED predictions in "
+                f"{prediction_root}: {preview}"
+            )
+
+    def __len__(self) -> int:
+        return len(self.records)
+
+    def __getitem__(self, index: int) -> dict[str, torch.Tensor | str]:
+        record = self.records[index]
+        with Image.open(self.predictions[record.key]) as image:
+            prediction_image = image.convert("RGB")
+            size = prediction_image.size
+            prediction = np.asarray(prediction_image, dtype=np.float32) / 255.0
+        with Image.open(record.gt_rgb) as image:
+            target_image = image.convert("RGB")
+            if target_image.size != size:
+                target_image = target_image.resize(size, Image.Resampling.LANCZOS)
+            target = np.asarray(target_image, dtype=np.float32) / 255.0
+
+        prediction = prediction.transpose(2, 0, 1)
+        target = target.transpose(2, 0, 1)
+        if self.augment:
+            if random.random() < 0.5:
+                prediction = prediction[:, :, ::-1]
+                target = target[:, :, ::-1]
+            if random.random() < 0.5:
+                prediction = prediction[:, ::-1, :]
+                target = target[:, ::-1, :]
+        return {
+            "prediction": torch.from_numpy(np.ascontiguousarray(prediction)).float(),
+            "target": torch.from_numpy(np.ascontiguousarray(target)).float(),
+            "key": record.key,
+        }
+
+
 class SIEDPairDataset(Dataset):
     """Paired low-light RAW and full-resolution sRGB patches."""
 
