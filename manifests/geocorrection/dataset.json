@@ -1,0 +1,30 @@
+{
+  "dataset": "GeoCorrection",
+  "data_root": "data/geocorrection/GeoCorrection",
+  "pair_count": 200,
+  "has_flat_ground_truth": false,
+  "mask_semantics": "binary document-page region, aligned to the distorted image",
+  "aggregate_sha256": "5523dfb7b4ad5f053b88ed5648e3f446bcb879a91c231b731d660bd572746050",
+  "image_mode": "RGB",
+  "mask_mode": "L binary {0,255}",
+  "sizes": {
+    "3000x4000": 16,
+    "3120x3120": 2,
+    "4000x3000": 66,
+    "4208x3120": 19,
+    "4624x3472": 50,
+    "5248x3936": 47
+  },
+  "families": {
+    "camera_img": 53,
+    "camera_timestamp": 82,
+    "dewarp_curved": 7,
+    "dewarp_fold": 4,
+    "dewarp_perspective": 4,
+    "dewarp_rotate": 3,
+    "numeric_book": 47
+  },
+  "total_image_bytes": 840906360,
+  "total_mask_bytes": 6239121,
+  "pairs_csv": "manifests/geocorrection/pairs.csv"
+}

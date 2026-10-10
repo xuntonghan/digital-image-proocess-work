@@ -24,3 +24,9 @@ manifests/test_sony.txt
 ## 图像压缩
 
 Kodak 压缩测试集的上游来源、固定提交、图像规格和 SHA256 清单见 `compression/`。原始 PNG 放在被 Git 忽略的 `data/compression/kodak/`，不与仓库中的实验代码和指标结果混存。
+
+## 几何校正
+
+`geocorrection/dataset.json` 记录 GeoCorrection 的数量、分辨率、文件族、模式和全数据聚合 SHA256；`geocorrection/pairs.csv` 记录 200 对图像/遮罩相对路径、尺寸、前景比例以及各文件 SHA256。
+
+原始 JPG、PNG 和压缩包均不提交到 Git。当前遮罩表示畸变输入中的页面区域，不是平整真值图或稠密形变场。

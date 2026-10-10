@@ -1,6 +1,6 @@
 # 数字图像处理课程实习
 
-本仓库用于完成课程实习中的三个任务：低光 RAW 图像增强、文档几何校正和图像压缩。当前首先实现图像增强模块。
+本仓库用于完成课程实习中的三个任务：低光 RAW 图像增强、文档几何校正和图像压缩。
 
 ## 当前范围
 
@@ -20,6 +20,9 @@
 - 冻结 SIED 后的轻量曝光/色调精修器，支持全场景缓存训练与原尺寸推理；
 - ΔE2000、亮度 MAE、饱和度 MAE、环形色相误差及前后五列对比图。
 - Kodak 24 张无损 RGB 图像的固定上游版本、SHA256 清单与压缩实验数据目录。
+- GeoCorrection 200 对图像/页面遮罩的严格审计和逐文件 SHA256 清单；
+- 基于页面遮罩的四角单应性、边界展平与文本方向自动校正传统基线；
+- 无平整真值场景下的页面边界直线度、文本行倾斜度和前后四列对比。
 
 项目不包含课程原始数据、模型权重或完整中间输出。它们分别放在 `data/`、`checkpoints/` 和 `outputs/`，这些目录不会提交到 Git。为便于验收，仓库保留最终逐图指标、汇总指标和 Canon/Sony 代表性四列对比图，见 `reports/assets/enhancement/`。
 
@@ -195,3 +198,26 @@ dip-dct-benchmark \
 DCTC Q70 在 Kodak 24 图上达到 8.965× PNG 文件压缩比、1.456 bpp、33.740 dB PSNR 和 0.9237 SSIM。它的率失真表现接近但仍弱于成熟 libjpeg，完整结构、结果和差异分析见 `reports/compression_dctc_v1.md`。
 
 图像增强最终结论见 `reports/enhancement_final_report.md`，压缩实验见 `reports/compression_jpeg_baseline.md` 和 `reports/compression_dctc_v1.md`，完整4090执行顺序见 `cloud/runbook.md`。
+
+## 文档几何校正
+
+先验证 200 对图像与二值页面遮罩：
+
+```bash
+dip-audit-geocorrection \
+  --data-root data/geocorrection/GeoCorrection \
+  --output-json manifests/geocorrection/dataset.json \
+  --output-csv manifests/geocorrection/pairs.csv \
+  --expected-count 200
+```
+
+运行无需训练的 oracle-mask 传统基线：
+
+```bash
+dip-rectify-classical \
+  --data-root data/geocorrection/GeoCorrection \
+  --output-dir outputs/geocorrection/classical_full \
+  --max-side 1200 --expected-count 200
+```
+
+本机 200 张全部处理成功，页面边界归一化 RMSE 平均下降 95.64%，文本行平均倾斜角下降 29.61%。由于数据没有平整真值，项目不计算无意义的输入/输出 PSNR 或 SSIM。研究路线、论文代码比较和后续 UVDoc/DocScanner 计划见 `reports/geocorrection_research_plan.md`，全量传统基线分析见 `reports/geocorrection_classical_baseline.md`。

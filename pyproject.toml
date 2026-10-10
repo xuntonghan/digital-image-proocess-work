@@ -47,6 +47,8 @@ dip-train-sied-refiner = "dip_course.cli.train_sied_refiner:main"
 dip-visualize = "dip_course.cli.visualize_comparison:main"
 dip-compress-benchmark = "dip_course.cli.benchmark_compression:main"
 dip-dct-benchmark = "dip_course.cli.benchmark_dct_compression:main"
+dip-audit-geocorrection = "dip_course.cli.audit_geocorrection:main"
+dip-rectify-classical = "dip_course.cli.run_geocorrection:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
