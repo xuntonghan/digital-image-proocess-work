@@ -23,6 +23,8 @@ def build_parser() -> argparse.ArgumentParser:
         description="Run the mask-guided classical GeoCorrection baseline"
     )
     parser.add_argument("--data-root", required=True)
+    parser.add_argument("--image-subdir", default="images")
+    parser.add_argument("--mask-subdir", default="mask")
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--max-side", type=int, default=1400)
     parser.add_argument("--expected-count", type=int, default=200)
@@ -90,7 +92,11 @@ def _aggregate(rows: list[dict[str, object]]) -> dict[str, object]:
 def main() -> None:
     args = build_parser().parse_args()
     root = Path(args.data_root)
-    pairs = discover_pairs(root)
+    pairs = discover_pairs(
+        root,
+        image_subdir=args.image_subdir,
+        mask_subdir=args.mask_subdir,
+    )
     if args.expected_count > 0 and len(pairs) != args.expected_count:
         raise ValueError(f"Expected {args.expected_count} pairs, found {len(pairs)}")
     if args.keys:
@@ -201,6 +207,8 @@ def main() -> None:
     summary = {
         "method": "mask_guided_projective_plus_boundary_strip_dewarp",
         "data_root": str(root),
+        "image_subdir": args.image_subdir,
+        "mask_subdir": args.mask_subdir,
         "input_count": len(rows),
         "mask_usage": "dataset-provided oracle page-region masks",
         "flat_ground_truth_available": False,

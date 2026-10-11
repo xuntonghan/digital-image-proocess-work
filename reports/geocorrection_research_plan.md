@@ -77,7 +77,7 @@ Hugging Face 上已有 [PaddlePaddle/UVDoc](https://huggingface.co/PaddlePaddle/
 
 将数据按文件族分层固定划分为训练/验证/测试集，训练轻量页面分割器，替换推理时的真值遮罩。该阶段只使用现有遮罩监督，报告 IoU、Dice 以及遮罩误差对最终几何结果的影响。
 
-### 阶段 C：4090 上的预训练稠密展平
+### 阶段 C：4090 上的预训练稠密展平（已完成）
 
 首选 UVDoc 做零样本推理，再以 DocScanner 或 DocGeoNet 做强基线。统一保存低分辨率位移/网格，尽可能在原分辨率图像上执行最终重映射。比较：
 
@@ -86,7 +86,7 @@ Hugging Face 上已有 [PaddlePaddle/UVDoc](https://huggingface.co/PaddlePaddle/
 - UVDoc；
 - UVDoc + 外观恢复（可选 DocRes）。
 
-### 阶段 D：OCR 与文本行评价
+### 阶段 D：OCR 与文本行评价（已完成无转录诊断）
 
 在固定测试集上使用同一版本、同一参数的 PaddleOCR，分别评价输入和各方法输出。至少记录可识别文本数、平均置信度；若人工转录一小部分页面，再增加字符错误率 CER。没有人工转录时，不把 OCR 置信度包装成识别准确率。
 
@@ -107,4 +107,4 @@ Hugging Face 上已有 [PaddlePaddle/UVDoc](https://huggingface.co/PaddlePaddle/
 - **效率**：预处理、模型推理和原分辨率重映射分别计时；
 - 每个模型固定版本、权重哈希、数据划分和随机种子，测试集只在方案冻结后统一评价。
 
-当前传统结果见 `reports/geocorrection_classical_baseline.md`。下一步需要 4090 云机完成阶段 C 与 D。
+当前传统结果见 `reports/geocorrection_classical_baseline.md`，UVDoc、混合精修与 PP-OCRv6 诊断见 `reports/geocorrection_uvdoc_hybrid.md`。阶段 C 已完成 200 张全量实验，阶段 D 已完成固定 40 张分层子集评价；若要报告 OCR CER，还需人工转录。

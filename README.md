@@ -220,4 +220,26 @@ dip-rectify-classical \
   --max-side 1200 --expected-count 200
 ```
 
-本机 200 张全部处理成功，页面边界归一化 RMSE 平均下降 95.64%，文本行平均倾斜角下降 29.61%。由于数据没有平整真值，项目不计算无意义的输入/输出 PSNR 或 SSIM。研究路线、论文代码比较和后续 UVDoc/DocScanner 计划见 `reports/geocorrection_research_plan.md`，全量传统基线分析见 `reports/geocorrection_classical_baseline.md`。
+本机 200 张全部处理成功，页面边界归一化 RMSE 平均下降 95.64%，文本行平均倾斜角下降 29.61%。由于数据没有平整真值，项目不计算无意义的输入/输出 PSNR 或 SSIM。研究路线见 `reports/geocorrection_research_plan.md`，全量传统基线分析见 `reports/geocorrection_classical_baseline.md`。
+
+4090 阶段已完成 UVDoc 零样本展平和“UVDoc + 传统边界精修”全量实验。混合方案将文本行平均倾斜角从 7.597° 降至 5.113°，40 张固定 OCR 子集的高置信字符数提升 22.03%。完整方法、版本、权重哈希和分类结果见 `reports/geocorrection_uvdoc_hybrid.md`。
+
+```bash
+dip-infer-uvdoc \
+  --data-root data/geocorrection/GeoCorrection \
+  --output-dir outputs/geocorrection/uvdoc_full \
+  --model-id PaddlePaddle/UVDoc_safetensors --device cuda
+
+dip-rectify-classical \
+  --data-root outputs/geocorrection/uvdoc_full \
+  --image-subdir rectified --mask-subdir rectified_masks \
+  --output-dir outputs/geocorrection/hybrid_full --max-side 1200
+
+dip-eval-geocorrection-ocr \
+  --data-root data/geocorrection/GeoCorrection \
+  --keys-manifest manifests/geocorrection/ocr_test_40.txt \
+  --classical-dir outputs/geocorrection/classical_full/corrected \
+  --uvdoc-dir outputs/geocorrection/uvdoc_full/rectified \
+  --hybrid-dir outputs/geocorrection/hybrid_full/corrected \
+  --output-dir outputs/geocorrection/ocr_eval40 --device gpu
+```

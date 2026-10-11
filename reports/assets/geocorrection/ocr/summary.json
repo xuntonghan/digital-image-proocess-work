@@ -1,0 +1,378 @@
+{
+  "method": "fixed_subset_ppocrv6_diagnostic",
+  "subset_count": 40,
+  "keys_manifest": "/root/autodl-tmp/cv-homework/repo/manifests/geocorrection/ocr_test_40.txt",
+  "stages": [
+    "input",
+    "classical",
+    "uvdoc",
+    "hybrid"
+  ],
+  "confidence_threshold": 0.8,
+  "max_side": 1200,
+  "paddleocr_version": "3.7.0",
+  "paddlex_version": "3.7.2",
+  "transformers_version": "5.19.0",
+  "engine": "transformers",
+  "device": "gpu",
+  "models": {
+    "detection": "PP-OCRv6_medium_det_safetensors",
+    "recognition": "PP-OCRv6_medium_rec_safetensors"
+  },
+  "accuracy_note": "No transcripts are available, so these are OCR yield/confidence diagnostics, not character accuracy or CER.",
+  "overall": {
+    "input": {
+      "image_count": 40,
+      "line_count_total": 2679,
+      "confident_line_count_total": 2171,
+      "character_count_total": 38522,
+      "confident_character_count_total": 35226,
+      "mean_line_confidence": 0.8913208785542982,
+      "confidence_weighted_characters_total": 36356.92773613334,
+      "runtime_ms_mean": 749.948160475
+    },
+    "classical": {
+      "image_count": 40,
+      "line_count_total": 2292,
+      "confident_line_count_total": 1530,
+      "character_count_total": 32984,
+      "confident_character_count_total": 24860,
+      "mean_line_confidence": 0.8286209986764567,
+      "confidence_weighted_characters_total": 28945.41968615353,
+      "runtime_ms_mean": 677.894055475
+    },
+    "uvdoc": {
+      "image_count": 40,
+      "line_count_total": 2966,
+      "confident_line_count_total": 2541,
+      "character_count_total": 45908,
+      "confident_character_count_total": 42689,
+      "mean_line_confidence": 0.9134555893597857,
+      "confidence_weighted_characters_total": 43765.27825252712,
+      "runtime_ms_mean": 816.6600022
+    },
+    "hybrid": {
+      "image_count": 40,
+      "line_count_total": 2937,
+      "confident_line_count_total": 2476,
+      "character_count_total": 46096,
+      "confident_character_count_total": 42987,
+      "mean_line_confidence": 0.9061329951208589,
+      "confidence_weighted_characters_total": 43911.11637877673,
+      "runtime_ms_mean": 824.182456175
+    }
+  },
+  "versus_input": {
+    "classical": {
+      "confident_character_delta_total": -10366,
+      "confident_character_delta_mean": -259.15,
+      "images_improved": 6,
+      "images_equal": 0,
+      "images_worse": 34
+    },
+    "uvdoc": {
+      "confident_character_delta_total": 7463,
+      "confident_character_delta_mean": 186.575,
+      "images_improved": 34,
+      "images_equal": 0,
+      "images_worse": 6
+    },
+    "hybrid": {
+      "confident_character_delta_total": 7761,
+      "confident_character_delta_mean": 194.025,
+      "images_improved": 33,
+      "images_equal": 1,
+      "images_worse": 6
+    }
+  },
+  "by_family": {
+    "input": {
+      "camera_img": {
+        "image_count": 10,
+        "line_count_total": 627,
+        "confident_line_count_total": 572,
+        "character_count_total": 10313,
+        "confident_character_count_total": 9972,
+        "mean_line_confidence": 0.9459377891804422,
+        "confidence_weighted_characters_total": 10035.861255019903,
+        "runtime_ms_mean": 781.0906745999999
+      },
+      "camera_timestamp": {
+        "image_count": 15,
+        "line_count_total": 734,
+        "confident_line_count_total": 624,
+        "character_count_total": 10218,
+        "confident_character_count_total": 9442,
+        "mean_line_confidence": 0.9083711926391405,
+        "confidence_weighted_characters_total": 9701.60840728879,
+        "runtime_ms_mean": 561.6966332
+      },
+      "dewarp_curved": {
+        "image_count": 2,
+        "line_count_total": 207,
+        "confident_line_count_total": 176,
+        "character_count_total": 3125,
+        "confident_character_count_total": 2946,
+        "mean_line_confidence": 0.8978714045983006,
+        "confidence_weighted_characters_total": 2978.6133067309856,
+        "runtime_ms_mean": 1050.464108
+      },
+      "dewarp_fold": {
+        "image_count": 2,
+        "line_count_total": 189,
+        "confident_line_count_total": 154,
+        "character_count_total": 3737,
+        "confident_character_count_total": 3609,
+        "mean_line_confidence": 0.8821824159098681,
+        "confidence_weighted_characters_total": 3610.785332813859,
+        "runtime_ms_mean": 1048.444395
+      },
+      "dewarp_perspective": {
+        "image_count": 2,
+        "line_count_total": 213,
+        "confident_line_count_total": 117,
+        "character_count_total": 2516,
+        "confident_character_count_total": 1712,
+        "mean_line_confidence": 0.7743711705219019,
+        "confidence_weighted_characters_total": 2066.993609160185,
+        "runtime_ms_mean": 1154.0158235000001
+      },
+      "dewarp_rotate": {
+        "image_count": 2,
+        "line_count_total": 281,
+        "confident_line_count_total": 120,
+        "character_count_total": 2468,
+        "confident_character_count_total": 1523,
+        "mean_line_confidence": 0.6973902294113967,
+        "confidence_weighted_characters_total": 1927.8472397774458,
+        "runtime_ms_mean": 1474.196364
+      },
+      "numeric_book": {
+        "image_count": 7,
+        "line_count_total": 428,
+        "confident_line_count_total": 408,
+        "character_count_total": 6145,
+        "confident_character_count_total": 6022,
+        "mean_line_confidence": 0.9684617132923313,
+        "confidence_weighted_characters_total": 6035.218585342169,
+        "runtime_ms_mean": 615.3326848571429
+      }
+    },
+    "classical": {
+      "camera_img": {
+        "image_count": 10,
+        "line_count_total": 543,
+        "confident_line_count_total": 468,
+        "character_count_total": 9097,
+        "confident_character_count_total": 7915,
+        "mean_line_confidence": 0.9184613956985772,
+        "confidence_weighted_characters_total": 8424.076878532767,
+        "runtime_ms_mean": 652.3339498
+      },
+      "camera_timestamp": {
+        "image_count": 15,
+        "line_count_total": 543,
+        "confident_line_count_total": 376,
+        "character_count_total": 7372,
+        "confident_character_count_total": 6445,
+        "mean_line_confidence": 0.8264663216433253,
+        "confidence_weighted_characters_total": 6739.857312552631,
+        "runtime_ms_mean": 459.3066439333333
+      },
+      "dewarp_curved": {
+        "image_count": 2,
+        "line_count_total": 195,
+        "confident_line_count_total": 101,
+        "character_count_total": 2845,
+        "confident_character_count_total": 1915,
+        "mean_line_confidence": 0.7668863404255647,
+        "confidence_weighted_characters_total": 2340.067405819893,
+        "runtime_ms_mean": 1133.7598229999999
+      },
+      "dewarp_fold": {
+        "image_count": 2,
+        "line_count_total": 121,
+        "confident_line_count_total": 12,
+        "character_count_total": 2201,
+        "confident_character_count_total": 120,
+        "mean_line_confidence": 0.590197624869583,
+        "confidence_weighted_characters_total": 1351.8884909898043,
+        "runtime_ms_mean": 644.176242
+      },
+      "dewarp_perspective": {
+        "image_count": 2,
+        "line_count_total": 213,
+        "confident_line_count_total": 76,
+        "character_count_total": 2467,
+        "confident_character_count_total": 942,
+        "mean_line_confidence": 0.7065536868474294,
+        "confidence_weighted_characters_total": 1839.930812112987,
+        "runtime_ms_mean": 1198.954404
+      },
+      "dewarp_rotate": {
+        "image_count": 2,
+        "line_count_total": 291,
+        "confident_line_count_total": 150,
+        "character_count_total": 3104,
+        "confident_character_count_total": 1773,
+        "mean_line_confidence": 0.7687168639038027,
+        "confidence_weighted_characters_total": 2541.166938737035,
+        "runtime_ms_mean": 1473.448813
+      },
+      "numeric_book": {
+        "image_count": 7,
+        "line_count_total": 386,
+        "confident_line_count_total": 347,
+        "character_count_total": 5898,
+        "confident_character_count_total": 5750,
+        "mean_line_confidence": 0.9237157688162487,
+        "confidence_weighted_characters_total": 5708.431847408414,
+        "runtime_ms_mean": 686.0206425714285
+      }
+    },
+    "uvdoc": {
+      "camera_img": {
+        "image_count": 10,
+        "line_count_total": 704,
+        "confident_line_count_total": 634,
+        "character_count_total": 13546,
+        "confident_character_count_total": 12286,
+        "mean_line_confidence": 0.9414789135229181,
+        "confidence_weighted_characters_total": 12933.17655068636,
+        "runtime_ms_mean": 799.3041827
+      },
+      "camera_timestamp": {
+        "image_count": 15,
+        "line_count_total": 837,
+        "confident_line_count_total": 721,
+        "character_count_total": 11813,
+        "confident_character_count_total": 11226,
+        "mean_line_confidence": 0.9141204637545411,
+        "confidence_weighted_characters_total": 11335.26654921472,
+        "runtime_ms_mean": 606.3564031999999
+      },
+      "dewarp_curved": {
+        "image_count": 2,
+        "line_count_total": 211,
+        "confident_line_count_total": 179,
+        "character_count_total": 3240,
+        "confident_character_count_total": 3103,
+        "mean_line_confidence": 0.9029090792223176,
+        "confidence_weighted_characters_total": 3106.677005752921,
+        "runtime_ms_mean": 1183.1747135
+      },
+      "dewarp_fold": {
+        "image_count": 2,
+        "line_count_total": 193,
+        "confident_line_count_total": 158,
+        "character_count_total": 3804,
+        "confident_character_count_total": 3694,
+        "mean_line_confidence": 0.8895748414369444,
+        "confidence_weighted_characters_total": 3690.8002455979586,
+        "runtime_ms_mean": 1189.025361
+      },
+      "dewarp_perspective": {
+        "image_count": 2,
+        "line_count_total": 257,
+        "confident_line_count_total": 154,
+        "character_count_total": 2751,
+        "confident_character_count_total": 1983,
+        "mean_line_confidence": 0.7749111757320188,
+        "confidence_weighted_characters_total": 2263.709386497736,
+        "runtime_ms_mean": 1448.5352830000002
+      },
+      "dewarp_rotate": {
+        "image_count": 2,
+        "line_count_total": 297,
+        "confident_line_count_total": 246,
+        "character_count_total": 3204,
+        "confident_character_count_total": 2939,
+        "mean_line_confidence": 0.9029105736651405,
+        "confidence_weighted_characters_total": 3004.9158563762903,
+        "runtime_ms_mean": 1557.179295
+      },
+      "numeric_book": {
+        "image_count": 7,
+        "line_count_total": 467,
+        "confident_line_count_total": 449,
+        "character_count_total": 7550,
+        "confident_character_count_total": 7458,
+        "mean_line_confidence": 0.9676036875878463,
+        "confidence_weighted_characters_total": 7430.732658401132,
+        "runtime_ms_mean": 688.8832725714285
+      }
+    },
+    "hybrid": {
+      "camera_img": {
+        "image_count": 10,
+        "line_count_total": 679,
+        "confident_line_count_total": 605,
+        "character_count_total": 13311,
+        "confident_character_count_total": 12414,
+        "mean_line_confidence": 0.9371202935263053,
+        "confidence_weighted_characters_total": 12752.603198379278,
+        "runtime_ms_mean": 817.7690056
+      },
+      "camera_timestamp": {
+        "image_count": 15,
+        "line_count_total": 853,
+        "confident_line_count_total": 717,
+        "character_count_total": 12423,
+        "confident_character_count_total": 11651,
+        "mean_line_confidence": 0.9033005383271825,
+        "confidence_weighted_characters_total": 11868.679818585515,
+        "runtime_ms_mean": 648.1375402
+      },
+      "dewarp_curved": {
+        "image_count": 2,
+        "line_count_total": 203,
+        "confident_line_count_total": 168,
+        "character_count_total": 3195,
+        "confident_character_count_total": 2987,
+        "mean_line_confidence": 0.8950673433507017,
+        "confidence_weighted_characters_total": 3050.042265743017,
+        "runtime_ms_mean": 1072.0669480000001
+      },
+      "dewarp_fold": {
+        "image_count": 2,
+        "line_count_total": 192,
+        "confident_line_count_total": 153,
+        "character_count_total": 3807,
+        "confident_character_count_total": 3694,
+        "mean_line_confidence": 0.8700572540207455,
+        "confidence_weighted_characters_total": 3674.1412568837404,
+        "runtime_ms_mean": 1105.1591305
+      },
+      "dewarp_perspective": {
+        "image_count": 2,
+        "line_count_total": 253,
+        "confident_line_count_total": 142,
+        "character_count_total": 2682,
+        "confident_character_count_total": 1917,
+        "mean_line_confidence": 0.7664567955103316,
+        "confidence_weighted_characters_total": 2206.2110821828246,
+        "runtime_ms_mean": 1446.8577125000002
+      },
+      "dewarp_rotate": {
+        "image_count": 2,
+        "line_count_total": 299,
+        "confident_line_count_total": 248,
+        "character_count_total": 3126,
+        "confident_character_count_total": 2851,
+        "mean_line_confidence": 0.897118063774396,
+        "confidence_weighted_characters_total": 2927.0753584206104,
+        "runtime_ms_mean": 1478.582613
+      },
+      "numeric_book": {
+        "image_count": 7,
+        "line_count_total": 458,
+        "confident_line_count_total": 443,
+        "character_count_total": 7552,
+        "confident_character_count_total": 7473,
+        "mean_line_confidence": 0.9685393763486475,
+        "confidence_weighted_characters_total": 7432.363398581743,
+        "runtime_ms_mean": 694.6017542857143
+      }
+    }
+  }
+}

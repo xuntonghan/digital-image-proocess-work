@@ -284,6 +284,11 @@ def _needs_quarter_turn(image: np.ndarray, mask: np.ndarray) -> bool:
     return vertical_score > horizontal_score * 1.25
 
 
+def needs_quarter_turn(image: np.ndarray, mask: np.ndarray) -> bool:
+    """Return whether document text is predominantly vertical in the image frame."""
+    return _needs_quarter_turn(image, mask)
+
+
 def rectify_document(
     image: Image.Image | np.ndarray,
     mask: Image.Image | np.ndarray,

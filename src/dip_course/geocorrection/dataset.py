@@ -27,13 +27,18 @@ def classify_family(key: str) -> str:
     return "other"
 
 
-def discover_pairs(data_root: str | Path) -> list[GeoCorrectionPair]:
+def discover_pairs(
+    data_root: str | Path,
+    *,
+    image_subdir: str = "images",
+    mask_subdir: str = "mask",
+) -> list[GeoCorrectionPair]:
     root = Path(data_root)
-    image_dir = root / "images"
-    mask_dir = root / "mask"
+    image_dir = root / image_subdir
+    mask_dir = root / mask_subdir
     if not image_dir.is_dir() or not mask_dir.is_dir():
         raise FileNotFoundError(
-            f"Expected images/ and mask/ directories under {root}"
+            f"Expected {image_subdir}/ and {mask_subdir}/ directories under {root}"
         )
     images = {path.stem: path for path in image_dir.glob("*") if path.is_file()}
     masks = {path.stem: path for path in mask_dir.glob("*") if path.is_file()}

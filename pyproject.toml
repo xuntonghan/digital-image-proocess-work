@@ -19,6 +19,16 @@ train = [
   "torch>=2.1",
   "lpips>=0.1.4",
 ]
+geometry-ml = [
+  "torch>=2.1",
+  "transformers>=5.19,<6",
+  "accelerate>=1.0,<2",
+]
+geometry-ocr = [
+  "paddleocr>=3.7,<4",
+  "transformers>=5.19,<6",
+  "accelerate>=1.0,<2",
+]
 sied = [
   "torch>=2.1",
   "accelerate>=0.15",
@@ -49,6 +59,9 @@ dip-compress-benchmark = "dip_course.cli.benchmark_compression:main"
 dip-dct-benchmark = "dip_course.cli.benchmark_dct_compression:main"
 dip-audit-geocorrection = "dip_course.cli.audit_geocorrection:main"
 dip-rectify-classical = "dip_course.cli.run_geocorrection:main"
+dip-infer-uvdoc = "dip_course.cli.infer_uvdoc:main"
+dip-eval-geocorrection-ocr = "dip_course.cli.evaluate_geocorrection_ocr:main"
+dip-visualize-geocorrection-ml = "dip_course.cli.visualize_geocorrection_ml:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
