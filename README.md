@@ -2,6 +2,15 @@
 
 本仓库用于完成课程实习中的三个任务：低光 RAW 图像增强、文档几何校正和图像压缩。
 
+## 综合报告与复现入口
+
+- 完整方法、结果、可视化、代码清单和下一步方向：`reports/digital_image_processing_course_report.md`
+- 可编辑 Word 报告：`reports/deliverables/数字图像处理课程实习综合报告.docx`
+- 可直接提交的 PDF 报告：`output/pdf/数字图像处理课程实习综合报告.pdf`
+- 数据目录、版本和模型权重 SHA256：`DATA_AND_WEIGHTS.md`
+- 权重分发边界：`docs/CHECKPOINTS.md`
+- RTX 4090 环境与执行顺序：`cloud/runbook.md`
+
 ## 当前范围
 
 第一阶段提供：
