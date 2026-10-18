@@ -1,0 +1,40 @@
+{
+  "method": "official_sied_iccv2025_stage2",
+  "checkpoint": "/root/autodl-tmp/cv-homework/project/checkpoints/official/canon_0.0001.pt",
+  "weight_source": "ema:ema_model.",
+  "blind_inference": true,
+  "count": 76,
+  "device": "cuda",
+  "precision": "fp16",
+  "sampling_steps": 20,
+  "seed": 3407,
+  "ensemble_size": 3,
+  "refiner": {
+    "checkpoint": "/root/autodl-tmp/cv-homework/runs/canon_sied_refiner_v2/best.pt",
+    "global_step": 1500,
+    "metrics": {
+      "base_val_loss": 0.08826714164266984,
+      "val_loss": 0.08031944558024406,
+      "base_psnr": 26.698815729307093,
+      "refined_psnr": 27.164426274921585,
+      "base_ssim": 0.9147905707359314,
+      "refined_ssim": 0.9188916484514872
+    },
+    "model_config": {
+      "base_channels": 24,
+      "context_side": 256
+    }
+  },
+  "base_predictions": "/root/autodl-tmp/cv-homework/runs/enhancement_final_test/base_images",
+  "metrics_evaluated": true,
+  "save_max_side": null,
+  "psnr_mean": 22.997995521480572,
+  "ssim_mean": 0.7867649672062773,
+  "delta_e2000_mean": 7.228839180671604,
+  "delta_e2000_p95_mean": 13.047278839349746,
+  "lightness_mae_mean": 6.817649907187412,
+  "saturation_mae_mean": 0.0670080540309611,
+  "hue_error_degrees_mean": 24.7777495716906,
+  "lpips_mean": null,
+  "inference_seconds_mean": 0.7986662002574456
+}

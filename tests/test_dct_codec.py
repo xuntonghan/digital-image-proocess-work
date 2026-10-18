@@ -78,8 +78,9 @@ def test_high_quality_improves_fidelity() -> None:
     [
         ({"quality": 0}, "quality"),
         ({"quality": 101}, "quality"),
-        ({"quality": 70, "subsampling": "422"}, "subsampling"),
+        ({"quality": 70, "subsampling": "411"}, "subsampling"),
         ({"quality": 70, "entropy_level": 10}, "entropy_level"),
+        ({"quality": 70, "stream_format": "packed"}, "stream_format"),
     ],
 )
 def test_dct_settings_reject_invalid_values(
@@ -98,3 +99,20 @@ def test_decoder_rejects_foreign_and_truncated_payloads() -> None:
     payload = compress_dct(_fixture_image(), DCTCodecSettings(quality=70))
     with pytest.raises(ValueError):
         decompress_dct(payload[:-20])
+
+
+@pytest.mark.parametrize("subsampling", ["420", "422", "444"])
+@pytest.mark.parametrize("stream_format", ["dense", "trimmed", "sparse"])
+def test_v2_round_trip(subsampling: str, stream_format: str) -> None:
+    image = _fixture_image()
+    payload = compress_dct(
+        image,
+        DCTCodecSettings(
+            quality=70,
+            subsampling=subsampling,
+            stream_format=stream_format,
+        ),
+    )
+    decoded = decompress_dct(payload)
+    assert payload.startswith(b"DCTC\x02")
+    assert decoded.size == image.size

@@ -25,6 +25,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--data-root", required=True)
     parser.add_argument("--image-subdir", default="images")
     parser.add_argument("--mask-subdir", default="mask")
+    parser.add_argument(
+        "--mask-source-label",
+        default="dataset-provided oracle page-region masks",
+        help="Provenance label recorded in summary.json",
+    )
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--max-side", type=int, default=1400)
     parser.add_argument("--expected-count", type=int, default=200)
@@ -51,6 +56,14 @@ def _prefixed_metrics(
     values.update(boundary_linearity(mask))
     values.update(text_line_metrics(image, mask))
     return {f"{prefix}_{key}": value for key, value in values.items()}
+
+
+def _portable_source_path(path: Path, root: Path) -> str:
+    """Keep dataset paths relative while allowing external predicted masks."""
+    try:
+        return path.relative_to(root).as_posix()
+    except ValueError:
+        return str(path.resolve())
 
 
 def _write_csv(path: Path, rows: list[dict[str, object]]) -> None:
@@ -155,8 +168,8 @@ def main() -> None:
         row: dict[str, object] = {
             "key": pair.key,
             "family": pair.family,
-            "source": pair.image_path.relative_to(root).as_posix(),
-            "mask": pair.mask_path.relative_to(root).as_posix(),
+            "source": _portable_source_path(pair.image_path, root),
+            "mask": _portable_source_path(pair.mask_path, root),
             "corrected": corrected_path.relative_to(output_dir).as_posix(),
             "input_width": result.input_image.shape[1],
             "input_height": result.input_image.shape[0],
@@ -203,6 +216,11 @@ def main() -> None:
             corrected=corrected_paths,
             keys=visualization_keys,
             output=output_dir / "comparison.png",
+            mask_header=(
+                "Dataset mask"
+                if args.mask_source_label == "dataset-provided oracle page-region masks"
+                else "Predicted mask"
+            ),
         )
     summary = {
         "method": "mask_guided_projective_plus_boundary_strip_dewarp",
@@ -210,7 +228,7 @@ def main() -> None:
         "image_subdir": args.image_subdir,
         "mask_subdir": args.mask_subdir,
         "input_count": len(rows),
-        "mask_usage": "dataset-provided oracle page-region masks",
+        "mask_usage": args.mask_source_label,
         "flat_ground_truth_available": False,
         "ocr_status": "not_run_in_classical_local_baseline",
         "max_side": args.max_side,

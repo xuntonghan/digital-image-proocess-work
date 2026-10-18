@@ -34,8 +34,14 @@ def build_parser() -> argparse.ArgumentParser:
         nargs="+",
         default=(30, 50, 70, 90),
     )
-    parser.add_argument("--subsampling", choices=("444", "420"), default="420")
+    parser.add_argument("--subsampling", choices=("444", "422", "420"), default="420")
     parser.add_argument("--entropy-level", type=int, default=9)
+    parser.add_argument(
+        "--stream-format",
+        choices=("rle", "dense", "trimmed", "sparse"),
+        default="sparse",
+        help="v1 RLE or vectorized v2 coefficient stream",
+    )
     parser.add_argument("--repeats", type=int, default=3)
     parser.add_argument("--warmup", type=int, default=1)
     parser.add_argument("--expected-count", type=int, default=24)
@@ -90,6 +96,7 @@ def main() -> None:
             quality=quality,
             subsampling=args.subsampling,
             entropy_level=args.entropy_level,
+            stream_format=args.stream_format,
         )
         for quality in sorted(args.qualities)
     ]
@@ -143,6 +150,7 @@ def main() -> None:
                 "quality": setting.quality,
                 "subsampling": setting.subsampling,
                 "entropy_level": setting.entropy_level,
+                "stream_format": setting.stream_format,
                 "source": str(image_path.relative_to(data_dir)),
                 "encoded": str(encoded_path.relative_to(output_dir)),
                 "decoded": str(decoded_path.relative_to(output_dir)),
@@ -164,6 +172,7 @@ def main() -> None:
             "quality": setting.quality,
             "subsampling": setting.subsampling,
             "entropy_level": setting.entropy_level,
+            "stream_format": setting.stream_format,
             "count": len(quality_rows),
             "source_file_bytes_total": source_total,
             "raw_rgb_bytes_total": raw_total,
@@ -212,20 +221,28 @@ def main() -> None:
         build_rate_distortion_plot(
             series={
                 "libjpeg": list(baseline.values()),
-                "DCTC v1": summaries,
+                f"DCTC {'v1' if args.stream_format == 'rle' else 'v2'}": summaries,
             },
             output=curve_path,
         )
         rate_distortion_plot = str(curve_path.relative_to(output_dir))
     summary = {
-        "method": "coursework_dctc_v1",
+        "method": f"coursework_dctc_{'v1_rle' if args.stream_format == 'rle' else 'v2_' + args.stream_format}",
         "algorithm": [
             "RGB to YCbCr",
             f"chroma subsampling {args.subsampling}",
             "8x8 orthonormal DCT",
             "JPEG quality-scaled quantization",
             "zigzag scan",
-            "DC differential and AC zero-run coding",
+            (
+                "vectorized DC differential and trailing-zero-trimmed int16 packing"
+                if args.stream_format == "trimmed"
+                else "vectorized sparse AC positions and int16 values"
+                if args.stream_format == "sparse"
+                else "vectorized DC differential and dense int16 coefficient packing"
+                if args.stream_format == "dense"
+                else "DC differential and AC zero-run coding"
+            ),
             "zlib DEFLATE entropy coding",
         ],
         "data_dir": str(data_dir),

@@ -15,6 +15,7 @@ from typing import Any
 
 import torch
 import torch.nn.functional as F
+from torch.torch_version import TorchVersion
 
 from dip_course.cli._common import choose_torch_device, write_json
 from dip_course.enhancement.refiner import ExposureColorRefiner
@@ -67,6 +68,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--refiner-checkpoint",
         help="Optional exposure/color refiner trained on frozen SIED predictions",
+    )
+    parser.add_argument(
+        "--save-base-dir",
+        help="When a refiner is used, also save the unrefined SIED ensemble here",
     )
     return parser
 
@@ -174,7 +179,12 @@ def load_official_model(
 def load_refiner(
     checkpoint_path: str | Path, device: torch.device
 ) -> tuple[ExposureColorRefiner, dict[str, Any]]:
-    checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=True)
+    # Project-generated checkpoints store ``torch.__version__``, whose runtime
+    # type is TorchVersion rather than a plain string.  Keep weights-only mode
+    # and allowlist that inert metadata type instead of falling back to unsafe
+    # unrestricted pickle loading.
+    with torch.serialization.safe_globals([TorchVersion]):
+        checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=True)
     if not isinstance(checkpoint, Mapping):
         raise TypeError("Refiner checkpoint root must be a mapping")
     state = checkpoint.get("model", checkpoint)
@@ -266,6 +276,8 @@ def main() -> None:
         raise ValueError("--lpips cannot be combined with --skip-metrics")
     if args.save_max_side and not args.skip_metrics:
         raise ValueError("--save-max-side is only valid with --skip-metrics")
+    if args.save_base_dir and not args.refiner_checkpoint:
+        raise ValueError("--save-base-dir requires --refiner-checkpoint")
 
     model, weight_source = load_official_model(
         args.official_repo,
@@ -289,6 +301,9 @@ def main() -> None:
     output_dir = Path(args.output_dir)
     image_dir = output_dir / "images"
     image_dir.mkdir(parents=True, exist_ok=True)
+    base_image_dir = Path(args.save_base_dir) if args.save_base_dir else None
+    if base_image_dir is not None:
+        base_image_dir.mkdir(parents=True, exist_ok=True)
     lpips_metric = LPIPSMetric(str(device)) if args.lpips else None
     rows: list[dict[str, object]] = []
 
@@ -310,6 +325,7 @@ def main() -> None:
             sample = predict_official_sied(model, tensor, precision=args.precision)
             prediction_samples.append(sample)
         prediction_tensor = average_prediction_samples(prediction_samples)
+        base_prediction_tensor = prediction_tensor
         if refiner is not None:
             with torch.inference_mode():
                 prediction_tensor = refiner(prediction_tensor)
@@ -332,10 +348,20 @@ def main() -> None:
         saved_prediction = saved_tensor.squeeze(0).cpu().numpy().transpose(1, 2, 0)
         output_name = f"{index:04d}_{record.key}.png"
         save_rgb(image_dir / output_name, saved_prediction)
+        if base_image_dir is not None:
+            base_prediction = (
+                base_prediction_tensor.squeeze(0).cpu().numpy().transpose(1, 2, 0)
+            )
+            save_rgb(base_image_dir / output_name, base_prediction)
         row: dict[str, object] = {
             "index": index,
             "key": record.key,
             "output": str(Path("images") / output_name),
+            "base_output": (
+                str((base_image_dir / output_name).resolve())
+                if base_image_dir is not None
+                else None
+            ),
             "seeds": ";".join(str(seed) for seed in seeds),
             "inference_seconds": elapsed,
         }
@@ -374,6 +400,9 @@ def main() -> None:
         "seed": args.seed,
         "ensemble_size": args.ensemble_size,
         "refiner": refiner_metadata,
+        "base_predictions": (
+            str(base_image_dir.resolve()) if base_image_dir is not None else None
+        ),
         "metrics_evaluated": not args.skip_metrics,
         "save_max_side": args.save_max_side or None,
         "psnr_mean": (

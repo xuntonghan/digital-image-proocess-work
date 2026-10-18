@@ -4,9 +4,11 @@
 
 ## 综合报告与复现入口
 
-- 完整方法、结果、可视化、代码清单和下一步方向：`reports/digital_image_processing_course_report.md`
-- 可编辑 Word 报告：`reports/deliverables/数字图像处理课程实习综合报告.docx`
-- 可直接提交的 PDF 报告：`output/pdf/数字图像处理课程实习综合报告.pdf`
+- 最终方法、4090 结果、可视化和逐步复现：`reports/final_experiment_report.md`
+- 前期完整实验记录：`reports/digital_image_processing_course_report.md`
+- 三个项目的下一轮改进与 4090 训练方案：`reports/next_iteration_plan.md`
+- 可编辑 Word 报告：`reports/deliverables/数字图像处理课程实习最终实验报告.docx`
+- 可直接提交的 PDF 报告：`output/pdf/数字图像处理课程实习最终实验报告.pdf`
 - 数据目录、版本和模型权重 SHA256：`DATA_AND_WEIGHTS.md`
 - 权重分发边界：`docs/CHECKPOINTS.md`
 - RTX 4090 环境与执行顺序：`cloud/runbook.md`
@@ -31,7 +33,9 @@
 - Kodak 24 张无损 RGB 图像的固定上游版本、SHA256 清单与压缩实验数据目录。
 - GeoCorrection 200 对图像/页面遮罩的严格审计和逐文件 SHA256 清单；
 - 基于页面遮罩的四角单应性、边界展平与文本方向自动校正传统基线；
+- PageMaskUNet 页面分割和预测遮罩驱动的完全自动几何纠正；
 - 无平整真值场景下的页面边界直线度、文本行倾斜度和前后四列对比。
+- DCTC v2 快速码流和 CompressAI Cheng2020 真实熵码流基准。
 
 项目不包含课程原始数据、模型权重或完整中间输出。它们分别放在 `data/`、`checkpoints/` 和 `outputs/`，这些目录不会提交到 Git。为便于验收，仓库保留最终逐图指标、汇总指标和 Canon/Sony 代表性四列对比图，见 `reports/assets/enhancement/`。
 
@@ -162,14 +166,28 @@ dip-train-sied-refiner \
   --checkpoint /path/to/canon_0.0001.pt \
   --data-root /path/to/SIED_dataset \
   --train-manifest manifests/enhancement/canon_train.txt \
-  --val-manifest manifests/enhancement/canon_visual_gate.txt \
+  --val-manifest manifests/enhancement/canon_val.txt \
   --prediction-dir /path/to/cached_sied/images \
+  --initial-checkpoint checkpoints/canon_sied_refiner_fullscene_bf16_best.pt \
   --output-dir outputs/canon_sied_refiner \
   --device cuda --precision bf16 --batch-size 8 \
-  --max-steps 1000 --learning-rate 1e-4 --require-cuda
+  --max-steps 1500 --learning-rate 2e-5 --require-cuda
 ```
 
 推理时在原 SIED 命令上增加 `--refiner-checkpoint /path/to/best.pt`。精修器只能使用训练集学习，通过验证门控后才允许在官方测试集报告一次冻结结果。
+
+最终 1500 步精修器在 Canon 官方 76 图测试集达到 22.9980 dB、0.7868 SSIM 和 7.2288 ΔE2000。相对同一批三次采样未精修输出，PSNR 提升 0.8298 dB、SSIM 提升 0.005845、ΔE2000 降低 9.24%、亮度 MAE 降低 13.34%；饱和度 MAE 增加 0.70%，属于已记录的小幅取舍。
+
+若推理时使用了 `--save-base-dir` 同时保存未精修输出，可在不重复扩散采样的情况下独立复算基线指标：
+
+```bash
+dip-evaluate-enhancement \
+  --data-root /path/to/SIED_dataset \
+  --manifest manifests/enhancement/canon_test.txt \
+  --prediction-dir outputs/enhancement_final_test/base_images \
+  --output-dir outputs/enhancement_final_test/base_evaluation \
+  --method official_sied_ensemble3
+```
 
 ## Kodak 图像压缩
 
@@ -206,6 +224,34 @@ dip-dct-benchmark \
 
 DCTC Q70 在 Kodak 24 图上达到 8.965× PNG 文件压缩比、1.456 bpp、33.740 dB PSNR 和 0.9237 SSIM。它的率失真表现接近但仍弱于成熟 libjpeg，完整结构、结果和差异分析见 `reports/compression_dctc_v1.md`。
 
+### DCTC v2 与神经压缩
+
+DCTC v2 保留 v1 的颜色变换、DCT 和量化，新增 4:2:2、矢量化稀疏/截尾系数码流和快速 DEFLATE 配置。`trimmed + entropy-level 1` 是低延迟配置；它以较高码率换取约 8 ms 编码和约 4.5 ms 解码。v1 仍是自研编码器中的码率优先方案。
+
+```bash
+dip-dct-benchmark \
+  --data-dir data/compression/kodak \
+  --output-dir outputs/compression/dctc_v2_fast \
+  --qualities 30 50 70 90 --subsampling 420 \
+  --stream-format trimmed --entropy-level 1 \
+  --repeats 3 --warmup 1 \
+  --baseline-summary reports/assets/compression/jpeg_baseline/summary.json
+```
+
+机器学习路线使用 CompressAI 官方预训练的 Cheng2020 Anchor 模型。Kodak 始终只用于测试，不参与模型训练；bpp 由实际熵编码字节数计算，不使用概率估计值替代码流大小。
+
+```bash
+pip install -e '.[compression-ml]'
+dip-learned-compression-benchmark \
+  --data-dir data/compression/kodak \
+  --output-dir outputs/compression/cheng2020_anchor \
+  --architecture cheng2020-anchor --qualities 1 3 6 \
+  --metric mse --device cuda --repeats 1 --warmup 0 \
+  --baseline-summary reports/assets/compression/jpeg_baseline/summary.json
+```
+
+RTX 4090 的真实码流结果为：Q1 0.1196 bpp / 28.5804 dB，Q3 0.2709 bpp / 31.3405 dB，Q6 0.8056 bpp / 36.7047 dB。Q3 相对 JPEG Q30 少用 58.94% bpp且高 0.849 dB；Q6 相对 JPEG Q70 少用 34.96% bpp且高 2.788 dB。Cheng2020 的率失真最优，但自回归熵解码约需 5.8 秒，实时部署仍应选 libjpeg。
+
 图像增强最终结论见 `reports/enhancement_final_report.md`，压缩实验见 `reports/compression_jpeg_baseline.md` 和 `reports/compression_dctc_v1.md`，完整4090执行顺序见 `cloud/runbook.md`。
 
 ## 文档几何校正
@@ -232,6 +278,32 @@ dip-rectify-classical \
 本机 200 张全部处理成功，页面边界归一化 RMSE 平均下降 95.64%，文本行平均倾斜角下降 29.61%。由于数据没有平整真值，项目不计算无意义的输入/输出 PSNR 或 SSIM。研究路线见 `reports/geocorrection_research_plan.md`，全量传统基线分析见 `reports/geocorrection_classical_baseline.md`。
 
 4090 阶段已完成 UVDoc 零样本展平和“UVDoc + 传统边界精修”全量实验。混合方案将文本行平均倾斜角从 7.597° 降至 5.113°，40 张固定 OCR 子集的高置信字符数提升 22.03%。完整方法、版本、权重哈希和分类结果见 `reports/geocorrection_uvdoc_hybrid.md`。
+
+### 端到端页面掩膜预测
+
+原有传统/UVDoc 流程以数据集掩膜作为 oracle 上限，不能直接处理没有标注的新图像。最终版增加紧凑 U-Net，将 200 对图像按畸变类别固定划分为 156 张训练、22 张验证和 22 张测试；训练目标由 BCE、Dice 和边界损失组成。预测掩膜可直接接入原有透视和边界带纠正器：
+
+```bash
+dip-train-page-segmentation \
+  --data-root data/geocorrection/GeoCorrection \
+  --output-dir outputs/geocorrection/page_mask_unet \
+  --input-size 512 --base-channels 32 --epochs 100 \
+  --batch-size 8 --device cuda --precision bf16 --require-cuda
+
+dip-infer-page-segmentation \
+  --data-root data/geocorrection/GeoCorrection \
+  --checkpoint outputs/geocorrection/page_mask_unet/best.pt \
+  --output-dir outputs/geocorrection/predicted_masks \
+  --split all --device cuda --precision bf16
+
+dip-rectify-classical \
+  --data-root data/geocorrection/GeoCorrection \
+  --mask-subdir /absolute/path/to/predicted_masks/masks \
+  --mask-source-label 'PageMaskUNet predictions' \
+  --output-dir outputs/geocorrection/end_to_end
+```
+
+RTX 4090 固定测试集上，PageMaskUNet 达到 0.9461 IoU、0.9693 Dice 和 0.7880 boundary F1。预测掩膜驱动的 22 张全自动纠正把文本行平均倾斜从 9.994° 降至 7.104°，页面填充率达到 0.9829；同一测试集的 oracle-mask 上限为 6.097° 和 0.9998。
 
 ```bash
 dip-infer-uvdoc \

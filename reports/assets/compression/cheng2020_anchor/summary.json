@@ -1,0 +1,51 @@
+{
+  "method": "pretrained_learned_image_compression",
+  "architecture": "cheng2020-anchor",
+  "optimization_metric": "mse",
+  "pretrained": true,
+  "kodak_used_for_training": false,
+  "input_count": 24,
+  "input_manifest_sha256": "900976cefbe968ace159eab8a39afd0411fed99e8ffb83c0dea097d1723c77fa",
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "python": "3.12.3",
+  "torch": "2.8.0+cu128",
+  "compressai": "1.2.8",
+  "repeats": 1,
+  "warmup": 0,
+  "timing_scope": "actual entropy-coded compress/decompress calls",
+  "visualization": "comparison.png",
+  "rate_distortion_plot": "rate_distortion.png",
+  "qualities": [
+    {
+      "quality": 1,
+      "count": 24,
+      "compressed_bytes_total": 141032,
+      "bits_per_pixel_mean": 0.11955430772569443,
+      "psnr_mean": 28.58035559034768,
+      "ssim_mean": 0.7654518013199171,
+      "encode_ms_mean": 2455.354218541667,
+      "decode_ms_mean": 6525.765301625
+    },
+    {
+      "quality": 3,
+      "count": 24,
+      "compressed_bytes_total": 319552,
+      "bits_per_pixel_mean": 0.2708875868055555,
+      "psnr_mean": 31.340509729645543,
+      "ssim_mean": 0.8572701265414556,
+      "encode_ms_mean": 2225.81191775,
+      "decode_ms_mean": 5775.776767
+    },
+    {
+      "quality": 6,
+      "count": 24,
+      "compressed_bytes_total": 950368,
+      "bits_per_pixel_mean": 0.8056369357638888,
+      "psnr_mean": 36.704702429433745,
+      "ssim_mean": 0.9468630403280258,
+      "encode_ms_mean": 2249.0610344166666,
+      "decode_ms_mean": 5784.880492166667
+    }
+  ]
+}

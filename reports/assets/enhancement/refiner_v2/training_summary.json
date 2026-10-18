@@ -1,0 +1,5 @@
+{
+  "global_step": 1500,
+  "best_val_loss": 0.08031944558024406,
+  "best_checkpoint": "/root/autodl-tmp/cv-homework/runs/canon_sied_refiner_v2/best.pt"
+}

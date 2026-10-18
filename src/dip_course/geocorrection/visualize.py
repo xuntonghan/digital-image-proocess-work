@@ -25,10 +25,11 @@ def build_geometry_grid(
     keys: Sequence[str],
     output: str | Path,
     panel_size: tuple[int, int] = (330, 235),
+    mask_header: str = "Dataset mask",
 ) -> None:
     if not keys:
         raise ValueError("At least one visualization key is required")
-    headers = ("Input", "Dataset mask", "Homography", "Boundary dewarp")
+    headers = ("Input", mask_header, "Homography", "Boundary dewarp")
     label_width, header_height = 170, 38
     canvas = Image.new(
         "RGB",

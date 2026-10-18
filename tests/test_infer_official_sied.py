@@ -85,6 +85,7 @@ def test_loads_exposure_color_refiner_checkpoint(tmp_path) -> None:
             "model": source.state_dict(),
             "model_config": {"base_channels": 8, "context_side": 32},
             "global_step": 12,
+            "torch_version": torch.__version__,
         },
         checkpoint,
     )

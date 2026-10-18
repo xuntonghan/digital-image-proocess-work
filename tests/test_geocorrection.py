@@ -10,6 +10,7 @@ from dip_course.cli.evaluate_geocorrection_ocr import (
     _count_characters,
     _ocr_values,
 )
+from dip_course.cli.run_geocorrection import _portable_source_path
 from dip_course.cli.visualize_geocorrection_ml import _fit_on_white
 from dip_course.geocorrection.dataset import classify_family, discover_pairs
 from dip_course.geocorrection.metrics import boundary_linearity
@@ -116,6 +117,15 @@ def test_discovers_pairs_from_custom_stage_directories(tmp_path: Path) -> None:
 
     assert pairs[0].image_path.parent.name == "rectified"
     assert pairs[0].mask_path.parent.name == "rectified_masks"
+
+
+def test_portable_source_path_accepts_external_predicted_mask(tmp_path: Path) -> None:
+    root = tmp_path / "dataset"
+    external = tmp_path / "predictions" / "mask.png"
+    external.parent.mkdir()
+    external.touch()
+
+    assert _portable_source_path(external, root) == str(external.resolve())
 
 
 def test_mask_guided_crop_includes_margin() -> None:

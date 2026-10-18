@@ -1,0 +1,13 @@
+{
+  "method": "official_sied_ensemble3",
+  "prediction_dir": "/root/autodl-tmp/cv-homework/runs/enhancement_final_test/base_images",
+  "count": 76,
+  "psnr_mean": 22.16816077831056,
+  "ssim_mean": 0.7809201929914323,
+  "delta_e2000_mean": 7.964759489273792,
+  "delta_e2000_p95_mean": 13.862606010782091,
+  "lightness_mae_mean": 7.867175557111439,
+  "saturation_mae_mean": 0.06654503702578184,
+  "hue_error_degrees_mean": 24.7705793982222,
+  "lpips_mean": null
+}

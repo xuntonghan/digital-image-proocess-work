@@ -46,6 +46,10 @@ def build_parser() -> argparse.ArgumentParser:
         "--prediction-dir",
         help="Train from cached full-scene SIED thumbnails instead of online RAW patches",
     )
+    parser.add_argument(
+        "--initial-checkpoint",
+        help="Initialize the refiner from an earlier best.pt before fine-tuning",
+    )
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--device", default="auto")
     parser.add_argument("--precision", choices=("fp32", "fp16", "bf16"), default="fp16")
@@ -70,6 +74,43 @@ def save_checkpoint(path: Path, payload: dict[str, object]) -> None:
     temporary = path.with_suffix(path.suffix + ".tmp")
     torch.save(payload, temporary)
     temporary.replace(path)
+
+
+def load_initial_refiner(
+    checkpoint_path: str | Path | None,
+    device: torch.device,
+) -> tuple[ExposureColorRefiner, dict[str, object] | None, dict[str, object]]:
+    """Build the refiner and optionally initialize it from a trusted checkpoint."""
+    default_config: dict[str, object] = {
+        "base_channels": 24,
+        "context_side": 256,
+    }
+    if checkpoint_path is None:
+        return ExposureColorRefiner(**default_config).to(device), None, default_config
+
+    path = Path(checkpoint_path)
+    # This path is only accepted through the explicit --initial-checkpoint
+    # option.  Project-generated checkpoints include TorchVersion metadata,
+    # which PyTorch 2.6+ intentionally rejects in weights-only mode.
+    checkpoint = torch.load(path, map_location="cpu", weights_only=False)
+    if not isinstance(checkpoint, dict):
+        raise TypeError("Initial refiner checkpoint root must be a dictionary")
+    state = checkpoint.get("model", checkpoint)
+    if not isinstance(state, dict):
+        raise TypeError("Initial refiner checkpoint does not contain model weights")
+    stored_config = checkpoint.get("model_config", default_config)
+    if not isinstance(stored_config, dict):
+        raise TypeError("Initial refiner model_config must be a dictionary")
+    model_config = dict(stored_config)
+    model = ExposureColorRefiner(**model_config).to(device)
+    model.load_state_dict(state, strict=True)
+    metadata: dict[str, object] = {
+        "path": str(path.resolve()),
+        "sha256": file_sha256(path),
+        "source_global_step": checkpoint.get("global_step"),
+        "source_metrics": checkpoint.get("metrics"),
+    }
+    return model, metadata, model_config
 
 
 @torch.no_grad()
@@ -223,7 +264,10 @@ def main() -> None:
     train_loader = DataLoader(train_dataset, shuffle=True, **loader_options)
     val_loader = DataLoader(val_dataset, shuffle=False, **loader_options)
 
-    model = ExposureColorRefiner().to(device)
+    model, initial_checkpoint, model_config = load_initial_refiner(
+        args.initial_checkpoint,
+        device,
+    )
     ema_model = copy.deepcopy(model).eval()
     for parameter in ema_model.parameters():
         parameter.requires_grad_(False)
@@ -266,6 +310,7 @@ def main() -> None:
         "blind_inference": True,
         "settings": vars(args),
         "cached_predictions": cached_predictions,
+        "initial_checkpoint": initial_checkpoint,
     }
     write_json(output_dir / "run_environment.json", environment)
     print(json.dumps(environment, ensure_ascii=False, indent=2))
@@ -379,10 +424,7 @@ def main() -> None:
                             "model": ema_model.state_dict(),
                             "global_step": global_step,
                             "metrics": metrics,
-                            "model_config": {
-                                "base_channels": 24,
-                                "context_side": 256,
-                            },
+                            "model_config": model_config,
                             "environment": environment,
                         },
                     )
@@ -403,10 +445,7 @@ def main() -> None:
                         "scaler": scaler.state_dict(),
                         "global_step": global_step,
                         "best_val_loss": best_val_loss,
-                        "model_config": {
-                            "base_channels": 24,
-                            "context_side": 256,
-                        },
+                        "model_config": model_config,
                         "environment": environment,
                     },
                 )

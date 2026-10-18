@@ -13,7 +13,8 @@ from PIL import Image
 
 from dip_course.metrics import psnr_rgb, ssim_rgb
 
-_MAGIC = b"DCTC\x01"
+_MAGIC_V1 = b"DCTC\x01"
+_MAGIC_V2 = b"DCTC\x02"
 _BLOCK_SIZE = 8
 
 _LUMA_QUANTIZATION = np.array(
@@ -82,14 +83,19 @@ class DCTCodecSettings:
     quality: int
     subsampling: str = "420"
     entropy_level: int = 9
+    stream_format: str = "rle"
 
     def __post_init__(self) -> None:
         if not 1 <= self.quality <= 100:
             raise ValueError("DCT codec quality must be in [1, 100]")
-        if self.subsampling not in {"420", "444"}:
-            raise ValueError("DCT codec subsampling must be one of: 420, 444")
+        if self.subsampling not in {"420", "422", "444"}:
+            raise ValueError("DCT codec subsampling must be one of: 420, 422, 444")
         if not 0 <= self.entropy_level <= 9:
             raise ValueError("entropy_level must be in [0, 9]")
+        if self.stream_format not in {"rle", "dense", "trimmed", "sparse"}:
+            raise ValueError(
+                "stream_format must be one of: rle, dense, trimmed, sparse"
+            )
 
 
 @dataclass(frozen=True)
@@ -147,6 +153,12 @@ def _downsample_420(channel: np.ndarray) -> np.ndarray:
         padded.shape[1] // 2,
         2,
     ).mean(axis=(1, 3))
+
+
+def _downsample_422(channel: np.ndarray) -> np.ndarray:
+    pad_right = channel.shape[1] % 2
+    padded = np.pad(channel, ((0, 0), (0, pad_right)), mode="edge")
+    return padded.reshape(padded.shape[0], padded.shape[1] // 2, 2).mean(axis=2)
 
 
 def _channel_to_blocks(channel: np.ndarray) -> tuple[np.ndarray, tuple[int, int]]:
@@ -272,23 +284,182 @@ def _decode_coefficients(data: bytes, block_count: int) -> np.ndarray:
     return coefficients
 
 
-def _encode_channel(channel: np.ndarray, quantization: np.ndarray) -> tuple[bytes, list[int]]:
+def _encode_dense_coefficients(coefficients: np.ndarray) -> bytes:
+    values = coefficients.astype("<i2", copy=True)
+    dc = values[:, 0].astype(np.int32)
+    delta = np.diff(dc, prepend=0)
+    if np.any(delta < np.iinfo(np.int16).min) or np.any(
+        delta > np.iinfo(np.int16).max
+    ):
+        raise ValueError("DC difference is outside int16 range")
+    values[:, 0] = delta.astype(np.int16)
+    return values.tobytes(order="C")
+
+
+def _decode_dense_coefficients(data: bytes, block_count: int) -> np.ndarray:
+    expected_bytes = block_count * 64 * np.dtype("<i2").itemsize
+    if len(data) != expected_bytes:
+        raise ValueError("Dense DCT coefficient payload length mismatch")
+    coefficients = np.frombuffer(data, dtype="<i2").reshape(block_count, 64).copy()
+    dc = np.cumsum(coefficients[:, 0].astype(np.int32))
+    if np.any(dc < np.iinfo(np.int16).min) or np.any(dc > np.iinfo(np.int16).max):
+        raise ValueError("Decoded DC coefficient is outside int16 range")
+    coefficients[:, 0] = dc.astype(np.int16)
+    return coefficients
+
+
+def _encode_trimmed_coefficients(coefficients: np.ndarray) -> bytes:
+    values = coefficients.astype("<i2", copy=False)
+    dc = values[:, 0].astype(np.int32)
+    dc_delta = np.diff(dc, prepend=0)
+    if np.any(dc_delta < np.iinfo(np.int16).min) or np.any(
+        dc_delta > np.iinfo(np.int16).max
+    ):
+        raise ValueError("DC difference is outside int16 range")
+    positions = np.arange(1, 64, dtype=np.uint8)
+    nonzero_positions = np.where(values[:, 1:] != 0, positions, 0)
+    last = nonzero_positions.max(axis=1).astype(np.uint8)
+    included = positions[None, :] <= last[:, None]
+    ac_prefixes = values[:, 1:][included].astype("<i2", copy=False)
+    return b"".join(
+        (
+            last.tobytes(order="C"),
+            dc_delta.astype("<i2").tobytes(order="C"),
+            ac_prefixes.tobytes(order="C"),
+        )
+    )
+
+
+def _decode_trimmed_coefficients(data: bytes, block_count: int) -> np.ndarray:
+    prefix_bytes = block_count * 3
+    if len(data) < prefix_bytes:
+        raise ValueError("Truncated trimmed DCT coefficient payload")
+    last = np.frombuffer(data, dtype=np.uint8, count=block_count)
+    if np.any(last > 63):
+        raise ValueError("Invalid trimmed DCT coefficient length")
+    dc_delta = np.frombuffer(
+        data,
+        dtype="<i2",
+        count=block_count,
+        offset=block_count,
+    )
+    ac_count = int(last.astype(np.int64).sum())
+    if len(data) != prefix_bytes + ac_count * 2:
+        raise ValueError("Trimmed DCT coefficient payload length mismatch")
+    coefficients = np.zeros((block_count, 64), dtype=np.int16)
+    dc = np.cumsum(dc_delta.astype(np.int32))
+    if np.any(dc < np.iinfo(np.int16).min) or np.any(dc > np.iinfo(np.int16).max):
+        raise ValueError("Decoded DC coefficient is outside int16 range")
+    coefficients[:, 0] = dc.astype(np.int16)
+    ac_prefixes = np.frombuffer(data, dtype="<i2", offset=prefix_bytes)
+    positions = np.arange(1, 64, dtype=np.uint8)
+    coefficients[:, 1:][positions[None, :] <= last[:, None]] = ac_prefixes
+    return coefficients
+
+
+def _encode_sparse_coefficients(coefficients: np.ndarray) -> bytes:
+    values = coefficients.astype("<i2", copy=False)
+    dc = values[:, 0].astype(np.int32)
+    dc_delta = np.diff(dc, prepend=0)
+    if np.any(dc_delta < np.iinfo(np.int16).min) or np.any(
+        dc_delta > np.iinfo(np.int16).max
+    ):
+        raise ValueError("DC difference is outside int16 range")
+    nonzero = values[:, 1:] != 0
+    counts = nonzero.sum(axis=1).astype(np.uint8)
+    positions = np.broadcast_to(
+        np.arange(1, 64, dtype=np.uint8), nonzero.shape
+    )[nonzero]
+    ac_values = values[:, 1:][nonzero].astype("<i2", copy=False)
+    return b"".join(
+        (
+            counts.tobytes(order="C"),
+            dc_delta.astype("<i2").tobytes(order="C"),
+            positions.tobytes(order="C"),
+            ac_values.tobytes(order="C"),
+        )
+    )
+
+
+def _decode_sparse_coefficients(data: bytes, block_count: int) -> np.ndarray:
+    prefix_bytes = block_count * 3
+    if len(data) < prefix_bytes:
+        raise ValueError("Truncated sparse DCT coefficient payload")
+    counts = np.frombuffer(data, dtype=np.uint8, count=block_count)
+    if np.any(counts > 63):
+        raise ValueError("Invalid sparse DCT coefficient count")
+    dc_delta = np.frombuffer(
+        data,
+        dtype="<i2",
+        count=block_count,
+        offset=block_count,
+    )
+    ac_count = int(counts.astype(np.int64).sum())
+    if len(data) != prefix_bytes + ac_count * 3:
+        raise ValueError("Sparse DCT coefficient payload length mismatch")
+    positions = np.frombuffer(
+        data,
+        dtype=np.uint8,
+        count=ac_count,
+        offset=prefix_bytes,
+    )
+    if np.any((positions < 1) | (positions > 63)):
+        raise ValueError("Invalid sparse DCT coefficient position")
+    ac_values = np.frombuffer(
+        data,
+        dtype="<i2",
+        count=ac_count,
+        offset=prefix_bytes + ac_count,
+    )
+    coefficients = np.zeros((block_count, 64), dtype=np.int16)
+    dc = np.cumsum(dc_delta.astype(np.int32))
+    if np.any(dc < np.iinfo(np.int16).min) or np.any(dc > np.iinfo(np.int16).max):
+        raise ValueError("Decoded DC coefficient is outside int16 range")
+    coefficients[:, 0] = dc.astype(np.int16)
+    block_indices = np.repeat(np.arange(block_count), counts.astype(np.int64))
+    coefficients[block_indices, positions] = ac_values
+    return coefficients
+
+
+def _encode_channel(
+    channel: np.ndarray,
+    quantization: np.ndarray,
+    *,
+    stream_format: str,
+) -> tuple[bytes, list[int]]:
     blocks, shape = _channel_to_blocks(channel)
     transformed = _DCT_MATRIX @ (blocks - 128.0) @ _DCT_MATRIX.T
     quantized = np.rint(transformed / quantization).astype(np.int16)
     zigzagged = quantized.reshape(-1, 64)[:, _ZIGZAG]
-    return _encode_coefficients(zigzagged), [shape[0], shape[1]]
+    if stream_format == "dense":
+        stream = _encode_dense_coefficients(zigzagged)
+    elif stream_format == "trimmed":
+        stream = _encode_trimmed_coefficients(zigzagged)
+    elif stream_format == "sparse":
+        stream = _encode_sparse_coefficients(zigzagged)
+    else:
+        stream = _encode_coefficients(zigzagged)
+    return stream, [shape[0], shape[1]]
 
 
 def _decode_channel(
     stream: bytes,
     shape: tuple[int, int],
     quantization: np.ndarray,
+    *,
+    stream_format: str,
 ) -> np.ndarray:
     padded_height = ((shape[0] + _BLOCK_SIZE - 1) // _BLOCK_SIZE) * _BLOCK_SIZE
     padded_width = ((shape[1] + _BLOCK_SIZE - 1) // _BLOCK_SIZE) * _BLOCK_SIZE
     block_count = padded_height * padded_width // (_BLOCK_SIZE * _BLOCK_SIZE)
-    zigzagged = _decode_coefficients(stream, block_count)
+    if stream_format == "dense":
+        zigzagged = _decode_dense_coefficients(stream, block_count)
+    elif stream_format == "trimmed":
+        zigzagged = _decode_trimmed_coefficients(stream, block_count)
+    elif stream_format == "sparse":
+        zigzagged = _decode_sparse_coefficients(stream, block_count)
+    else:
+        zigzagged = _decode_coefficients(stream, block_count)
     quantized = zigzagged[:, _INVERSE_ZIGZAG].reshape(-1, 8, 8)
     transformed = quantized.astype(np.float32) * quantization
     blocks = _DCT_MATRIX.T @ transformed @ _DCT_MATRIX + 128.0
@@ -296,7 +467,7 @@ def _decode_channel(
 
 
 def compress_dct(image: Image.Image, settings: DCTCodecSettings) -> bytes:
-    """Encode an image into the self-contained DCTC v1 coursework format."""
+    """Encode an image into the self-contained DCTC coursework format."""
     rgb_image = image if image.mode == "RGB" else image.convert("RGB")
     rgb = np.asarray(rgb_image, dtype=np.uint8)
     height, width = rgb.shape[:2]
@@ -304,6 +475,9 @@ def compress_dct(image: Image.Image, settings: DCTCodecSettings) -> bytes:
     if settings.subsampling == "420":
         cb = _downsample_420(cb)
         cr = _downsample_420(cr)
+    elif settings.subsampling == "422":
+        cb = _downsample_422(cb)
+        cr = _downsample_422(cr)
 
     luma_quantization = _scaled_quantization_table(
         _LUMA_QUANTIZATION, settings.quality
@@ -318,7 +492,9 @@ def compress_dct(image: Image.Image, settings: DCTCodecSettings) -> bytes:
         (cb, chroma_quantization),
         (cr, chroma_quantization),
     ):
-        stream, shape = _encode_channel(channel, quantization)
+        stream, shape = _encode_channel(
+            channel, quantization, stream_format=settings.stream_format
+        )
         streams.append(stream)
         shapes.append(shape)
 
@@ -328,6 +504,7 @@ def compress_dct(image: Image.Image, settings: DCTCodecSettings) -> bytes:
         "quality": settings.quality,
         "shapes": shapes,
         "stream_lengths": [len(stream) for stream in streams],
+        "stream_format": settings.stream_format,
         "subsampling": settings.subsampling,
         "width": width,
     }
@@ -335,7 +512,8 @@ def compress_dct(image: Image.Image, settings: DCTCodecSettings) -> bytes:
         metadata, sort_keys=True, separators=(",", ":")
     ).encode("utf-8")
     entropy_payload = zlib.compress(coefficient_payload, settings.entropy_level)
-    return _MAGIC + struct.pack(">I", len(header)) + header + entropy_payload
+    magic = _MAGIC_V2 if settings.stream_format != "rle" else _MAGIC_V1
+    return magic + struct.pack(">I", len(header)) + header + entropy_payload
 
 
 def _positive_integer(value: object, name: str) -> int:
@@ -345,10 +523,18 @@ def _positive_integer(value: object, name: str) -> int:
 
 
 def decompress_dct(payload: bytes) -> Image.Image:
-    """Decode a DCTC v1 byte stream to an RGB image."""
-    if not payload.startswith(_MAGIC) or len(payload) < len(_MAGIC) + 4:
-        raise ValueError("Not a DCTC v1 payload")
-    header_offset = len(_MAGIC)
+    """Decode a DCTC v1 or v2 byte stream to an RGB image."""
+    if payload.startswith(_MAGIC_V1):
+        magic = _MAGIC_V1
+        default_stream_format = "rle"
+    elif payload.startswith(_MAGIC_V2):
+        magic = _MAGIC_V2
+        default_stream_format = "trimmed"
+    else:
+        raise ValueError("Not a DCTC payload")
+    if len(payload) < len(magic) + 4:
+        raise ValueError("Truncated DCTC payload")
+    header_offset = len(magic)
     header_length = struct.unpack(">I", payload[header_offset : header_offset + 4])[0]
     header_start = header_offset + 4
     header_end = header_start + header_length
@@ -363,9 +549,18 @@ def decompress_dct(payload: bytes) -> Image.Image:
     height = _positive_integer(metadata.get("height"), "height")
     quality = _positive_integer(metadata.get("quality"), "quality")
     subsampling = metadata.get("subsampling")
-    if subsampling not in ("420", "444"):
+    if subsampling not in ("420", "422", "444"):
         raise ValueError("Invalid subsampling in DCTC header")
-    settings = DCTCodecSettings(quality=quality, subsampling=subsampling)
+    stream_format = metadata.get("stream_format", default_stream_format)
+    settings = DCTCodecSettings(
+        quality=quality,
+        subsampling=subsampling,
+        stream_format=stream_format,
+    )
+    if magic == _MAGIC_V1 and stream_format != "rle":
+        raise ValueError("DCTC v1 must use the RLE coefficient stream")
+    if magic == _MAGIC_V2 and stream_format not in {"dense", "trimmed", "sparse"}:
+        raise ValueError("DCTC v2 must use a vectorized coefficient stream")
     shapes = metadata.get("shapes")
     lengths = metadata.get("stream_lengths")
     if not isinstance(shapes, list) or len(shapes) != 3:
@@ -378,11 +573,15 @@ def decompress_dct(payload: bytes) -> Image.Image:
         (
             ((height + 1) // 2, (width + 1) // 2)
             if settings.subsampling == "420"
+            else (height, (width + 1) // 2)
+            if settings.subsampling == "422"
             else (height, width)
         ),
         (
             ((height + 1) // 2, (width + 1) // 2)
             if settings.subsampling == "420"
+            else (height, (width + 1) // 2)
+            if settings.subsampling == "422"
             else (height, width)
         ),
     )
@@ -413,12 +612,30 @@ def decompress_dct(payload: bytes) -> Image.Image:
 
     luma_quantization = _scaled_quantization_table(_LUMA_QUANTIZATION, quality)
     chroma_quantization = _scaled_quantization_table(_CHROMA_QUANTIZATION, quality)
-    y = _decode_channel(streams[0], parsed_shapes[0], luma_quantization)
-    cb = _decode_channel(streams[1], parsed_shapes[1], chroma_quantization)
-    cr = _decode_channel(streams[2], parsed_shapes[2], chroma_quantization)
+    y = _decode_channel(
+        streams[0],
+        parsed_shapes[0],
+        luma_quantization,
+        stream_format=settings.stream_format,
+    )
+    cb = _decode_channel(
+        streams[1],
+        parsed_shapes[1],
+        chroma_quantization,
+        stream_format=settings.stream_format,
+    )
+    cr = _decode_channel(
+        streams[2],
+        parsed_shapes[2],
+        chroma_quantization,
+        stream_format=settings.stream_format,
+    )
     if settings.subsampling == "420":
         cb = np.repeat(np.repeat(cb, 2, axis=0), 2, axis=1)[:height, :width]
         cr = np.repeat(np.repeat(cr, 2, axis=0), 2, axis=1)[:height, :width]
+    elif settings.subsampling == "422":
+        cb = np.repeat(cb, 2, axis=1)[:height, :width]
+        cr = np.repeat(cr, 2, axis=1)[:height, :width]
     return Image.fromarray(_ycbcr_to_rgb(y, cb, cr), mode="RGB")
 
 

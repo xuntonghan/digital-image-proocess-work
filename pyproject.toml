@@ -29,6 +29,10 @@ geometry-ocr = [
   "transformers>=5.19,<6",
   "accelerate>=1.0,<2",
 ]
+compression-ml = [
+  "torch>=2.1",
+  "compressai>=1.2.8,<2",
+]
 sied = [
   "torch>=2.1",
   "accelerate>=0.15",
@@ -52,16 +56,20 @@ dip-tune-auto-classical = "dip_course.cli.tune_auto_classical:main"
 dip-prepare-gt-cache = "dip_course.cli.prepare_gt_cache:main"
 dip-train = "dip_course.cli.train_enhancement:main"
 dip-infer = "dip_course.cli.infer_enhancement:main"
+dip-evaluate-enhancement = "dip_course.cli.evaluate_enhancement_predictions:main"
 dip-infer-official-sied = "dip_course.cli.infer_official_sied:main"
 dip-train-sied-refiner = "dip_course.cli.train_sied_refiner:main"
 dip-visualize = "dip_course.cli.visualize_comparison:main"
 dip-compress-benchmark = "dip_course.cli.benchmark_compression:main"
 dip-dct-benchmark = "dip_course.cli.benchmark_dct_compression:main"
+dip-learned-compression-benchmark = "dip_course.cli.benchmark_learned_compression:main"
 dip-audit-geocorrection = "dip_course.cli.audit_geocorrection:main"
 dip-rectify-classical = "dip_course.cli.run_geocorrection:main"
 dip-infer-uvdoc = "dip_course.cli.infer_uvdoc:main"
 dip-eval-geocorrection-ocr = "dip_course.cli.evaluate_geocorrection_ocr:main"
 dip-visualize-geocorrection-ml = "dip_course.cli.visualize_geocorrection_ml:main"
+dip-train-page-segmentation = "dip_course.cli.train_page_segmentation:main"
+dip-infer-page-segmentation = "dip_course.cli.infer_page_segmentation:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
