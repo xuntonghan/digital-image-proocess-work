@@ -176,7 +176,7 @@ dip-train-sied-refiner \
 
 推理时在原 SIED 命令上增加 `--refiner-checkpoint /path/to/best.pt`。精修器只能使用训练集学习，通过验证门控后才允许在官方测试集报告一次冻结结果。
 
-最终 1500 步精修器在 Canon 官方 76 图测试集达到 22.9980 dB、0.7868 SSIM 和 7.2288 ΔE2000。相对同一批三次采样未精修输出，PSNR 提升 0.8298 dB、SSIM 提升 0.005845、ΔE2000 降低 9.24%、亮度 MAE 降低 13.34%；饱和度 MAE 增加 0.70%，属于已记录的小幅取舍。
+最终 1500 步精修器在 Canon 官方 76 图测试集达到 22.9980 dB、0.7868 SSIM 和 7.2288 ΔE2000。任务一提交时应以这一行作为最终平均 PSNR；Residual U-Net 的 16.1234 dB 只是课程规模基线，训练记录中的 27.1644 dB 是验证缓存数值。相对同一批三次采样未精修输出，PSNR 提升 0.8298 dB、SSIM 提升 0.005845、ΔE2000 降低 9.24%、亮度 MAE 降低 13.34%；饱和度 MAE 增加 0.70%，属于已记录的小幅取舍。
 
 若推理时使用了 `--save-base-dir` 同时保存未精修输出，可在不重复扩散采样的情况下独立复算基线指标：
 
@@ -250,7 +250,7 @@ dip-learned-compression-benchmark \
   --baseline-summary reports/assets/compression/jpeg_baseline/summary.json
 ```
 
-RTX 4090 的真实码流结果为：Q1 0.1196 bpp / 28.5804 dB，Q3 0.2709 bpp / 31.3405 dB，Q6 0.8056 bpp / 36.7047 dB。Q3 相对 JPEG Q30 少用 58.94% bpp且高 0.849 dB；Q6 相对 JPEG Q70 少用 34.96% bpp且高 2.788 dB。Cheng2020 的率失真最优，但自回归熵解码约需 5.8 秒，实时部署仍应选 libjpeg。
+RTX 4090 的真实码流结果为：Q1 0.1196 bpp / 28.5804 dB，Q3 0.2709 bpp / 31.3405 dB，Q6 0.8056 bpp / 36.7047 dB。按未压缩 24-bit RGB 计算，三档压缩比分别为 200.746:1、88.598:1 和 29.790:1；相对 Kodak 原始 PNG 文件则为 109.155:1、48.175:1 和 16.198:1。Q3 相对 JPEG Q30 少用 58.94% bpp且高 0.849 dB；Q6 相对 JPEG Q70 少用 34.96% bpp且高 2.788 dB。Cheng2020 的率失真最优，但自回归熵解码约需 5.8 秒，实时部署仍应选 libjpeg。
 
 图像增强最终结论见 `reports/enhancement_final_report.md`，压缩实验见 `reports/compression_jpeg_baseline.md` 和 `reports/compression_dctc_v1.md`，完整4090执行顺序见 `cloud/runbook.md`。
 
