@@ -1,6 +1,8 @@
 # SIED 极暗 RAW 图像增强实验报告
 
-更新时间：2026-10-03
+更新时间：2026-10-21
+
+> 2026-10-24新增RAW引导NAF与上下文一致性实验，见[本轮独立报告](enhancement_sprint_20261024.md)。下文历史测试分数保留原协议，不用本轮92张验证成绩替换；30dB目标是否达到须看本轮76张最终验收，而非验证分数。
 
 ## 1. 实验目标与数据
 
@@ -45,6 +47,18 @@ L = L1 + 0.2 × (1 - SSIM) + 1.0 × L_chroma
 最终 Canon 改进方案调用 SIED ICCV 2025 作者发布的 `canon_0.0001.pt` EMA 权重，模型使用 AICM 和 Stage-2 潜特征扩散，按论文配置执行 20 步 DDIM 采样。作者原 `sample()` 会把 GT RGB 拼入输入并计算一个最终未被预测采用的 GT 特征；本项目适配器直接调用低照 RAW 特征分支与 RGB 解码器，推理时完全不读取 GT。GT 只在预测完成后载入并计算指标，从实现上排除答案泄漏。最终输出平均三次独立 DDIM 预测以降低扩散随机性；种子安排保证每张图的第一个样本与单次推理完全相同。
 
 在冻结 SIED 的基础上，又增加一个恒等初始化的轻量曝光/色调精修器。该模型仅预测受限的全局曝光、伽马、白平衡、3×3 色彩矩阵和平滑局部照度，不改写冻结 SIED 生成的纹理。训练输入是 832 张训练图的 SIED 盲预测缩略图，目标是同尺寸 GT；验证集只用于早停与方案门控。最终使用 BF16、batch size 8、1,000 步训练，并在 4K 推理时对 SIED 三次采样平均结果做一次确定性精修。
+
+### 2.4 RAW 引导 NAF 残差恢复升级
+
+为了继续改善局部细节与低照 RAW 中的强度线索，最新方案在上述受限光度分支后加入 RAW-guided NAFNet 残差分支。它以 SIED 盲预测、四通道 RGGB RAW 和全场景 RAW 均值为输入；先根据极暗 RAW 均值计算有上限的自适应增益，再用三层 U 形 NAF 编解码器预测受限 RGB 残差。输出头零初始化，因此初始状态不改动原 SIED 结果；4K 推理使用 768 像素块、96 像素重叠和 Hann 加权融合。
+
+设计来源与实现取舍如下：
+
+- SIED 的 AICM 与软颜色直方图损失，对应本项目的 RAW 自适应增益与有界颜色分布损失；
+- DNF 的“RAW 去噪/颜色恢复解耦”原则，对应先冻结 SIED，再单独训练光度与 RAW 引导细节分支；
+- NAFNet 的非线性激活自由块，以及 NTIRE/AIM 2025 RAW 恢复挑战中的 NAFNet/ER-NAFNet、随机裁剪、水平/垂直翻转和余弦退火实践。
+
+升级实验使用 `832/92/76` 划分，包含缩略图预训练、原生裁剪微调、MSE主导、三次SIED集成原生缓存以及全场景光度上下文一致性五阶段。部分阶段先按缩略图快速验证选候选，再复核原生92图；Phase5改为直接用固定12张原生快速验证。最终在完整92张原生验证上执行固定颜色/SSIM门槛，再按逐图PSNR平均选择。本轮只在方案冻结后验收76张测试一次；它历史上已用于基线与此前报告，不宣传为全项目首次揭盲。官方SIED预训练见过92张验证场景，必须将这一限制与测试成绩区分。
 
 ## 3. 训练与模型选择
 
@@ -120,3 +134,12 @@ SIED 三次采样平均相对 Canon 原 U-Net 提升 `6.0466 dB` PSNR 和 `0.159
 - 官方训练/验证/测试清单：`manifests/enhancement/`。
 
 本报告中的汇总值均可由对应逐图 CSV 重新计算；训练配置、数据清单和权重相互独立保存，满足课程演示与复现实验需要。
+
+## 7. 主要参考资料
+
+- Jiang et al., *Learning to See in the Extremely Dark*, ICCV 2025：<https://openaccess.thecvf.com/content/ICCV2025/html/Jiang_Learning_to_See_in_the_Extremely_Dark_ICCV_2025_paper.html>
+- SIED 官方代码与数据：<https://github.com/JianghaiSCU/SIED>
+- Jin et al., *DNF: Decouple and Feedback Network for Seeing in the Dark*, CVPR 2023：<https://openaccess.thecvf.com/content/CVPR2023/html/Jin_DNF_Decouple_and_Feedback_Network_for_Seeing_in_the_Dark_CVPR_2023_paper.html>
+- Chen et al., *Simple Baselines for Image Restoration (NAFNet)*, ECCV 2022：<https://www.ecva.net/papers/eccv_2022/papers_ECCV/papers/136670017.pdf>
+- NTIRE 2025 RAW Image Restoration and Super-Resolution Challenge：<https://openaccess.thecvf.com/content/CVPR2025W/NTIRE/html/Conde_NTIRE_2025_Challenge_on_RAW_Image_Restoration_and_Super-Resolution_CVPRW_2025_paper.html>
+- AIM 2025 Real-World RAW Image Denoising Challenge：<https://openaccess.thecvf.com/content/ICCV2025W/AIM/html/Li_AIM_2025_Challenge_on_Real-World_RAW_Image_Denoising_ICCVW_2025_paper.html>

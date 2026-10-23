@@ -1,0 +1,8 @@
+{
+  "count": 76,
+  "protocol": "Same-run saved uint8 PNGs, same 76 GT JPGs, per-image PSNR arithmetic mean at native resolution. No additional neural inference or model selection.",
+  "base_psnr_mean": 22.16815662897792,
+  "refined_psnr_mean": 23.29401601164696,
+  "psnr_gain_mean": 1.1258593826690415,
+  "note": "PNG quantization means these values are not replacements for the floating-point frozen-test summary."
+}

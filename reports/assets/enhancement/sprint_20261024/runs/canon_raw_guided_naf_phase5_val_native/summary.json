@@ -1,0 +1,22 @@
+{
+  "method": "official_sied_plus_full_scene_context_naf",
+  "count": 92,
+  "evaluation_resolution": [
+    3840,
+    2160
+  ],
+  "base_source": "blind_ensemble_rgb_png_uint8",
+  "corrected_cache_dtype": "float16",
+  "blind_inference": true,
+  "refiner_tile_size": 512,
+  "refiner_overlap": 64,
+  "psnr_mean": 26.585810982165864,
+  "delta_e2000_mean": 4.5068981043977345,
+  "delta_e2000_p95_mean": 7.871453365553981,
+  "lightness_mae_mean": 4.465854011152102,
+  "saturation_mae_mean": 0.033826098169969475,
+  "hue_error_degrees_mean": 11.361233671012338,
+  "ssim_mean": 0.8552129313997601,
+  "checkpoint": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase5_context/best.pt",
+  "checkpoint_sha256": "864a15c6a75c5433399669ca1611745933bbaa988abc8190077557784d4f7fb5"
+}

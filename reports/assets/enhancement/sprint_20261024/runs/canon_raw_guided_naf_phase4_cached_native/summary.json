@@ -1,0 +1,5 @@
+{
+  "global_step": 20000,
+  "best_refined_psnr_mean": 27.55775937826737,
+  "best_checkpoint": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase4_cached_native/best.pt"
+}

@@ -1,0 +1,35 @@
+{
+  "selection_metric": "native_validation_psnr_mean",
+  "selected": {
+    "phase": "phase4",
+    "checkpoint": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase4_cached_native/best.pt",
+    "psnr_mean": 26.63696698074309,
+    "validation_summary": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase4_val_native/summary.json"
+  },
+  "candidates": [
+    {
+      "phase": "phase1",
+      "checkpoint": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase1/selected.pt",
+      "psnr_mean": 26.13466141055326,
+      "validation_summary": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase1/selected_validation_summary.json"
+    },
+    {
+      "phase": "phase2",
+      "checkpoint": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase2_native/best.pt",
+      "psnr_mean": 26.63692394945656,
+      "validation_summary": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase2_val_native/summary.json"
+    },
+    {
+      "phase": "phase3",
+      "checkpoint": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase3_psnr/best.pt",
+      "psnr_mean": 26.636923283043316,
+      "validation_summary": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase3_val_native/summary.json"
+    },
+    {
+      "phase": "phase4",
+      "checkpoint": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase4_cached_native/best.pt",
+      "psnr_mean": 26.63696698074309,
+      "validation_summary": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase4_val_native/summary.json"
+    }
+  ]
+}

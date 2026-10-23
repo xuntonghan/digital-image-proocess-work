@@ -1,0 +1,75 @@
+{
+  "method": "official_sied_plus_raw_guided_naf",
+  "started_at_unix": 1792767489.3040097,
+  "python": "3.12.3",
+  "torch": "2.8.0+cu128",
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 4080 SUPER",
+  "prediction_dir": "/root/autodl-tmp/sied30/cache/official_sied/canon_train_val_native_ensemble3/images",
+  "train_manifest_sha256": "b5068639ac967d4e1cdd34893c9c0ba33393b9f73eff9ef1f7b8746bef792a01",
+  "val_manifest_sha256": "a17a96a26fa3dc8d1a63e3cdacd6c86b6ca17132cd8b6860a76a08595ff0968a",
+  "train_pairs": 832,
+  "val_pairs": 92,
+  "model_type": "raw_guided_naf",
+  "model_config": {
+    "width": 48,
+    "encoder_blocks": [
+      2,
+      2,
+      4
+    ],
+    "middle_blocks": 6,
+    "decoder_blocks": [
+      2,
+      2,
+      2
+    ],
+    "max_residual": 0.35,
+    "raw_target_mean": 0.1,
+    "raw_max_gain": 4096.0
+  },
+  "initial_checkpoint": {
+    "path": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase3_psnr/best.pt",
+    "sha256": "f6b0175724e7e53ad1cf2c5573c30c61cf0fef9b3499c464f0af106693ee028c",
+    "global_step": 1,
+    "metrics": {
+      "base_native_psnr": 25.740544358889263,
+      "refined_native_psnr": 25.703670144081116,
+      "native_validation_count": 48
+    }
+  },
+  "photometric_checkpoint": null,
+  "settings": {
+    "data_root": "/root/autodl-tmp/sied30/data/SIED_dataset",
+    "train_manifest": "/root/autodl-tmp/sied30/project/manifests/enhancement/canon_train.txt",
+    "val_manifest": "/root/autodl-tmp/sied30/project/manifests/enhancement/canon_val.txt",
+    "prediction_dir": "/root/autodl-tmp/sied30/cache/official_sied/canon_train_val_native_ensemble3/images",
+    "val_prediction_dir": "/root/autodl-tmp/sied30/cache/official_sied/canon_val_768_ensemble3/images",
+    "raw_mean_cache": "/root/autodl-tmp/sied30/cache/official_sied/canon_raw_means.json",
+    "output_dir": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase4_cached_native",
+    "initial_checkpoint": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase3_psnr/best.pt",
+    "photometric_checkpoint": null,
+    "device": "cuda",
+    "precision": "fp16",
+    "max_steps": 20000,
+    "learning_rate": 2e-05,
+    "weight_decay": 0.0001,
+    "validation_interval": 500,
+    "checkpoint_interval": 5000,
+    "gradient_accumulation": 1,
+    "ema_decay": 0.999,
+    "seed": 20261021,
+    "num_workers": 4,
+    "batch_size": 1,
+    "crop_size": 512,
+    "width": 48,
+    "encoder_blocks": "2,2,4",
+    "middle_blocks": 6,
+    "decoder_blocks": "2,2,2",
+    "max_residual": 0.35,
+    "raw_target_mean": 0.1,
+    "raw_max_gain": 4096.0,
+    "loss_profile": "psnr",
+    "require_cuda": true
+  }
+}

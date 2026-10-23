@@ -1,0 +1,89 @@
+{
+  "method": "full_scene_context_naf",
+  "settings": {
+    "data_root": "/root/autodl-tmp/sied30/data/SIED_dataset",
+    "train_manifest": "/root/autodl-tmp/sied30/project/manifests/enhancement/canon_train.txt",
+    "val_manifest": "/root/autodl-tmp/sied30/project/manifests/enhancement/canon_val.txt",
+    "prediction_dir": "/root/autodl-tmp/sied30/cache/official_sied/canon_train_val_native_ensemble3/images",
+    "cache_dir": "/root/autodl-tmp/sied30/cache/official_sied/canon_full_scene_corrected",
+    "initial_checkpoint": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase4_cached_native/best.pt",
+    "output_dir": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase5_context",
+    "validation_output_dir": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase5_val_native",
+    "val_prediction_dir": null,
+    "device": "cuda",
+    "precision": "fp16",
+    "require_cuda": true,
+    "crop_size": 512,
+    "batch_size": 1,
+    "num_workers": 4,
+    "max_steps": 10000,
+    "min_steps": 2500,
+    "early_stop_patience": 6,
+    "validation_interval": 500,
+    "val_limit": 12,
+    "tile_size": 512,
+    "tile_overlap": 64,
+    "learning_rate": 2e-05,
+    "weight_decay": 0.0001,
+    "ema_decay": 0.999,
+    "seed": 20261023,
+    "min_psnr_improvement": 0.01,
+    "max_color_regression": 0.02,
+    "max_ssim_regression": 0.002,
+    "resume": true
+  },
+  "initial_checkpoint": {
+    "path": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase4_cached_native/best.pt",
+    "sha256": "337acc11705e8ae1f170d22263161b210a0ed0d4272a647db4e82ccbb611f2d8",
+    "global_step": 1,
+    "metrics": {
+      "base_psnr_mean": 27.02860480806102,
+      "refined_psnr_mean": 27.55775937826737,
+      "base_global_psnr": 22.524387599067452,
+      "refined_global_psnr": 23.77748724500225,
+      "base_ssim": 0.9203016032343325,
+      "refined_ssim": 0.9257765431766924
+    },
+    "model_config": {
+      "width": 48,
+      "encoder_blocks": [
+        2,
+        2,
+        4
+      ],
+      "middle_blocks": 6,
+      "decoder_blocks": [
+        2,
+        2,
+        2
+      ],
+      "max_residual": 0.35,
+      "raw_target_mean": 0.1,
+      "raw_max_gain": 4096.0
+    }
+  },
+  "train_pairs": 832,
+  "val_pairs": 92,
+  "quick_validation_keys": [
+    "325",
+    "543",
+    "664",
+    "386",
+    "242",
+    "230",
+    "372",
+    "400",
+    "633",
+    "165",
+    "373",
+    "610"
+  ],
+  "train_manifest_sha256": "b5068639ac967d4e1cdd34893c9c0ba33393b9f73eff9ef1f7b8746bef792a01",
+  "val_manifest_sha256": "a17a96a26fa3dc8d1a63e3cdacd6c86b6ca17132cd8b6860a76a08595ff0968a",
+  "corrected_cache_root": "/root/autodl-tmp/sied30/cache/official_sied/canon_full_scene_corrected/2705add049647d70",
+  "torch": "2.8.0+cu128",
+  "started_unix": 1792772645.8769352,
+  "photometric_frozen": true,
+  "validation_caveat": "Official pretrained SIED saw official train split including refiner validation scenes; final test is disjoint.",
+  "precision_caveat": "Training/validation base uses uint8 PNG, corrected cache float16; final blind inference uses fresh floating-point SIED output."
+}

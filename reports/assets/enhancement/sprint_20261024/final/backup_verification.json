@@ -1,0 +1,23 @@
+{
+  "verification_date": "2026-10-24",
+  "timezone": "Asia/Taipei",
+  "source_commit": "75b0c84ba21a940638ad9b8b49255260df8aa3be",
+  "test_count": 76,
+  "base_png_count": 76,
+  "refined_png_count": 76,
+  "reference_jpg_count": 76,
+  "csv_key_order_matches_manifest": true,
+  "eight_summary_metric_means_recomputed_from_csv": true,
+  "final_output_rsync_checksum_dry_run": "no differences",
+  "test_reference_rsync_checksum_dry_run": "no differences",
+  "official_checkpoint_sha256": "40014f1f71dfdcd9a8969074097f675a54d2598aec26b183c0874bfcd5c26238",
+  "refiner_checkpoint_sha256": "337acc11705e8ae1f170d22263161b210a0ed0d4272a647db4e82ccbb611f2d8",
+  "local_official_and_refiner_sha256_match": true,
+  "models_root": "checkpoints/sied30_resume_snapshot",
+  "outputs_root": "outputs/sied30_resume_snapshot",
+  "clean_code_snapshot_tests_passed": 139,
+  "cloud_stop_action": "Platform-equivalent normal shutdown: verify no GPU processes, record shutdown event, terminate verified supervisord. Trash and persistent data were preserved.",
+  "cloud_stop_time_approx": "2026-10-24T01:32:00+08:00",
+  "ssh_probes_after_shutdown": "Both returned Connection closed; no successful SSH session afterwards.",
+  "provider_control_panel_billing_independently_checked": false
+}

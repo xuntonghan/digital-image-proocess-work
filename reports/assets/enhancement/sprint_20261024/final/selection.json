@@ -1,0 +1,148 @@
+{
+  "schema_version": 2,
+  "selection_metric": "validation_psnr_mean_after_full_validation_guardrails",
+  "guardrails": {
+    "reference_phase": 2,
+    "validation_count": 92,
+    "ssim_max_absolute_decrease": 0.002,
+    "color_max_relative_increase": 0.02,
+    "color_metrics": [
+      "delta_e2000_mean",
+      "delta_e2000_p95_mean",
+      "lightness_mae_mean",
+      "saturation_mae_mean",
+      "hue_error_degrees_mean"
+    ],
+    "claim": "Bounded regression is allowed; not a claim that every metric improves."
+  },
+  "reference": {
+    "phase": 2,
+    "checkpoint": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase2_native/best.pt",
+    "checkpoint_sha256": "91b5059e67b0c5f8f9521e231566c4a59c59b33aff0bf7229b24a1097e0ea289",
+    "validation_summary": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase2_val_native/summary.json",
+    "validation_summary_sha256": "11f005de75105aea24d5d7d4efef9b21fe394a28e01c9ecc403181f6534d431d",
+    "count": 92,
+    "refiner_tile_size": 768,
+    "refiner_overlap": 96,
+    "psnr_mean": 26.63692394945656,
+    "ssim_mean": 0.8562718629837036,
+    "delta_e2000_mean": 4.496329893467709,
+    "delta_e2000_p95_mean": 7.831765027149864,
+    "lightness_mae_mean": 4.455134593922159,
+    "saturation_mae_mean": 0.03374168379029826,
+    "hue_error_degrees_mean": 11.346901101066905
+  },
+  "selected": {
+    "phase": 4,
+    "checkpoint": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase4_cached_native/best.pt",
+    "checkpoint_sha256": "337acc11705e8ae1f170d22263161b210a0ed0d4272a647db4e82ccbb611f2d8",
+    "validation_summary": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase4_val_native/summary.json",
+    "validation_summary_sha256": "738ca0f86d5f8c34923954112c90e62f12b89fd85c82c93290346cbb02498f79",
+    "count": 92,
+    "refiner_tile_size": 768,
+    "refiner_overlap": 96,
+    "psnr_mean": 26.63696698074309,
+    "ssim_mean": 0.8562718739976054,
+    "delta_e2000_mean": 4.496313538704763,
+    "delta_e2000_p95_mean": 7.831745103649471,
+    "lightness_mae_mean": 4.455111962297688,
+    "saturation_mae_mean": 0.03374166615590777,
+    "hue_error_degrees_mean": 11.346906146127253
+  },
+  "candidates": [
+    {
+      "phase": 2,
+      "checkpoint": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase2_native/best.pt",
+      "checkpoint_sha256": "91b5059e67b0c5f8f9521e231566c4a59c59b33aff0bf7229b24a1097e0ea289",
+      "validation_summary": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase2_val_native/summary.json",
+      "validation_summary_sha256": "11f005de75105aea24d5d7d4efef9b21fe394a28e01c9ecc403181f6534d431d",
+      "count": 92,
+      "refiner_tile_size": 768,
+      "refiner_overlap": 96,
+      "psnr_mean": 26.63692394945656,
+      "ssim_mean": 0.8562718629837036,
+      "delta_e2000_mean": 4.496329893467709,
+      "delta_e2000_p95_mean": 7.831765027149864,
+      "lightness_mae_mean": 4.455134593922159,
+      "saturation_mae_mean": 0.03374168379029826,
+      "hue_error_degrees_mean": 11.346901101066905
+    },
+    {
+      "phase": 3,
+      "checkpoint": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase3_psnr/best.pt",
+      "checkpoint_sha256": "f6b0175724e7e53ad1cf2c5573c30c61cf0fef9b3499c464f0af106693ee028c",
+      "validation_summary": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase3_val_native/summary.json",
+      "validation_summary_sha256": "8b70f4580578a69ea91f566bd023405222f585065bb94b1fc03fe6ae730d4bf4",
+      "count": 92,
+      "refiner_tile_size": 768,
+      "refiner_overlap": 96,
+      "psnr_mean": 26.636923283043316,
+      "ssim_mean": 0.8562718590964442,
+      "delta_e2000_mean": 4.496328402365441,
+      "delta_e2000_p95_mean": 7.831766250340835,
+      "lightness_mae_mean": 4.455133671345918,
+      "saturation_mae_mean": 0.033741707164470267,
+      "hue_error_degrees_mean": 11.346911416981438
+    },
+    {
+      "phase": 4,
+      "checkpoint": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase4_cached_native/best.pt",
+      "checkpoint_sha256": "337acc11705e8ae1f170d22263161b210a0ed0d4272a647db4e82ccbb611f2d8",
+      "validation_summary": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase4_val_native/summary.json",
+      "validation_summary_sha256": "738ca0f86d5f8c34923954112c90e62f12b89fd85c82c93290346cbb02498f79",
+      "count": 92,
+      "refiner_tile_size": 768,
+      "refiner_overlap": 96,
+      "psnr_mean": 26.63696698074309,
+      "ssim_mean": 0.8562718739976054,
+      "delta_e2000_mean": 4.496313538704763,
+      "delta_e2000_p95_mean": 7.831745103649471,
+      "lightness_mae_mean": 4.455111962297688,
+      "saturation_mae_mean": 0.03374166615590777,
+      "hue_error_degrees_mean": 11.346906146127253
+    },
+    {
+      "phase": 5,
+      "checkpoint": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase5_context/best.pt",
+      "checkpoint_sha256": "864a15c6a75c5433399669ca1611745933bbaa988abc8190077557784d4f7fb5",
+      "validation_summary": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase5_val_native/summary.json",
+      "validation_summary_sha256": "6f80c5104de37a17e15e66d107c04b5c8ed28580b84366e8e1118846e77ced6e",
+      "count": 92,
+      "refiner_tile_size": 512,
+      "refiner_overlap": 64,
+      "psnr_mean": 26.585810982165864,
+      "ssim_mean": 0.8552129313997601,
+      "delta_e2000_mean": 4.5068981043977345,
+      "delta_e2000_p95_mean": 7.871453365553981,
+      "lightness_mae_mean": 4.465854011152102,
+      "saturation_mae_mean": 0.033826098169969475,
+      "hue_error_degrees_mean": 11.361233671012338
+    }
+  ],
+  "rejected": [
+    {
+      "phase": 1,
+      "reasons": [
+        "SSIM decreases by more than 0.002 versus Phase 2",
+        "delta_e2000_p95_mean increases by more than 2% versus Phase 2",
+        "lightness_mae_mean increases by more than 2% versus Phase 2"
+      ]
+    }
+  ],
+  "frozen_protocol": {
+    "manifest": "/root/autodl-tmp/sied30/project/manifests/enhancement/canon_test.txt",
+    "manifest_sha256": "bbb3561f320e2c37dc850f625e0efbdd8ca6a5e2943d09f711fba8f4a745f8a8",
+    "count": 76,
+    "official_checkpoint": "/root/autodl-tmp/sied30/checkpoints/official/canon_0.0001.pt",
+    "official_checkpoint_sha256": "40014f1f71dfdcd9a8969074097f675a54d2598aec26b183c0874bfcd5c26238",
+    "refiner_checkpoint": "/root/autodl-tmp/sied30/final/best.pt",
+    "refiner_checkpoint_sha256": "337acc11705e8ae1f170d22263161b210a0ed0d4272a647db4e82ccbb611f2d8",
+    "refiner_tile_size": 768,
+    "refiner_overlap": 96,
+    "seed": 3407,
+    "sampling_steps": 20,
+    "ensemble_size": 3,
+    "precision": "fp16",
+    "lpips": true
+  }
+}

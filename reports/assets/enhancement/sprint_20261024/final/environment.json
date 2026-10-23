@@ -1,0 +1,21 @@
+{
+  "source_commit": "75b0c84ba21a940638ad9b8b49255260df8aa3be",
+  "python": "3.12.3",
+  "platform": "Linux-5.15.0-78-generic-x86_64-with-glibc2.35",
+  "gpu": "NVIDIA GeForce RTX 4080 SUPER vGPU",
+  "reported_gpu_memory_mib": 32760,
+  "packages": {
+    "torch": "2.8.0+cu128",
+    "torchvision": "0.23.0+cu128",
+    "numpy": "2.3.2",
+    "Pillow": "11.3.0",
+    "scikit-image": "0.26.0",
+    "lpips": "0.1.4",
+    "accelerate": "1.15.0",
+    "einops": "0.8.2",
+    "ema-pytorch": "0.8.3",
+    "tqdm": "4.66.2",
+    "requests": "2.31.0"
+  },
+  "note": "Observed reproduction snapshot, not a recommendation to deploy these historical dependency versions in production."
+}

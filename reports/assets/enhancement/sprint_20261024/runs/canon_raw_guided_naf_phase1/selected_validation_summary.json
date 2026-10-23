@@ -1,0 +1,56 @@
+{
+  "method": "official_sied_iccv2025_stage2",
+  "checkpoint": "/root/autodl-tmp/sied30/checkpoints/official/canon_0.0001.pt",
+  "weight_source": "ema:ema_model.",
+  "blind_inference": true,
+  "count": 92,
+  "device": "cuda",
+  "precision": "fp16",
+  "sampling_steps": 20,
+  "seed": 3407,
+  "ensemble_size": 3,
+  "refiner": {
+    "checkpoint": "/root/autodl-tmp/sied30/runs/canon_raw_guided_naf_phase1/best.pt",
+    "global_step": 18000,
+    "metrics": {
+      "base_psnr_mean": 26.698815718941066,
+      "refined_psnr_mean": 27.60664369748986,
+      "base_global_psnr": 22.694605645337013,
+      "refined_global_psnr": 24.09877307164468,
+      "base_ssim": 0.9150016690077989,
+      "refined_ssim": 0.9226281448550846
+    },
+    "model_type": "raw_guided_naf",
+    "model_config": {
+      "width": 48,
+      "encoder_blocks": [
+        2,
+        2,
+        4
+      ],
+      "middle_blocks": 6,
+      "decoder_blocks": [
+        2,
+        2,
+        2
+      ],
+      "max_residual": 0.35,
+      "raw_target_mean": 0.1,
+      "raw_max_gain": 4096.0
+    }
+  },
+  "refiner_tile_size": 768,
+  "refiner_overlap": 96,
+  "base_predictions": null,
+  "metrics_evaluated": true,
+  "save_max_side": null,
+  "psnr_mean": 26.13466141055326,
+  "ssim_mean": 0.8534935738729394,
+  "delta_e2000_mean": 4.559380260669168,
+  "delta_e2000_p95_mean": 8.105304834635362,
+  "lightness_mae_mean": 4.549424702706545,
+  "saturation_mae_mean": 0.03421584549157516,
+  "hue_error_degrees_mean": 11.494577263305134,
+  "lpips_mean": null,
+  "inference_seconds_mean": 2.0531015504232566
+}

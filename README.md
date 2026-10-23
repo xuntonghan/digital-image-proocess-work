@@ -189,6 +189,24 @@ dip-evaluate-enhancement \
   --method official_sied_ensemble3
 ```
 
+### RAW-guided NAFNet 分阶段升级
+
+该路线保留冻结 SIED 与受限光度分支，再用四通道 RGGB RAW 引导 NAFNet 残差恢复，并增加整图光度上下文一致性消融。4090或本次实测4080 SUPER可运行。以下流程使用全新实验目录；已有数据只审计复用，不重新执行准备脚本。准备脚本拒绝覆盖数据/权重，默认保留下载压缩包，因此须另预留压缩包空间。
+
+```bash
+bash cloud/prepare_sied_canon_assets.sh /root/autodl-tmp/sied30
+bash cloud/run_sied30_phase1.sh /root/autodl-tmp/sied30
+bash cloud/run_sied30_phase1_select.sh /root/autodl-tmp/sied30
+bash cloud/run_sied30_phase2.sh /root/autodl-tmp/sied30
+bash cloud/run_sied30_phase3_psnr.sh /root/autodl-tmp/sied30
+bash cloud/run_sied30_phase4_cached_native.sh /root/autodl-tmp/sied30
+bash cloud/run_sied30_phase5_context.sh /root/autodl-tmp/sied30
+# 复核全部原生验证、权重哈希与HOLD_FINALIZE状态后，才执行最终验收。
+bash cloud/run_sied30_finalize.sh /root/autodl-tmp/sied30
+```
+
+各阶段使用预设快速验证选择候选，再复核完整92张原生验证；Phase5直接用12张原生快速验证，并在无收益时早停。最终在完整92张上以Phase2作为固定参考，限制SSIM最大回摆0.002、各颜色误差最多增加2%，再选平均PSNR最高者，对76张官方测试图仅做本轮一次最终验收。测试清单、权重哈希与推理参数不可变绑定，禁止更换权重复用旧分数。92张验证场景已被官方SIED预训练见过，验证分数不是独立泛化成绩。完整新轮实验与负结果见[增强冲刺报告](reports/enhancement_sprint_20261024.md)。官方2.43GiB权重和数据集不提交到Git，推理需同时具备官方基础权重和本项目精修权重。
+
 ## Kodak 图像压缩
 
 课件入口仓库将 Kodak 数据指向 `MohamedBakrAli/Kodak-Lossless-True-Color-Image-Suite`。本项目已固定上游提交，24 张 PNG 放在不提交到 Git 的 `data/compression/kodak/`；来源、图像规格和逐文件 SHA256 见 `manifests/compression/`。
