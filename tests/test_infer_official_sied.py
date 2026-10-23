@@ -10,7 +10,7 @@ from dip_course.cli.infer_official_sied import (
     load_refiner,
     select_official_state_dict,
 )
-from dip_course.enhancement.refiner import ExposureColorRefiner
+from dip_course.enhancement.refiner import ExposureColorRefiner, RawGuidedNAFRefiner
 
 
 def test_averages_inference_tensors_without_inplace_update() -> None:
@@ -95,3 +95,32 @@ def test_loads_exposure_color_refiner_checkpoint(tmp_path) -> None:
     image = torch.rand(1, 3, 24, 32)
     torch.testing.assert_close(loaded(image), image, atol=2e-6, rtol=2e-6)
     assert metadata["global_step"] == 12
+
+
+def test_loads_raw_guided_naf_refiner_checkpoint(tmp_path) -> None:
+    config = {
+        "width": 8,
+        "encoder_blocks": (1,),
+        "middle_blocks": 1,
+        "decoder_blocks": (1,),
+        "photometric_channels": 8,
+        "context_side": 32,
+    }
+    source = RawGuidedNAFRefiner(**config)
+    checkpoint = tmp_path / "restorer.pt"
+    torch.save(
+        {
+            "model": source.state_dict(),
+            "model_type": "raw_guided_naf",
+            "model_config": config,
+            "global_step": 25,
+            "torch_version": torch.__version__,
+        },
+        checkpoint,
+    )
+
+    loaded, metadata = load_refiner(checkpoint, torch.device("cpu"))
+
+    assert isinstance(loaded, RawGuidedNAFRefiner)
+    assert metadata["model_type"] == "raw_guided_naf"
+    assert metadata["global_step"] == 25

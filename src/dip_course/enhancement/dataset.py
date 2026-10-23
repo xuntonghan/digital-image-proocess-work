@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import random
 from pathlib import Path
 
@@ -21,9 +22,35 @@ class SIEDPredictionDataset(Dataset):
         manifest: str | Path,
         prediction_dir: str | Path,
         augment: bool = True,
+        include_raw: bool = False,
+        raw_spec: RawSpec | None = None,
+        crop_size: int | None = None,
+        raw_mean_cache: str | Path | None = None,
     ) -> None:
         self.records = read_pair_manifest(data_root, manifest)
         self.augment = augment
+        self.include_raw = include_raw
+        self.raw_spec = raw_spec
+        if include_raw and raw_spec is None:
+            raise ValueError("include_raw=True requires raw_spec")
+        if crop_size is not None and (crop_size <= 0 or crop_size % 2):
+            raise ValueError("crop_size must be a positive even integer")
+        if crop_size is not None and (not include_raw or raw_spec is None):
+            raise ValueError("native prediction crops require RAW guidance")
+        self.crop_size = crop_size
+        self.raw_means: dict[str, float] | None = None
+        if raw_mean_cache is not None:
+            payload = json.loads(Path(raw_mean_cache).read_text(encoding="utf-8"))
+            if not isinstance(payload, dict):
+                raise TypeError("RAW mean cache must contain a JSON object")
+            self.raw_means = {str(key): float(value) for key, value in payload.items()}
+            missing_means = [
+                record.key for record in self.records if record.key not in self.raw_means
+            ]
+            if missing_means:
+                raise ValueError(
+                    f"RAW mean cache is missing {len(missing_means)} manifest keys"
+                )
         prediction_root = Path(prediction_dir)
         self.predictions: dict[str, Path] = {}
         for path in sorted(prediction_root.glob("*.png")):
@@ -35,9 +62,7 @@ class SIEDPredictionDataset(Dataset):
                 )
             self.predictions[key] = path
         missing = [
-            record.key
-            for record in self.records
-            if record.key not in self.predictions
+            record.key for record in self.records if record.key not in self.predictions
         ]
         if missing:
             preview = ", ".join(missing[:5])
@@ -54,25 +79,138 @@ class SIEDPredictionDataset(Dataset):
         with Image.open(self.predictions[record.key]) as image:
             prediction_image = image.convert("RGB")
             size = prediction_image.size
-            prediction = np.asarray(prediction_image, dtype=np.float32) / 255.0
         with Image.open(record.gt_rgb) as image:
             target_image = image.convert("RGB")
             if target_image.size != size:
                 target_image = target_image.resize(size, Image.Resampling.LANCZOS)
-            target = np.asarray(target_image, dtype=np.float32) / 255.0
+
+        top = 0
+        left = 0
+        crop_size = self.crop_size
+        if crop_size is not None:
+            assert self.raw_spec is not None
+            expected_size = (self.raw_spec.width, self.raw_spec.height)
+            if size != expected_size:
+                raise ValueError(
+                    f"Native cached prediction {self.predictions[record.key]} has "
+                    f"size {size}; expected {expected_size}"
+                )
+            width, height = size
+            if crop_size > width or crop_size > height:
+                raise ValueError("crop_size exceeds the cached native prediction")
+            if self.augment:
+                top = 2 * random.randint(0, (height - crop_size) // 2)
+                left = 2 * random.randint(0, (width - crop_size) // 2)
+            else:
+                top = 2 * ((height - crop_size) // 4)
+                left = 2 * ((width - crop_size) // 4)
+            box = (left, top, left + crop_size, top + crop_size)
+            prediction_image = prediction_image.crop(box)
+            target_image = target_image.crop(box)
+
+        prediction = np.asarray(prediction_image, dtype=np.float32) / 255.0
+        target = np.asarray(target_image, dtype=np.float32) / 255.0
 
         prediction = prediction.transpose(2, 0, 1)
         target = target.transpose(2, 0, 1)
-        if self.augment:
-            if random.random() < 0.5:
-                prediction = prediction[:, :, ::-1]
-                target = target[:, :, ::-1]
-            if random.random() < 0.5:
-                prediction = prediction[:, ::-1, :]
-                target = target[:, ::-1, :]
-        return {
+        horizontal_flip = self.augment and random.random() < 0.5
+        vertical_flip = self.augment and random.random() < 0.5
+        if horizontal_flip:
+            prediction = prediction[:, :, ::-1]
+            target = target[:, :, ::-1]
+        if vertical_flip:
+            prediction = prediction[:, ::-1, :]
+            target = target[:, ::-1, :]
+        sample: dict[str, torch.Tensor | str] = {
             "prediction": torch.from_numpy(np.ascontiguousarray(prediction)).float(),
             "target": torch.from_numpy(np.ascontiguousarray(target)).float(),
+            "key": record.key,
+        }
+        if self.include_raw:
+            assert self.raw_spec is not None
+            actual_bytes = record.low_raw.stat().st_size
+            if actual_bytes != self.raw_spec.expected_bytes:
+                raise ValueError(
+                    f"Unexpected RAW size for {record.low_raw}: {actual_bytes} bytes; "
+                    f"expected {self.raw_spec.expected_bytes}"
+                )
+            raw_memmap = np.memmap(
+                record.low_raw,
+                dtype=np.uint16,
+                mode="r",
+                shape=(self.raw_spec.height, self.raw_spec.width),
+            )
+            raw_array = raw_memmap
+            if crop_size is not None:
+                raw_array = raw_memmap[
+                    top : top + crop_size,
+                    left : left + crop_size,
+                ]
+            normalized = (
+                np.asarray(raw_array, dtype=np.float32)
+                - float(self.raw_spec.black_level)
+            ) / float(self.raw_spec.white_level - self.raw_spec.black_level)
+            raw = pack_rggb(np.clip(normalized, 0.0, 1.0))
+            if horizontal_flip:
+                raw = raw[:, :, ::-1]
+            if vertical_flip:
+                raw = raw[:, ::-1, :]
+            sample["raw"] = torch.from_numpy(np.ascontiguousarray(raw)).float()
+            if self.raw_means is not None:
+                sample["raw_mean"] = torch.tensor(
+                    self.raw_means[record.key], dtype=torch.float32
+                )
+        return sample
+
+
+class SIEDFullSceneDataset(Dataset):
+    """Load full-resolution RAW/GT pairs for native-scale refinement."""
+
+    def __init__(
+        self,
+        *,
+        data_root: str | Path,
+        manifest: str | Path,
+        raw_spec: RawSpec,
+    ) -> None:
+        self.records = read_pair_manifest(data_root, manifest)
+        self.raw_spec = raw_spec
+
+    def __len__(self) -> int:
+        return len(self.records)
+
+    def __getitem__(self, index: int) -> dict[str, torch.Tensor | str]:
+        record = self.records[index]
+        actual_bytes = record.low_raw.stat().st_size
+        if actual_bytes != self.raw_spec.expected_bytes:
+            raise ValueError(
+                f"Unexpected RAW size for {record.low_raw}: {actual_bytes} bytes; "
+                f"expected {self.raw_spec.expected_bytes}"
+            )
+        raw_memmap = np.memmap(
+            record.low_raw,
+            dtype=np.uint16,
+            mode="r",
+            shape=(self.raw_spec.height, self.raw_spec.width),
+        )
+        normalized = (
+            np.asarray(raw_memmap, dtype=np.float32) - float(self.raw_spec.black_level)
+        ) / float(self.raw_spec.white_level - self.raw_spec.black_level)
+        raw = pack_rggb(np.clip(normalized, 0.0, 1.0))
+        with Image.open(record.gt_rgb) as image:
+            target_image = image.convert("RGB")
+            expected_size = (self.raw_spec.width, self.raw_spec.height)
+            if target_image.size != expected_size:
+                raise ValueError(
+                    f"Unexpected GT size for {record.gt_rgb}: {target_image.size}; "
+                    f"expected {expected_size}"
+                )
+            target = np.asarray(target_image, dtype=np.float32) / 255.0
+        return {
+            "raw": torch.from_numpy(np.ascontiguousarray(raw)).float(),
+            "target": torch.from_numpy(
+                np.ascontiguousarray(target.transpose(2, 0, 1))
+            ).float(),
             "key": record.key,
         }
 
@@ -141,10 +279,7 @@ class SIEDPairDataset(Dataset):
                 )
 
         if self.augment:
-            if (
-                cached is not None
-                and random.random() < self.color_aware_probability
-            ):
+            if cached is not None and random.random() < self.color_aware_probability:
                 candidates = [
                     (
                         random.randint(0, packed_height - size),
@@ -227,9 +362,7 @@ class SIEDPairDataset(Dataset):
         }
 
     @staticmethod
-    def _color_score(
-        target: np.ndarray, top: int, left: int, size: int
-    ) -> float:
+    def _color_score(target: np.ndarray, top: int, left: int, size: int) -> float:
         """Approximate colorful-pixel coverage using a sparse GT crop."""
         stride = max(1, size // 32)
         sample = target[

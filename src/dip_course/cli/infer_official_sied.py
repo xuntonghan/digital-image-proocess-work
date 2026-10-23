@@ -18,7 +18,12 @@ import torch.nn.functional as F
 from torch.torch_version import TorchVersion
 
 from dip_course.cli._common import choose_torch_device, write_json
-from dip_course.enhancement.refiner import ExposureColorRefiner
+from dip_course.enhancement.refiner import (
+    ExposureColorRefiner,
+    RawGuidedNAFRefiner,
+    apply_raw_guided_refiner_tiled,
+    build_refiner,
+)
 from dip_course.io import (
     RawSpec,
     load_packed_raw,
@@ -68,6 +73,18 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--refiner-checkpoint",
         help="Optional exposure/color refiner trained on frozen SIED predictions",
+    )
+    parser.add_argument(
+        "--refiner-tile-size",
+        type=int,
+        default=768,
+        help="Native-resolution tile size for RAW-guided structural refinement",
+    )
+    parser.add_argument(
+        "--refiner-overlap",
+        type=int,
+        default=96,
+        help="Overlap between RAW-guided structural-refinement tiles",
     )
     parser.add_argument(
         "--save-base-dir",
@@ -178,7 +195,7 @@ def load_official_model(
 
 def load_refiner(
     checkpoint_path: str | Path, device: torch.device
-) -> tuple[ExposureColorRefiner, dict[str, Any]]:
+) -> tuple[torch.nn.Module, dict[str, Any]]:
     # Project-generated checkpoints store ``torch.__version__``, whose runtime
     # type is TorchVersion rather than a plain string.  Keep weights-only mode
     # and allowlist that inert metadata type instead of falling back to unsafe
@@ -193,13 +210,17 @@ def load_refiner(
     config = checkpoint.get("model_config", {})
     if not isinstance(config, Mapping):
         raise TypeError("Refiner model_config must be a mapping")
-    model = ExposureColorRefiner(**dict(config)).to(device)
+    model_type = checkpoint.get("model_type", "exposure_color")
+    if not isinstance(model_type, str):
+        raise TypeError("Refiner model_type must be a string")
+    model = build_refiner(model_type, dict(config)).to(device)
     model.load_state_dict(dict(state), strict=True)
     model.eval()
     metadata = {
         "checkpoint": str(Path(checkpoint_path).resolve()),
         "global_step": checkpoint.get("global_step"),
         "metrics": checkpoint.get("metrics"),
+        "model_type": model_type,
         "model_config": dict(config),
     }
     return model, metadata
@@ -272,6 +293,10 @@ def main() -> None:
         raise ValueError("ensemble-size must be positive")
     if args.save_max_side < 0:
         raise ValueError("save-max-side must be non-negative")
+    if args.refiner_tile_size <= 0:
+        raise ValueError("refiner-tile-size must be positive")
+    if args.refiner_overlap < 0 or args.refiner_overlap >= args.refiner_tile_size:
+        raise ValueError("refiner-overlap must be in [0, refiner-tile-size)")
     if args.lpips and args.skip_metrics:
         raise ValueError("--lpips cannot be combined with --skip-metrics")
     if args.save_max_side and not args.skip_metrics:
@@ -285,7 +310,7 @@ def main() -> None:
         sampling_steps=args.sampling_steps,
         device=device,
     )
-    refiner: ExposureColorRefiner | None = None
+    refiner: torch.nn.Module | None = None
     refiner_metadata: dict[str, Any] | None = None
     if args.refiner_checkpoint:
         refiner, refiner_metadata = load_refiner(args.refiner_checkpoint, device)
@@ -327,15 +352,28 @@ def main() -> None:
         prediction_tensor = average_prediction_samples(prediction_samples)
         base_prediction_tensor = prediction_tensor
         if refiner is not None:
-            with torch.inference_mode():
-                prediction_tensor = refiner(prediction_tensor)
+            with torch.inference_mode(), _autocast_context(device, args.precision):
+                if isinstance(refiner, RawGuidedNAFRefiner):
+                    prediction_tensor = apply_raw_guided_refiner_tiled(
+                        refiner,
+                        prediction_tensor,
+                        tensor,
+                        tile_size=args.refiner_tile_size,
+                        overlap=args.refiner_overlap,
+                    )
+                elif isinstance(refiner, ExposureColorRefiner):
+                    prediction_tensor = refiner(prediction_tensor)
+                else:
+                    raise TypeError(f"Unsupported refiner type: {type(refiner)!r}")
         if device.type == "cuda":
             torch.cuda.synchronize()
         elapsed = time.perf_counter() - started
         saved_tensor = prediction_tensor
         if args.save_max_side:
             predicted_height, predicted_width = prediction_tensor.shape[-2:]
-            scale = min(1.0, args.save_max_side / max(predicted_height, predicted_width))
+            scale = min(
+                1.0, args.save_max_side / max(predicted_height, predicted_width)
+            )
             if scale < 1.0:
                 saved_tensor = F.interpolate(
                     prediction_tensor,
@@ -400,6 +438,12 @@ def main() -> None:
         "seed": args.seed,
         "ensemble_size": args.ensemble_size,
         "refiner": refiner_metadata,
+        "refiner_tile_size": (
+            args.refiner_tile_size if isinstance(refiner, RawGuidedNAFRefiner) else None
+        ),
+        "refiner_overlap": (
+            args.refiner_overlap if isinstance(refiner, RawGuidedNAFRefiner) else None
+        ),
         "base_predictions": (
             str(base_image_dir.resolve()) if base_image_dir is not None else None
         ),

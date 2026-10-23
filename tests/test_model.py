@@ -5,7 +5,12 @@ torch = pytest.importorskip("torch")
 from dip_course.enhancement.color import hvi_to_rgb, rgb_to_hvi
 from dip_course.enhancement.losses import EnhancementLoss
 from dip_course.enhancement.model import AdaptiveColorLUT, RawToRGBUNet
-from dip_course.enhancement.refiner import ExposureColorRefiner, linear_to_srgb
+from dip_course.enhancement.refiner import (
+    ExposureColorRefiner,
+    RawGuidedNAFRefiner,
+    apply_raw_guided_refiner_tiled,
+    linear_to_srgb,
+)
 
 
 def test_model_produces_two_times_larger_rgb() -> None:
@@ -81,6 +86,59 @@ def test_exposure_color_refiner_trains_from_frozen_inference_output() -> None:
     trainable_input = frozen_output.clone()
     refiner(trainable_input).mean().backward()
     assert any(parameter.grad is not None for parameter in refiner.parameters())
+
+
+def test_raw_guided_naf_refiner_starts_as_identity() -> None:
+    refiner = RawGuidedNAFRefiner(
+        width=8,
+        encoder_blocks=(1, 1),
+        middle_blocks=1,
+        decoder_blocks=(1, 1),
+        photometric_channels=8,
+        context_side=32,
+    )
+    image = torch.rand(1, 3, 51, 67)
+    raw = torch.rand(1, 4, 26, 34)
+
+    output = refiner(image, raw)
+
+    torch.testing.assert_close(output, image, atol=2e-6, rtol=2e-6)
+
+
+def test_raw_guided_naf_tiled_identity_matches_direct() -> None:
+    refiner = RawGuidedNAFRefiner(
+        width=8,
+        encoder_blocks=(1,),
+        middle_blocks=1,
+        decoder_blocks=(1,),
+        photometric_channels=8,
+        context_side=32,
+    ).eval()
+    image = torch.rand(1, 3, 48, 72)
+    raw = torch.rand(1, 4, 24, 36)
+
+    direct = refiner(image, raw)
+    tiled = apply_raw_guided_refiner_tiled(refiner, image, raw, tile_size=32, overlap=8)
+
+    torch.testing.assert_close(tiled, direct, atol=2e-6, rtol=2e-6)
+
+
+def test_raw_guidance_adaptively_amplifies_extremely_dark_signal() -> None:
+    refiner = RawGuidedNAFRefiner(
+        width=8,
+        encoder_blocks=(1,),
+        middle_blocks=1,
+        decoder_blocks=(1,),
+        photometric_channels=8,
+        context_side=32,
+    )
+    raw = torch.full((2, 4, 12, 16), 0.0004)
+
+    gain = refiner.compute_raw_gain(raw)
+    guidance = refiner.raw_guidance(raw, size=(24, 32), raw_gain=gain)
+
+    torch.testing.assert_close(gain, torch.full_like(gain, 250.0))
+    torch.testing.assert_close(guidance.mean(), torch.tensor(0.1), atol=1e-5, rtol=1e-5)
 
 
 def test_linear_to_srgb_has_finite_gradient_at_black() -> None:
