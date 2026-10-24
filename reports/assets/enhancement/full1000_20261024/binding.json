@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "purpose": "descriptive_full_dataset_not_generalization",
+  "all_manifest_sha256": "d8631c12a21e85cbfc770ab1c6ebeb28090a5d63a29d36c15b66888eb8d3aa30",
+  "split_manifests_sha256": {
+    "train": "b5068639ac967d4e1cdd34893c9c0ba33393b9f73eff9ef1f7b8746bef792a01",
+    "val": "a17a96a26fa3dc8d1a63e3cdacd6c86b6ca17132cd8b6860a76a08595ff0968a",
+    "test": "bbb3561f320e2c37dc850f625e0efbdd8ca6a5e2943d09f711fba8f4a745f8a8"
+  },
+  "selection_sha256": "2576497270c75bc0640bc7ef49deb64fc295cb14a36f3793728c613380f74d84",
+  "official_sha256": "40014f1f71dfdcd9a8969074097f675a54d2598aec26b183c0874bfcd5c26238",
+  "refiner_sha256": "337acc11705e8ae1f170d22263161b210a0ed0d4272a647db4e82ccbb611f2d8",
+  "sealed_test_csv_sha256": "97f8b2cf3acb1901c22dfa38b2f2a5e418595abb682f826c5aa80a56769cc82a",
+  "protocol": {
+    "manifest": "/root/autodl-tmp/sied30/project/manifests/enhancement/canon_test.txt",
+    "manifest_sha256": "bbb3561f320e2c37dc850f625e0efbdd8ca6a5e2943d09f711fba8f4a745f8a8",
+    "count": 76,
+    "official_checkpoint": "/root/autodl-tmp/sied30/checkpoints/official/canon_0.0001.pt",
+    "official_checkpoint_sha256": "40014f1f71dfdcd9a8969074097f675a54d2598aec26b183c0874bfcd5c26238",
+    "refiner_checkpoint": "/root/autodl-tmp/sied30/final/best.pt",
+    "refiner_checkpoint_sha256": "337acc11705e8ae1f170d22263161b210a0ed0d4272a647db4e82ccbb611f2d8",
+    "refiner_tile_size": 768,
+    "refiner_overlap": 96,
+    "seed": 3407,
+    "sampling_steps": 20,
+    "ensemble_size": 3,
+    "precision": "fp16",
+    "lpips": true
+  },
+  "seed_indexing": "original split-local index; never global 1000 index",
+  "prediction_metrics": "float native RGB; PNGs are visualization only",
+  "training_cache": "native_float32_blind_base",
+  "color_training_cache": "float32_area512_rgb_pairs",
+  "pretraining_exposure": "Official base saw 924 train+val images; refiner saw 832",
+  "new_inference_gpu": "NVIDIA GeForce RTX 4090",
+  "test_hardware": "historical RTX 4080 SUPER vGPU; no test reinference",
+  "packages": {
+    "torch": "2.8.0+cu128",
+    "torchvision": "0.23.0+cu128",
+    "numpy": "2.3.2",
+    "Pillow": "11.3.0",
+    "scikit-image": "0.26.0",
+    "lpips": "0.1.4"
+  },
+  "code_sha256": {
+    "cloud/evaluate_sied1000.py": "c01208b9eb06018c8cdf8eaf731ae97c9726a764ebb1accb6dac4f17f0c66df2",
+    "src/dip_course/cli/infer_official_sied.py": "ec12cef0ded0f29fe3ad9598a47ecf3557c456f97ccfd2aeb2a6499f2a34ddac",
+    "src/dip_course/enhancement/refiner.py": "9a37005962c4f1c8799c3969e415322d0a2af2891b493e62768c82623dc26669",
+    "src/dip_course/io.py": "05f79e0134f99b0e62110f1f6c4618c0fb22e440685ef9ea081721d3632a1ebc",
+    "src/dip_course/metrics.py": "84cc25742db56989fdb3256e3beb6bddeee05c1431a4cbf00176a6ff0e4c321f"
+  }
+}

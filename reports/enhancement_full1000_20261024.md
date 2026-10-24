@@ -1,4 +1,4 @@
-# Canon 1000张固定模型补充评价（进行中）
+# Canon 1000张固定模型补充评价（已完成；改进研究继续）
 
 ## 用户范围与交付
 
@@ -8,11 +8,11 @@
 
 仅项目一SIED增强；几何纠正与压缩继续暂停。用户在2026-10-24提供最新旧实例与新4090实例，用于迁移资料并补齐1000张整体评价。**没有授权新一轮盲目训练，不以训练集成绩替代独立测试。** 继续遵循此前“持续监测、完成备份后关闭云机”的要求。
 
-当前未产生1000张的完整均值。既有76测试PSNR为23.295996430040688dB，不能改写成1000张成绩。
+固定模型1000张评价已于21:53:59完成，总体平均PSNR为**26.554489664752047dB**；本机随后独立复算并核对1000唯一key、832/92/76划分、全部8项逐图均值、76封存结果逐字段一致，以及924张新展示PNG的SHA256。**总体包含训练/预训练暴露，不能当作独立测试成绩。** 独立76测试PSNR仍为23.295996430040688dB。两组有界改进研究继续，尚未关闭新机。
 
 ## 实例与路径（无密码）
 
-- 资料源：`ssh -i /Users/hanxuntong/.ssh/codex_gala_autodl -p 18868 -o BatchMode=yes root@connect.nmb1.seetacloud.com`，已无卡开机。`/root/autodl-tmp/sied30`中1000 RAW、1000 GT、924基础PNG完整存在。旧45990不需要开机。
+- 资料源：`ssh -i /Users/hanxuntong/.ssh/codex_gala_autodl -p 18868 -o BatchMode=yes root@connect.nmb1.seetacloud.com`，已于19:12关闭并验证SSH离线。其`/root/autodl-tmp/sied30`资料盘保留1000 RAW、1000 GT、924基础PNG；无需重新开机。旧45990也不需要开机。
 - 新评价机：`ssh -i /Users/hanxuntong/.ssh/codex_gala_autodl -p 37497 -o BatchMode=yes root@connect.bjb2.seetacloud.com`，RTX4090、24564MiB显存、初始150GiB空闲数据盘。
 - 新根目录：`/root/autodl-tmp/sied30_eval1000`；代码`project`，Python`/root/autodl-tmp/cv-homework/.venv/bin/python`（Python3.12.3，Torch2.8.0+cu128）。系统Python不在默认PATH，必须用上述绝对路径。
 - 本机操作根：`/Users/hanxuntong/Documents/ChatGPT/cv宿題`。结果预定增量备份：`outputs/sied1000_20261024/`。
@@ -65,6 +65,31 @@
 ### 19:58后续改进排程
 
 实查新机已完成279/924新推理，日志持续更新，暂无1000均值。新增文件仅为独立低秩模型、实验、排程与测试，不修改`binding.json`登记的基线源码。新screen预定`sied_iccv_research`，日志`logs/iccv_research.log`，输出`research/iccv_pairwise/`；必须等`research/color_lut_tlc/result.json`存在并取得同一个GPU锁后才运行。最终收尾要同时检查这组新实验。原生FP32基础缓存仍不全量下载本机；新增模型、验证展示、逐图指标与日志必须备份校验。
+
+20:56例行检查：云端603/924新推理、日志持续更新，两组研究等待进程均在；云盘剩余67GiB，仍正常。Mac电池降至26%、未接电，系统预计仅剩1小时12分，可能无法覆盖后续研究与备份关机。已向用户发出接电并保持应用/网络运行的提醒；没有擅自改电源设置或提前关云机。仅当电量继续降到紧急程度或状态有实质变化时再提醒，勿每10分钟重复通知。
+
+## 固定1000张的最终统计与独立复核
+
+以下为PNG量化前浮点预测的逐图指标算术平均。↑越大越好，↓越小越好；颜色指标沿用最长边960的既定协议，PSNR/SSIM在原生3840×2160计算。
+
+| 指标 | 总体1000 | train 832 | val 92 | test 76（封存复用） |
+|---|---:|---:|---:|---:|
+| PSNR↑ / dB | 26.554490 | 26.843024 | 26.636931 | 23.295996 |
+| SSIM↑ | 0.843553 | 0.847422 | 0.856272 | 0.785802 |
+| DeltaE2000↓ | 4.595405 | 4.393579 | 4.496330 | 6.924813 |
+| 逐图DeltaE P95均值↓ | 8.165957 | 7.792339 | 7.831748 | 12.660655 |
+| 亮度MAE↓ | 4.458091 | 4.287994 | 4.455134 | 6.323792 |
+| 饱和度MAE↓ | 0.037685 | 0.035325 | 0.033742 | 0.068297 |
+| 色相误差↓ / 度 | 11.926284 | 10.831856 | 11.346907 | 24.608742 |
+| LPIPS↓ | 0.324441 | 0.320581 | 0.313367 | 0.380104 |
+
+可提交的轻量证据：[完整逐图CSV](assets/enhancement/full1000_20261024/metrics.csv)、[完整精度summary](assets/enhancement/full1000_20261024/summary.json)、[实验绑定](assets/enhancement/full1000_20261024/binding.json)、[云端封存receipt](assets/enhancement/full1000_20261024/verification.json)、[本机独立复核receipt](assets/enhancement/full1000_20261024/local_verification.json)。原生924张展示图与逐图JSON备份于本机`outputs/sied1000_20261024/evaluation1000_native/`；约86GiB可再生基础缓存不下载本机。
+
+独立复核未调用评价程序的`summarize`：本机用标准库CSV/JSON解析、`statistics.fmean`复算全部8项均值（误差阈值1e-12），校验source与三个split的manifest SHA、key顺序、split-local索引与seed。76test的每个原始CSV字段（包括指标、种子、耗时与路径）与昨日封存文件逐字一致；新924行的JSON/CSV字段相符，924张PNG的SHA全部一致。CSV SHA256为`3b005a7a76b0b46629ce56196b126e1b84bdbac177f261f3314c776af85d6691`。
+
+这仍未达到独立测试30dB目标。不能拿包含832训练图的26.55dB包装成“测试已提高到26.55”；也不能把新val与昨日val约0.000036dB的混合GPU数值差异当成算法收益。后续LUT/TLC研究与本固定基线分开报告，绝不回写此CSV或昨日76test。
+
+Mac已接上AC电源并在充电（21:54复查），此前电量风险暂解除。云端第一组研究已开始，第二组仍等待；所有授权研究和新产物备份核验完成前不关闭37497。
 
 ## 收尾要求
 

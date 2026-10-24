@@ -1,2 +1,3 @@
 # Experiment CSV bytes are bound by SHA256 receipts: preserve original CRLF.
 reports/assets/enhancement/sprint_20261024/**/*.csv -text whitespace=trailing-space,space-before-tab,cr-at-eol
+reports/assets/enhancement/full1000_20261024/*.csv -text whitespace=trailing-space,space-before-tab,cr-at-eol

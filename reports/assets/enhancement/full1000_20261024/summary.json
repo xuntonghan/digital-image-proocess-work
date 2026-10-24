@@ -1,0 +1,52 @@
+{
+  "purpose": "descriptive_full_dataset_not_generalization",
+  "binding_sha256": "33012fff36bf5fb1d926095d4542d808b5cf0a0b4607abef2f11534db7654645",
+  "overall": {
+    "count": 1000,
+    "psnr_mean": 26.554489664752047,
+    "ssim_mean": 0.8435530973672867,
+    "delta_e2000_mean": 4.595405403388102,
+    "delta_e2000_p95_mean": 8.165956889867783,
+    "lightness_mae_mean": 4.458091252505779,
+    "saturation_mae_mean": 0.037684849431738256,
+    "hue_error_degrees_mean": 11.926284229756048,
+    "lpips_mean": 0.3244408456012607
+  },
+  "splits": {
+    "train": {
+      "count": 832,
+      "psnr_mean": 26.843024370336057,
+      "ssim_mean": 0.8474219920686804,
+      "delta_e2000_mean": 4.393578503399272,
+      "delta_e2000_p95_mean": 7.792339278528323,
+      "lightness_mae_mean": 4.287993666142798,
+      "saturation_mae_mean": 0.03532459141682081,
+      "hue_error_degrees_mean": 10.831856197397261,
+      "lpips_mean": 0.32058071586876535
+    },
+    "val": {
+      "count": 92,
+      "psnr_mean": 26.63693108640604,
+      "ssim_mean": 0.8562718798284945,
+      "delta_e2000_mean": 4.496329591376776,
+      "delta_e2000_p95_mean": 7.8317480268685715,
+      "lightness_mae_mean": 4.455134238885797,
+      "saturation_mae_mean": 0.033741672189258366,
+      "hue_error_degrees_mean": 11.346907098615006,
+      "lpips_mean": 0.3133673859031304
+    },
+    "test": {
+      "count": 76,
+      "psnr_mean": 23.295996430040688,
+      "ssim_mean": 0.7858024608147772,
+      "delta_e2000_mean": 6.924812712542685,
+      "delta_e2000_p95_mean": 12.660655153425116,
+      "lightness_mae_mean": 6.323791740756286,
+      "saturation_mae_mean": 0.06829678330962595,
+      "hue_error_degrees_mean": 24.608742374328227,
+      "lpips_mean": 0.38010382230736706
+    }
+  },
+  "interpretation": "Includes 832 refiner-training and 92 base-pretraining images. NOT an independent test score. Reused 76 sealed test rows unchanged.",
+  "precision": "Metrics use float RGB before PNG quantization at native 3840x2160"
+}

@@ -1,0 +1,19 @@
+{
+  "verified": true,
+  "verification_location": "local Mac; independently parsed CSV/JSON and recomputed with statistics.fmean",
+  "unique_count": 1000,
+  "split_counts": {"train": 832, "val": 92, "test": 76},
+  "all_eight_means_recomputed": true,
+  "mean_absolute_and_relative_tolerance": 1e-12,
+  "all_source_and_split_manifest_hashes_match": true,
+  "split_keys_order_indices_and_new_inference_seeds_verified": true,
+  "sealed_test_all_original_fields_identical": true,
+  "new_json_rows_match_csv": 924,
+  "new_png_sha256_verified": 924,
+  "binding_sha256": "33012fff36bf5fb1d926095d4542d808b5cf0a0b4607abef2f11534db7654645",
+  "summary_sha256": "07fab3f96fc7b6428aa9c70f3b814ae55b154b047e2ee4f9dc9ae74d5b8b28d0",
+  "metrics_sha256": "3b005a7a76b0b46629ce56196b126e1b84bdbac177f261f3314c776af85d6691",
+  "test_csv_sha256": "97f8b2cf3acb1901c22dfa38b2f2a5e418595abb682f826c5aa80a56769cc82a",
+  "regenerable_float_and_thumbnail_caches_downloaded": false,
+  "caveat": "Descriptive full-set baseline, not independent generalization. Train and val exposed during training/pretraining; test reused unchanged. New research is separate and not yet finalized."
+}
