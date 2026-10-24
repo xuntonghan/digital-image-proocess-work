@@ -1,0 +1,21 @@
+{
+  "verified": true,
+  "verification_date": "2026-10-24 Asia/Taipei",
+  "count": 92,
+  "all_eight_means_independently_recomputed": true,
+  "manifest_keys_and_order_match": true,
+  "all_92_pngs_and_nonregenerable_experiment_files_rsync_checksum_match": true,
+  "checkpoint_sha256": "2cfd72ec81addd4a091ea199c613c4bc47e27e562a098971db7302510a1db609",
+  "selected_step": 1250,
+  "test_evaluated": false,
+  "full_validation_gate_independently_passed": true,
+  "psnr_gain": 0.20604898953713047,
+  "ssim_delta": -0.000011317755865047907,
+  "delta_e_p95_relative_change": 0.002512534936366828,
+  "psnr_improved_images": 50,
+  "psnr_decreased_images": 42,
+  "psnr_delta_median": 0.31827063826584734,
+  "psnr_delta_min": -1.104357346782642,
+  "psnr_delta_max": 2.1144456542356735,
+  "caveat": "Internal validation exposed to official base pretraining. Not all metrics or images improve; not a new independent test score or replacement of the sealed final model."
+}

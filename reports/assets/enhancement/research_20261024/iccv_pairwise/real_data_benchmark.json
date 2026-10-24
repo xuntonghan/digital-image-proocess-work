@@ -1,0 +1,34 @@
+{
+  "global_pinned_loader": {
+    "mean_data_and_step_seconds": 0.03469200129620731,
+    "median_data_and_step_seconds": 0.03231007978320122,
+    "measured_steps": 16,
+    "warmup_steps": 4,
+    "parameters": 63324,
+    "finite_parameters": true
+  },
+  "global_resident": {
+    "mean_data_and_step_seconds": 0.012995589524507523,
+    "median_data_and_step_seconds": 0.012809161096811295,
+    "measured_steps": 16,
+    "warmup_steps": 4,
+    "parameters": 63324,
+    "finite_parameters": true
+  },
+  "factorized_resident": {
+    "mean_data_and_step_seconds": 0.013023026054725051,
+    "median_data_and_step_seconds": 0.013918250799179077,
+    "measured_steps": 16,
+    "warmup_steps": 4,
+    "parameters": 22779,
+    "finite_parameters": true
+  },
+  "loader_vs_resident": {
+    "first_prediction_max_abs_difference": 0.0,
+    "final_parameter_max_abs_difference": 1.0766088962554932e-06,
+    "resident_preload_seconds": 2.448222242295742,
+    "resident_bytes": 2944401408,
+    "caveat": "Real train batches; short benchmark excludes native validation and preload amortization"
+  },
+  "same_model_measured_throughput_ratio": 2.669521165683477
+}

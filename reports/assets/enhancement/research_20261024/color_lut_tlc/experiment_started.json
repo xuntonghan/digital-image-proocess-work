@@ -1,0 +1,34 @@
+{
+  "started_unix": 1792850051.7119267,
+  "max_steps": 1500,
+  "training_images": 832,
+  "pilot_keys": [
+    "281",
+    "540",
+    "688",
+    "920",
+    "386",
+    "501",
+    "175",
+    "696",
+    "182",
+    "52",
+    "53",
+    "960"
+  ],
+  "seed": 20261024,
+  "baseline_binding_sha256": "33012fff36bf5fb1d926095d4542d808b5cf0a0b4607abef2f11534db7654645",
+  "refiner_sha256": "337acc11705e8ae1f170d22263161b210a0ed0d4272a647db4e82ccbb611f2d8",
+  "test_used": false,
+  "max_training_wall_minutes": 45,
+  "lut": "17 vertices, 3 bases, bounded 0.12 residual, area512 training",
+  "code_sha256": {
+    "cloud/research_sied_color.py": "9779f1244d441c460c3dab5cff086bd0c219cea82590a6842da8193af006fe9a",
+    "src/dip_course/enhancement/adaptive_lut.py": "af920b8d6d94f97ea148ba9024c9ab1fbd71f6181c3b9f34f3e48717af1cdeba",
+    "src/dip_course/enhancement/efficiency.py": "86d8930cc5250f2228c9e468ced832826de5d47d9511ba78b94f44362a09b243"
+  },
+  "torch": "2.8.0+cu128",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "precision": "baseline FP16 unchanged; LUT FP32; fusedAdamW",
+  "caveat": "Internal val was seen by the official base pretraining; not unbiased generalization"
+}

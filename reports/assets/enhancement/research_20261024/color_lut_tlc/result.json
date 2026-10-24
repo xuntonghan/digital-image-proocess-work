@@ -1,0 +1,30 @@
+{
+  "tlc512_pilot_passed": false,
+  "lut_best_step": 1250,
+  "training_steps": 1500,
+  "test_evaluated": false,
+  "baseline_full_val": {
+    "count": 92,
+    "psnr_mean": 26.63693108640604,
+    "ssim_mean": 0.8562718798284945,
+    "delta_e2000_mean": 4.496329591376776,
+    "delta_e2000_p95_mean": 7.8317480268685715,
+    "lightness_mae_mean": 4.455134238885797,
+    "saturation_mae_mean": 0.033741672189258366,
+    "hue_error_degrees_mean": 11.346907098615006,
+    "lpips_mean": 0.3133673859031304
+  },
+  "best_lut_sha256": "2cfd72ec81addd4a091ea199c613c4bc47e27e562a098971db7302510a1db609",
+  "lut_full_val": {
+    "count": 92,
+    "psnr_mean": 26.84298007594317,
+    "ssim_mean": 0.8562605620726295,
+    "delta_e2000_mean": 4.4730772902137845,
+    "delta_e2000_p95_mean": 7.8514255673989,
+    "lightness_mae_mean": 4.419811154837194,
+    "saturation_mae_mean": 0.033107693205871015,
+    "hue_error_degrees_mean": 11.199809099761511,
+    "lpips_mean": 0.31313677456067956
+  },
+  "lut_full_passed": true
+}
