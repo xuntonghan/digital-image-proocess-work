@@ -1,0 +1,64 @@
+{
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "torch": "2.8.0+cu128",
+  "purpose": "Synthetic structural forward/backward/optimizer only; excludes data/EMA/validation.",
+  "quality_caveat": "No PSNR improvement claim; layout/precision need real-image validation.",
+  "cases": [
+    {
+      "case": "nchw_fp16_default_adamw",
+      "batch_size": 1,
+      "rgb_crop": 512,
+      "measurement_steps": 20,
+      "successful_updates": 20,
+      "seconds_per_step_median": 0.12494497746229172,
+      "seconds_per_step_mean": 0.12213548496365548,
+      "images_per_second": 8.187628683814335,
+      "peak_allocated_gib": 5.323808193206787,
+      "initial_max_abs_vs_reference": 0.0,
+      "synthetic_final_mse": 0.006813477724790573,
+      "speedup_vs_baseline": 1.0
+    },
+    {
+      "case": "channels_last_fp16_default_adamw",
+      "batch_size": 1,
+      "rgb_crop": 512,
+      "measurement_steps": 20,
+      "successful_updates": 20,
+      "seconds_per_step_median": 0.12873406149446964,
+      "seconds_per_step_mean": 0.12908819131553173,
+      "images_per_second": 7.746641964761042,
+      "peak_allocated_gib": 5.326371669769287,
+      "initial_max_abs_vs_reference": 0.00018310546875,
+      "synthetic_final_mse": 0.0068135010078549385,
+      "speedup_vs_baseline": 0.9461398732058948
+    },
+    {
+      "case": "channels_last_fp16_fused_adamw",
+      "batch_size": 1,
+      "rgb_crop": 512,
+      "measurement_steps": 20,
+      "successful_updates": 20,
+      "seconds_per_step_median": 0.1042568925768137,
+      "seconds_per_step_mean": 0.10453497003763915,
+      "images_per_second": 9.566176750612138,
+      "peak_allocated_gib": 5.326549530029297,
+      "initial_max_abs_vs_reference": 0.00018310546875,
+      "synthetic_final_mse": 0.006813408806920052,
+      "speedup_vs_baseline": 1.1683696366840592
+    },
+    {
+      "case": "channels_last_bf16_fused_adamw",
+      "batch_size": 1,
+      "rgb_crop": 512,
+      "measurement_steps": 20,
+      "successful_updates": 20,
+      "seconds_per_step_median": 0.10356706194579601,
+      "seconds_per_step_mean": 0.10145016331225634,
+      "images_per_second": 9.85705658178264,
+      "peak_allocated_gib": 5.3265485763549805,
+      "initial_max_abs_vs_reference": 0.00115966796875,
+      "synthetic_final_mse": 0.0068208142183721066,
+      "speedup_vs_baseline": 1.2038963859302148
+    }
+  ]
+}
