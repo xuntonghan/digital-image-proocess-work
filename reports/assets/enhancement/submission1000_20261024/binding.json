@@ -1,0 +1,151 @@
+{
+  "schema": 1,
+  "purpose": "course_submission_1000_image_arithmetic_means",
+  "interpretation": "Includes 832 training and 92 official-pretraining-exposed validation images; NOT an independent generalization score.",
+  "baseline_binding_sha256": "33012fff36bf5fb1d926095d4542d808b5cf0a0b4607abef2f11534db7654645",
+  "baseline_metrics_sha256": "3b005a7a76b0b46629ce56196b126e1b84bdbac177f261f3314c776af85d6691",
+  "baseline_summary_sha256": "07fab3f96fc7b6428aa9c70f3b814ae55b154b047e2ee4f9dc9ae74d5b8b28d0",
+  "sealed_test_csv_sha256": "97f8b2cf3acb1901c22dfa38b2f2a5e418595abb682f826c5aa80a56769cc82a",
+  "selection": {
+    "selected": {
+      "name": "adaptive_color_lut",
+      "checkpoint": "research/color_lut_tlc/best_lut.pt",
+      "checkpoint_sha256": "2cfd72ec81addd4a091ea199c613c4bc47e27e562a098971db7302510a1db609",
+      "full_val": {
+        "count": 92,
+        "psnr_mean": 26.84298007594317,
+        "ssim_mean": 0.8562605620726295,
+        "delta_e2000_mean": 4.4730772902137845,
+        "delta_e2000_p95_mean": 7.8514255673989,
+        "lightness_mae_mean": 4.419811154837194,
+        "saturation_mae_mean": 0.033107693205871015,
+        "hue_error_degrees_mean": 11.199809099761511,
+        "lpips_mean": 0.31313677456067956
+      }
+    },
+    "candidates": [
+      {
+        "name": "baseline",
+        "checkpoint": null,
+        "checkpoint_sha256": null,
+        "full_val": {
+          "count": 92,
+          "psnr_mean": 26.63693108640604,
+          "ssim_mean": 0.8562718798284945,
+          "delta_e2000_mean": 4.496329591376776,
+          "delta_e2000_p95_mean": 7.8317480268685715,
+          "lightness_mae_mean": 4.455134238885797,
+          "saturation_mae_mean": 0.033741672189258366,
+          "hue_error_degrees_mean": 11.346907098615006,
+          "lpips_mean": 0.3133673859031304
+        }
+      },
+      {
+        "name": "adaptive_color_lut",
+        "checkpoint": "research/color_lut_tlc/best_lut.pt",
+        "checkpoint_sha256": "2cfd72ec81addd4a091ea199c613c4bc47e27e562a098971db7302510a1db609",
+        "full_val": {
+          "count": 92,
+          "psnr_mean": 26.84298007594317,
+          "ssim_mean": 0.8562605620726295,
+          "delta_e2000_mean": 4.4730772902137845,
+          "delta_e2000_p95_mean": 7.8514255673989,
+          "lightness_mae_mean": 4.419811154837194,
+          "saturation_mae_mean": 0.033107693205871015,
+          "hue_error_degrees_mean": 11.199809099761511,
+          "lpips_mean": 0.31313677456067956
+        }
+      },
+      {
+        "name": "global3d",
+        "checkpoint": "research/iccv_pairwise/global3d/best.pt",
+        "checkpoint_sha256": "47580a832b66a43bcedf6276678f11a3a1969b47d15c9e2568bad1238f472323",
+        "full_val": {
+          "count": 92,
+          "psnr_mean": 26.799789263829947,
+          "ssim_mean": 0.8563056458597598,
+          "delta_e2000_mean": 4.475648837245575,
+          "delta_e2000_p95_mean": 7.847208787565646,
+          "lightness_mae_mean": 4.424133598804474,
+          "saturation_mae_mean": 0.03323074520322616,
+          "hue_error_degrees_mean": 11.206709628922619,
+          "lpips_mean": 0.31315882406804874
+        }
+      },
+      {
+        "name": "pairwise_rank4",
+        "checkpoint": "research/iccv_pairwise/pairwise_rank4/best.pt",
+        "checkpoint_sha256": "7ab0c534f3b353adf919d35529679d1d27874a98d5bbdf0b9697c6f7cbfebda9",
+        "full_val": {
+          "count": 92,
+          "psnr_mean": 26.78292993789838,
+          "ssim_mean": 0.8561901812968047,
+          "delta_e2000_mean": 4.4935319937238685,
+          "delta_e2000_p95_mean": 7.852467205213464,
+          "lightness_mae_mean": 4.442063529854235,
+          "saturation_mae_mean": 0.03348334932335369,
+          "hue_error_degrees_mean": 11.268014795364484,
+          "lpips_mean": 0.31359196600058803
+        }
+      }
+    ],
+    "rule": "full 92-val safeguards; highest PSNR, SSIM breaks exact PSNR ties",
+    "test_or_overall_used_for_selection": false
+  },
+  "research_results_sha256": {
+    "first": "3da016065e44a8ba3b5838e760b9d9fa91daa7c575e5ee9033b8c1faabad1d2b",
+    "paired": "7412e9971ec0b1db073ef5e13f2131b5dbe68f95ef8cfc6336343afa5aa866c2"
+  },
+  "all_manifest_sha256": "d8631c12a21e85cbfc770ab1c6ebeb28090a5d63a29d36c15b66888eb8d3aa30",
+  "split_manifests_sha256": {
+    "train": "b5068639ac967d4e1cdd34893c9c0ba33393b9f73eff9ef1f7b8746bef792a01",
+    "val": "a17a96a26fa3dc8d1a63e3cdacd6c86b6ca17132cd8b6860a76a08595ff0968a",
+    "test": "bbb3561f320e2c37dc850f625e0efbdd8ca6a5e2943d09f711fba8f4a745f8a8"
+  },
+  "official_sha256": "40014f1f71dfdcd9a8969074097f675a54d2598aec26b183c0874bfcd5c26238",
+  "refiner_sha256": "337acc11705e8ae1f170d22263161b210a0ed0d4272a647db4e82ccbb611f2d8",
+  "protocol": {
+    "manifest": "/root/autodl-tmp/sied30/project/manifests/enhancement/canon_test.txt",
+    "manifest_sha256": "bbb3561f320e2c37dc850f625e0efbdd8ca6a5e2943d09f711fba8f4a745f8a8",
+    "count": 76,
+    "official_checkpoint": "/root/autodl-tmp/sied30/checkpoints/official/canon_0.0001.pt",
+    "official_checkpoint_sha256": "40014f1f71dfdcd9a8969074097f675a54d2598aec26b183c0874bfcd5c26238",
+    "refiner_checkpoint": "/root/autodl-tmp/sied30/final/best.pt",
+    "refiner_checkpoint_sha256": "337acc11705e8ae1f170d22263161b210a0ed0d4272a647db4e82ccbb611f2d8",
+    "refiner_tile_size": 768,
+    "refiner_overlap": 96,
+    "seed": 3407,
+    "sampling_steps": 20,
+    "ensemble_size": 3,
+    "precision": "fp16",
+    "lpips": true
+  },
+  "seed_indexing": "original split-local index",
+  "primary_metrics": [
+    "psnr_mean",
+    "ssim_mean"
+  ],
+  "aggregation": "sum of 1000 per-image metrics / 1000; not PSNR of pooled MSE",
+  "prediction_metrics": "native 3840x2160 float RGB before PNG quantization",
+  "test_policy": "one final blind inference with the frozen selected pipeline; no test-based tuning",
+  "cache_policy": "hash-verified exact FP32 blind diffusion base for train/val only; fresh test base",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "packages": {
+    "torch": "2.8.0+cu128",
+    "torchvision": "0.23.0+cu128",
+    "numpy": "2.3.2",
+    "Pillow": "11.3.0",
+    "scikit-image": "0.26.0",
+    "lpips": "0.1.4"
+  },
+  "code_sha256": {
+    "cloud/finalize_sied_submission1000.py": "33a749d135e0637104dddc63367220e44dd80757e9cd2522e7796f4a02db838d",
+    "cloud/evaluate_sied1000.py": "c01208b9eb06018c8cdf8eaf731ae97c9726a764ebb1accb6dac4f17f0c66df2",
+    "src/dip_course/cli/infer_official_sied.py": "ec12cef0ded0f29fe3ad9598a47ecf3557c456f97ccfd2aeb2a6499f2a34ddac",
+    "src/dip_course/enhancement/refiner.py": "9a37005962c4f1c8799c3969e415322d0a2af2891b493e62768c82623dc26669",
+    "src/dip_course/enhancement/adaptive_lut.py": "af920b8d6d94f97ea148ba9024c9ab1fbd71f6181c3b9f34f3e48717af1cdeba",
+    "src/dip_course/enhancement/factorized_lut.py": "ef8f2c5f289968b2bf95e87585e70864b7ee0256c69141946cf6241739c9f25b",
+    "src/dip_course/io.py": "05f79e0134f99b0e62110f1f6c4618c0fb22e440685ef9ea081721d3632a1ebc",
+    "src/dip_course/metrics.py": "84cc25742db56989fdb3256e3beb6bddeee05c1431a4cbf00176a6ff0e4c321f"
+  }
+}

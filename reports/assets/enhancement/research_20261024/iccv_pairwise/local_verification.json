@@ -1,0 +1,36 @@
+{
+  "verified": true,
+  "verification_date": "2026-10-24 Asia/Taipei",
+  "all_research_arms_complete": true,
+  "test_evaluated": false,
+  "images_per_arm": 92,
+  "all_eight_means_independently_recomputed": true,
+  "manifest_keys_and_order_match": true,
+  "predeclared_full_validation_gates_independently_passed": true,
+  "all_nonregenerable_paired_research_files_and_184_pngs_rsync_checksum_match": true,
+  "global3d": {
+    "selected_step": 750,
+    "training_steps": 1000,
+    "checkpoint_sha256": "47580a832b66a43bcedf6276678f11a3a1969b47d15c9e2568bad1238f472323",
+    "psnr_mean": 26.799789263829947,
+    "ssim_mean": 0.8563056458597598,
+    "psnr_improved_images": 51,
+    "psnr_decreased_images": 41
+  },
+  "pairwise_rank4": {
+    "selected_step": 1000,
+    "training_steps": 1000,
+    "checkpoint_sha256": "7ab0c534f3b353adf919d35529679d1d27874a98d5bbdf0b9697c6f7cbfebda9",
+    "psnr_mean": 26.78292993789838,
+    "ssim_mean": 0.8561901812968047,
+    "psnr_improved_images": 50,
+    "psnr_decreased_images": 42
+  },
+  "matched_rank4_minus_global_psnr": -0.01685932593156636,
+  "matched_rank4_update_time_divided_by_global": 1.1081120027792566,
+  "final_submission_pipeline_frozen_before_1000_scoring": true,
+  "selected_final_pipeline": "adaptive_color_lut from first 1500-step-budget research, selected step1250",
+  "submission_binding_sha256": "1ba97465597da9fd7810aa422cc74aef3bc3e993472575e28a1dd30ba7e48052",
+  "final_1000_completed_at_this_verification": false,
+  "caveat": "Internal validation was exposed to official base pretraining. These are 92-image validation statistics, not the final 1000-image submission averages."
+}

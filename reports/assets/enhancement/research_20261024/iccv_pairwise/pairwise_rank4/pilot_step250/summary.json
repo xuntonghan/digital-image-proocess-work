@@ -1,0 +1,11 @@
+{
+  "count": 12,
+  "psnr_mean": 27.052162698395602,
+  "ssim_mean": 0.8675548086563746,
+  "delta_e2000_mean": 4.76426862881364,
+  "delta_e2000_p95_mean": 7.670834978421529,
+  "lightness_mae_mean": 4.673730184634526,
+  "saturation_mae_mean": 0.032729620890071,
+  "hue_error_degrees_mean": 7.684142668964644,
+  "lpips_mean": 0.3106660768389702
+}

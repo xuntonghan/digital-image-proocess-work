@@ -1,0 +1,60 @@
+{
+  "state": "complete",
+  "test_evaluated": false,
+  "baseline_binding_sha256": "33012fff36bf5fb1d926095d4542d808b5cf0a0b4607abef2f11534db7654645",
+  "baseline_full_val": {
+    "count": 92,
+    "psnr_mean": 26.63693108640604,
+    "ssim_mean": 0.8562718798284945,
+    "delta_e2000_mean": 4.496329591376776,
+    "delta_e2000_p95_mean": 7.8317480268685715,
+    "lightness_mae_mean": 4.455134238885797,
+    "saturation_mae_mean": 0.033741672189258366,
+    "hue_error_degrees_mean": 11.346907098615006,
+    "lpips_mean": 0.3133673859031304
+  },
+  "arms": {
+    "global3d": {
+      "steps": 1000,
+      "best_step": 750,
+      "training_including_validation_seconds": 251.85396302863955,
+      "mean_data_and_step_seconds": 0.012390573509037495,
+      "parameters": 63324,
+      "full_val": {
+        "count": 92,
+        "psnr_mean": 26.799789263829947,
+        "ssim_mean": 0.8563056458597598,
+        "delta_e2000_mean": 4.475648837245575,
+        "delta_e2000_p95_mean": 7.847208787565646,
+        "lightness_mae_mean": 4.424133598804474,
+        "saturation_mae_mean": 0.03323074520322616,
+        "hue_error_degrees_mean": 11.206709628922619,
+        "lpips_mean": 0.31315882406804874
+      },
+      "full_passed": true,
+      "checkpoint_sha256": "47580a832b66a43bcedf6276678f11a3a1969b47d15c9e2568bad1238f472323"
+    },
+    "pairwise_rank4": {
+      "steps": 1000,
+      "best_step": 1000,
+      "training_including_validation_seconds": 252.78675075620413,
+      "mean_data_and_step_seconds": 0.01373014322668314,
+      "parameters": 22779,
+      "full_val": {
+        "count": 92,
+        "psnr_mean": 26.78292993789838,
+        "ssim_mean": 0.8561901812968047,
+        "delta_e2000_mean": 4.4935319937238685,
+        "delta_e2000_p95_mean": 7.852467205213464,
+        "lightness_mae_mean": 4.442063529854235,
+        "saturation_mae_mean": 0.03348334932335369,
+        "hue_error_degrees_mean": 11.268014795364484,
+        "lpips_mean": 0.31359196600058803
+      },
+      "full_passed": true,
+      "checkpoint_sha256": "7ab0c534f3b353adf919d35529679d1d27874a98d5bbdf0b9697c6f7cbfebda9"
+    }
+  },
+  "best_paired_candidate": "global3d",
+  "sealed_baseline_replaced": false
+}
