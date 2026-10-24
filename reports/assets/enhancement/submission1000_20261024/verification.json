@@ -1,0 +1,8 @@
+{
+  "binding_sha256": "1ba97465597da9fd7810aa422cc74aef3bc3e993472575e28a1dd30ba7e48052",
+  "metrics_sha256": "a99994aeeeae9f4c86da9074e776525f489b23d7cb79f2ef1800f77e43bc5041",
+  "summary_sha256": "1268d7d1c5c821ab7e45df4d12cabafdb290d4200678ede39c804e43ceb4e9a2",
+  "unique_count": 1000,
+  "historical_baseline_csv_unchanged": true,
+  "historical_test_csv_unchanged": true
+}

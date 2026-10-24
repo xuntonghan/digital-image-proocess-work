@@ -1,0 +1,69 @@
+{
+  "purpose": "course_submission_1000_image_arithmetic_means",
+  "binding_sha256": "1ba97465597da9fd7810aa422cc74aef3bc3e993472575e28a1dd30ba7e48052",
+  "primary_metrics": [
+    "psnr_mean",
+    "ssim_mean"
+  ],
+  "overall": {
+    "count": 1000,
+    "psnr_mean": 26.707356438407885,
+    "ssim_mean": 0.8435157579481601,
+    "delta_e2000_mean": 4.5753878543685405,
+    "delta_e2000_p95_mean": 8.16935391163826,
+    "lightness_mae_mean": 4.433653626739979,
+    "saturation_mae_mean": 0.037258740944322195,
+    "hue_error_degrees_mean": 11.887846645748445,
+    "lpips_mean": 0.3243558964841068
+  },
+  "splits": {
+    "train": {
+      "count": 832,
+      "psnr_mean": 27.011915311087588,
+      "ssim_mean": 0.8474396014442811,
+      "delta_e2000_mean": 4.3627467730164975,
+      "delta_e2000_p95_mean": 7.7816513025989895,
+      "lightness_mae_mean": 4.249130374680345,
+      "saturation_mae_mean": 0.03495672291375321,
+      "hue_error_degrees_mean": 10.778888712513584,
+      "lpips_mean": 0.3204456016089982
+    },
+    "val": {
+      "count": 92,
+      "psnr_mean": 26.84298007594317,
+      "ssim_mean": 0.8562605620726295,
+      "delta_e2000_mean": 4.4730772902137845,
+      "delta_e2000_p95_mean": 7.8514255673989,
+      "lightness_mae_mean": 4.419811154837194,
+      "saturation_mae_mean": 0.033107693205871015,
+      "hue_error_degrees_mean": 11.199809099761511,
+      "lpips_mean": 0.31313677456067956
+    },
+    "test": {
+      "count": 76,
+      "psnr_mean": 23.209062271003162,
+      "ssim_mean": 0.7851320767873212,
+      "delta_e2000_mean": 7.027097743672978,
+      "delta_e2000_p95_mean": 12.798537837831597,
+      "lightness_mae_mean": 6.470454325801448,
+      "saturation_mae_mean": 0.0674847329623605,
+      "hue_error_degrees_mean": 24.860905259987955,
+      "lpips_mean": 0.3807443774452335
+    }
+  },
+  "baseline_overall": {
+    "count": 1000,
+    "psnr_mean": 26.554489664752047,
+    "ssim_mean": 0.8435530973672867,
+    "delta_e2000_mean": 4.595405403388102,
+    "delta_e2000_p95_mean": 8.165956889867783,
+    "lightness_mae_mean": 4.458091252505779,
+    "saturation_mae_mean": 0.037684849431738256,
+    "hue_error_degrees_mean": 11.926284229756048,
+    "lpips_mean": 0.3244408456012607
+  },
+  "interpretation": "Includes 832 training and 92 official-pretraining-exposed validation images; NOT an independent generalization score.",
+  "selected": "adaptive_color_lut",
+  "precision": "native 3840x2160 float RGB before PNG quantization",
+  "timing_caveat": "Cached train/val exclude diffusion generation; test includes it. Do not label this mixed time as end-to-end single-image latency."
+}
