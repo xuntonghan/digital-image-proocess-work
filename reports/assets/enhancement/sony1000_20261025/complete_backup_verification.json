@@ -1,0 +1,77 @@
+{
+  "verified": true,
+  "checked_at": "2026-10-25T19:39:29.885425+08:00",
+  "remote_and_local_file_count": 2304,
+  "remote_and_local_bytes": 5876058050,
+  "all_unique_files_sha256_match": true,
+  "final_png_count": 1000,
+  "native_dimensions_and_png_crc_verified": true,
+  "all_8_per_image_arithmetic_means_recomputed": true,
+  "single_model_binding_and_original_seeds_verified": true,
+  "three_train_raw_reproduction_exact": true,
+  "six_comparison_groups_and_48_images_verified": true,
+  "frozen_binding_sha256": "93ec76aabd954190faf3496ae26511f683f48d9e36b977c1f106a9b60abdc7e0",
+  "sony_final_model_sha256": "13bce17147874633d9b7618d75f8f6b201825d04dab43a89a9a5181ac36c5f01",
+  "cloud_backup_manifest_sha256": "d6d19a19f44e26981382caa4918167291617153d5a9522a583dda269f994fcef",
+  "statistics": {
+    "verified": true,
+    "count": 1000,
+    "splits": {
+      "train": {
+        "count": 822,
+        "psnr_mean": 26.864293724803137,
+        "ssim_mean": 0.8554363568333814,
+        "lpips_mean": 0.41547231242024407,
+        "delta_e2000_mean": 4.8574740785973205,
+        "delta_e2000_p95_mean": 8.842668163805403,
+        "lightness_mae_mean": 4.215060627300954,
+        "saturation_mae_mean": 0.05217218133813527,
+        "hue_error_degrees_mean": 17.334433574681153
+      },
+      "val": {
+        "count": 91,
+        "psnr_mean": 27.00013386711808,
+        "ssim_mean": 0.8533573471582853,
+        "lpips_mean": 0.3977747873945551,
+        "delta_e2000_mean": 4.691610091350634,
+        "delta_e2000_p95_mean": 8.425323255769499,
+        "lightness_mae_mean": 3.9992687106132507,
+        "saturation_mae_mean": 0.05200516231931173,
+        "hue_error_degrees_mean": 17.46984875904309
+      },
+      "test": {
+        "count": 87,
+        "psnr_mean": 25.084786861095626,
+        "ssim_mean": 0.8327788381740965,
+        "lpips_mean": 0.4162735718077627,
+        "delta_e2000_mean": 5.956916911914362,
+        "delta_e2000_p95_mean": 11.47886072082081,
+        "lightness_mae_mean": 4.847036504197395,
+        "saturation_mae_mean": 0.07655936824264882,
+        "hue_error_degrees_mean": 23.822087927859307
+      }
+    },
+    "overall": {
+      "count": 1000,
+      "psnr_mean": 26.721838080611242,
+      "ssim_mean": 0.8532759628295898,
+      "lpips_mean": 0.4139315472096205,
+      "delta_e2000_mean": 4.9380319822564545,
+      "delta_e2000_p95_mean": 9.034038529634476,
+      "lightness_mae_mean": 4.250405464172363,
+      "saturation_mae_mean": 0.054278667868115006,
+      "hue_error_degrees_mean": 17.91118228518459
+    },
+    "official_baseline_overall": {
+      "count": 1000,
+      "psnr_mean": 26.293513513261832,
+      "ssim_mean": 0.8523840713500976,
+      "lpips_mean": 0.4151367082297802,
+      "delta_e2000_mean": 5.152938707964684,
+      "delta_e2000_p95_mean": 9.265305627703667,
+      "lightness_mae_mean": 4.577381716012955,
+      "saturation_mae_mean": 0.054523587323725226,
+      "hue_error_degrees_mean": 18.04123386593243
+    }
+  }
+}

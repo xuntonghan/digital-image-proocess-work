@@ -145,6 +145,7 @@ GT-Mean追加训练未达到预设收益门槛，最终模型保留原1000步Son
     notes = (backup/'提交说明.txt').read_text().replace('先运行其中verify_weights.py核对5个文件。', '运行其中verify_weights.py核对全部附件权重，原Canon的5个文件保留。')
     notes += f"\nSony补充版本\nSony全部1000张已完成，PSNR为{statistics['overall']['psnr_mean']:.9f}，SSIM为{statistics['overall']['ssim_mean']:.12f}。\n"
     notes += '主指标均为原生浮点逐图算术平均。含822张训练和91张官方预训练暴露验证图，87张留出测试单列。\n'
+    notes += 'Sony全部1000张原生PNG已在本机outputs/sony1000_20261025/submission1000_native/images备份。提交包保留完整逐图指标与复现入口，大型原生图不重复打入附件。\n'
     notes += '代码保留Canon固定版本，另加Sony源码版本'+commit+'。原其他项目未提交改动未进入代码包。\n'
     notes += '自训增强权重增加Sony最终色彩表和两个未采用的损失对照。官方Sony2.6GB权重从作者处另行下载。\n'
     added['完整复现命令.txt'] = commands.encode()

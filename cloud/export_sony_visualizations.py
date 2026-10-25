@@ -44,19 +44,26 @@ def to_pil(array) -> Image.Image:
     return Image.fromarray(np.clip(np.rint(array * 255), 0, 255).astype(np.uint8))
 
 
-def export(root: Path, output: Path | None = None) -> dict:
-    final = root / 'submission1000_native'
-    checked = verify(final)  # Mandatory before reading or exporting any held-out reference.
+def raw_display_views(path: Path, spec):
     from dip_course.enhancement.classical import (
         auto_tone_map_rgb,
         demosaic_rggb,
         tone_map_rgb,
     )
+    from dip_course.io import normalize_raw, read_raw_uint16
+    linear = demosaic_rggb(normalize_raw(read_raw_uint16(path, spec), spec))
+    preview = tone_map_rgb(linear, exposure=1, gamma=2.2, white_balance=(1, 1, 1))
+    isp, parameters = auto_tone_map_rgb(linear, gamma=1.8, percentile=99, target=0.9,
+                                       white_balance_power=1)
+    return preview, isp, parameters
+
+
+def export(root: Path, output: Path | None = None) -> dict:
+    final = root / 'submission1000_native'
+    checked = verify(final)  # Mandatory before reading or exporting any held-out reference.
     from dip_course.io import (
         RawSpec,
-        normalize_raw,
         read_pair_manifest,
-        read_raw_uint16,
     )
 
     output = output or root / 'report_assets'
@@ -84,10 +91,7 @@ def export(root: Path, output: Path | None = None) -> dict:
         with Image.open(official_path) as im:
             if im.size != (3840, 2160):
                 raise ValueError('The official display must be native resolution')
-        linear = demosaic_rggb(normalize_raw(read_raw_uint16(record.low_raw, RawSpec())))
-        preview = tone_map_rgb(linear, exposure=1, gamma=2.2, white_balance=(1, 1, 1))
-        isp, parameters = auto_tone_map_rgb(linear, gamma=1.8, percentile=99, target=0.9,
-                                           white_balance_power=1)
+        preview, isp, parameters = raw_display_views(record.low_raw, RawSpec())
         views = {}
         for label, array in [('raw', preview), ('isp', isp)]:
             views[label] = save_display(to_pil(array), output / f'sony_case_{key}_{label}.jpg')

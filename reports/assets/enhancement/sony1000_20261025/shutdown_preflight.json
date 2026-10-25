@@ -1,0 +1,18 @@
+{
+  "checked_at": "2026-10-25T19:40:52.959055+08:00",
+  "supervisor": {
+    "pid": 1183,
+    "args": [
+      "/bin/supervisord",
+      "-c",
+      "/init/supervisor/supervisor.ini"
+    ],
+    "parent_pid": 1,
+    "start_ticks": "1970084578"
+  },
+  "gpu_processes": [],
+  "sony_processes": [],
+  "instance": "connect.nmb1.seetacloud.com:26592",
+  "retains_instance_disk": true,
+  "trash_cleanup_wrapper_used": false
+}

@@ -1,0 +1,14 @@
+{
+  "unique_count": 1000,
+  "split_counts": {
+    "train": 822,
+    "val": 91,
+    "test": 87
+  },
+  "binding_sha256": "93ec76aabd954190faf3496ae26511f683f48d9e36b977c1f106a9b60abdc7e0",
+  "metrics_sha256": "3dbad15d8c4b0c0eb54694aa4cd49e32b4303127dc5783da68bb4ca7e2260177",
+  "baseline_metrics_sha256": "aad69a67ad43ed28ce23ea9ed6c3bfb41374d3ea7450a700d3a8021147da7cf3",
+  "summary_sha256": "603a2425ccec718f23526305d3836adbb040885a3fd89579604958aaa7f5927e",
+  "selection_sha256": "5184105af5557ca14a0ba5fc4a82ef07f3ee52210c2ee8588f122299fc76400b",
+  "execution_receipt_sha256": "a61449750ebe7d2d9c1c2cd83fe12ba6d31b4515194f02ff2faae5dd264b241e"
+}

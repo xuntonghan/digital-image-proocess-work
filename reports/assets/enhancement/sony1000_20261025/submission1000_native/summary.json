@@ -1,0 +1,73 @@
+{
+  "camera": "sony",
+  "count": 1000,
+  "binding_sha256": "93ec76aabd954190faf3496ae26511f683f48d9e36b977c1f106a9b60abdc7e0",
+  "primary_metrics": [
+    "psnr_mean",
+    "ssim_mean"
+  ],
+  "overall": {
+    "count": 1000,
+    "psnr_mean": 26.721838080611242,
+    "ssim_mean": 0.8532759628295898,
+    "delta_e2000_mean": 4.9380319822564545,
+    "delta_e2000_p95_mean": 9.034038529634476,
+    "lightness_mae_mean": 4.250405464172363,
+    "saturation_mae_mean": 0.054278667868115006,
+    "hue_error_degrees_mean": 17.91118228518459,
+    "lpips_mean": 0.4139315472096205
+  },
+  "splits": {
+    "train": {
+      "count": 822,
+      "psnr_mean": 26.864293724803137,
+      "ssim_mean": 0.8554363568333814,
+      "delta_e2000_mean": 4.8574740785973205,
+      "delta_e2000_p95_mean": 8.842668163805403,
+      "lightness_mae_mean": 4.215060627300954,
+      "saturation_mae_mean": 0.05217218133813527,
+      "hue_error_degrees_mean": 17.334433574681153,
+      "lpips_mean": 0.41547231242024407
+    },
+    "val": {
+      "count": 91,
+      "psnr_mean": 27.00013386711808,
+      "ssim_mean": 0.8533573471582853,
+      "delta_e2000_mean": 4.691610091350634,
+      "delta_e2000_p95_mean": 8.425323255769499,
+      "lightness_mae_mean": 3.9992687106132507,
+      "saturation_mae_mean": 0.05200516231931173,
+      "hue_error_degrees_mean": 17.46984875904309,
+      "lpips_mean": 0.3977747873945551
+    },
+    "test": {
+      "count": 87,
+      "psnr_mean": 25.084786861095626,
+      "ssim_mean": 0.8327788381740965,
+      "delta_e2000_mean": 5.956916911914362,
+      "delta_e2000_p95_mean": 11.47886072082081,
+      "lightness_mae_mean": 4.847036504197395,
+      "saturation_mae_mean": 0.07655936824264882,
+      "hue_error_degrees_mean": 23.822087927859307,
+      "lpips_mean": 0.4162735718077627
+    }
+  },
+  "official_baseline_overall": {
+    "count": 1000,
+    "psnr_mean": 26.293513513261832,
+    "ssim_mean": 0.8523840713500976,
+    "delta_e2000_mean": 5.152938707964684,
+    "delta_e2000_p95_mean": 9.265305627703667,
+    "lightness_mae_mean": 4.577381716012955,
+    "saturation_mae_mean": 0.054523587323725226,
+    "hue_error_degrees_mean": 18.04123386593243,
+    "lpips_mean": 0.4151367082297802
+  },
+  "selected": {
+    "name": "official_sony_sied_plus_sony_lut",
+    "checkpoint": "research/sony_lut/best.pt",
+    "checkpoint_sha256": "13bce17147874633d9b7618d75f8f6b201825d04dab43a89a9a5181ac36c5f01"
+  },
+  "interpretation": "Overall includes 822 train and 91 official-pretraining-exposed val images; not independent generalization. Report the 87 test images separately.",
+  "execution_wall_seconds": 2448.5883384495974
+}

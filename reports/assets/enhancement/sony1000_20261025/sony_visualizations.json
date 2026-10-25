@@ -1,0 +1,1184 @@
+{
+  "camera": "sony",
+  "count": 6,
+  "selection": "fixed first six official test images",
+  "overall_1000": {
+    "count": 1000,
+    "psnr_mean": 26.721838080611242,
+    "ssim_mean": 0.8532759628295898,
+    "lpips_mean": 0.4139315472096205,
+    "delta_e2000_mean": 4.9380319822564545,
+    "delta_e2000_p95_mean": 9.034038529634476,
+    "lightness_mae_mean": 4.250405464172363,
+    "saturation_mae_mean": 0.054278667868115006,
+    "hue_error_degrees_mean": 17.91118228518459
+  },
+  "splits": {
+    "train": {
+      "count": 822,
+      "psnr_mean": 26.864293724803137,
+      "ssim_mean": 0.8554363568333814,
+      "lpips_mean": 0.41547231242024407,
+      "delta_e2000_mean": 4.8574740785973205,
+      "delta_e2000_p95_mean": 8.842668163805403,
+      "lightness_mae_mean": 4.215060627300954,
+      "saturation_mae_mean": 0.05217218133813527,
+      "hue_error_degrees_mean": 17.334433574681153
+    },
+    "val": {
+      "count": 91,
+      "psnr_mean": 27.00013386711808,
+      "ssim_mean": 0.8533573471582853,
+      "lpips_mean": 0.3977747873945551,
+      "delta_e2000_mean": 4.691610091350634,
+      "delta_e2000_p95_mean": 8.425323255769499,
+      "lightness_mae_mean": 3.9992687106132507,
+      "saturation_mae_mean": 0.05200516231931173,
+      "hue_error_degrees_mean": 17.46984875904309
+    },
+    "test": {
+      "count": 87,
+      "psnr_mean": 25.084786861095626,
+      "ssim_mean": 0.8327788381740965,
+      "lpips_mean": 0.4162735718077627,
+      "delta_e2000_mean": 5.956916911914362,
+      "delta_e2000_p95_mean": 11.47886072082081,
+      "lightness_mae_mean": 4.847036504197395,
+      "saturation_mae_mean": 0.07655936824264882,
+      "hue_error_degrees_mean": 23.822087927859307
+    }
+  },
+  "model": {
+    "name": "official_sony_sied_plus_sony_lut",
+    "checkpoint": "research/sony_lut/best.pt",
+    "checkpoint_sha256": "13bce17147874633d9b7618d75f8f6b201825d04dab43a89a9a5181ac36c5f01"
+  },
+  "examples": [
+    {
+      "index": 0,
+      "key": "6",
+      "views": {
+        "raw": {
+          "display_file": "sony_case_6_raw.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "9b8021dd9dfdedbf61248d0558bae2d64174da765ac5f3d60e5d538b42d0b5c9",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes"
+        },
+        "isp": {
+          "display_file": "sony_case_6_isp.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "99955f8d64c4c3fddd8091167bcf7466dc569ab3ef25b0de9761053524bceed8",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes"
+        },
+        "official": {
+          "display_file": "sony_case_6_official.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "02e1f0a224bb3823c3af417f844cbe7578a2848931722a5530c3d9567c72caf5",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/comparison_inputs/0000_6_official.png",
+          "source_sha256": "8defffcb1b2d9ca13697984f220a9d48d28b03632fca27e2e8fd55fbf284685c"
+        },
+        "official_crop": {
+          "display_file": "sony_case_6_official_crop.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1280,
+            720
+          ],
+          "crop_xyxy": [
+            1280,
+            720,
+            2560,
+            1440
+          ],
+          "display_sha256": "2b446f6e3f1e8dd0380b1990a273aa8e1541e87862392cf60309df687ed83ac1",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/comparison_inputs/0000_6_official.png",
+          "source_sha256": "8defffcb1b2d9ca13697984f220a9d48d28b03632fca27e2e8fd55fbf284685c"
+        },
+        "final": {
+          "display_file": "sony_case_6_final.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "b45c9849117d851d99b33ae645e32d9007866d5286a7a7bfe883740b4537bad9",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/images/test/0000_6.png",
+          "source_sha256": "f95d2331a5bd06200a8b8a963898aa2412f43e717c8d0b14b4cb02550144759e"
+        },
+        "final_crop": {
+          "display_file": "sony_case_6_final_crop.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1280,
+            720
+          ],
+          "crop_xyxy": [
+            1280,
+            720,
+            2560,
+            1440
+          ],
+          "display_sha256": "9e960680aae898cb4224772253c296603d0ec4e1d19e2b710fb3ba0351a46c44",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/images/test/0000_6.png",
+          "source_sha256": "f95d2331a5bd06200a8b8a963898aa2412f43e717c8d0b14b4cb02550144759e"
+        },
+        "gt": {
+          "display_file": "sony_case_6_gt.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "09bd19bc63afdf03b9e9791643d8e45a0a67c4ea3be25046deab3d05971f6b22",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "data/SIED_dataset/gt 2/6.jpg",
+          "source_sha256": "577599c439f82c02efe077bfd463c732aaed4258436f9e7153db5952932f8e5b"
+        },
+        "gt_crop": {
+          "display_file": "sony_case_6_gt_crop.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1280,
+            720
+          ],
+          "crop_xyxy": [
+            1280,
+            720,
+            2560,
+            1440
+          ],
+          "display_sha256": "d9ca04e4a4a1e062dad98f4bf1ebb2f19716386f18179879f010e13505d01161",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "data/SIED_dataset/gt 2/6.jpg",
+          "source_sha256": "577599c439f82c02efe077bfd463c732aaed4258436f9e7153db5952932f8e5b"
+        }
+      },
+      "raw_source_sha256": "90488126ec42780038dd4e303cf81f60cfa6800fc5f399a025feedee44193b87",
+      "raw_preview": {
+        "gamma": 2.2,
+        "exposure": 1,
+        "white_balance": [
+          1,
+          1,
+          1
+        ]
+      },
+      "classical_display_parameters": {
+        "exposure": 532.8808299913184,
+        "gamma": 1.8,
+        "white_balance": [
+          0.5097759504596413,
+          1.0,
+          0.5087529669526352
+        ],
+        "percentile": 99,
+        "target": 0.9,
+        "white_balance_power": 1
+      },
+      "final_metrics": {
+        "psnr": 22.960945023586824,
+        "ssim": 0.7787320613861084,
+        "lpips": 0.3323326110839844,
+        "delta_e2000_mean": 5.726948694592072,
+        "delta_e2000_p95": 8.756075859069824,
+        "lightness_mae": 5.918895721435547,
+        "saturation_mae": 0.04242386296391487,
+        "hue_error_degrees": 10.975649785496543
+      },
+      "official_metrics": {
+        "psnr": 21.6981187635822,
+        "ssim": 0.7760178446769714,
+        "lpips": 0.33902788162231445,
+        "delta_e2000_mean": 6.540300021840656,
+        "delta_e2000_p95": 9.63591194152832,
+        "lightness_mae": 7.089014530181885,
+        "saturation_mae": 0.04402492195367813,
+        "hue_error_degrees": 11.168387885953702
+      }
+    },
+    {
+      "index": 1,
+      "key": "13",
+      "views": {
+        "raw": {
+          "display_file": "sony_case_13_raw.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "be1ed2b7f3168f69b3b5738a26210e5a9ec70d68281956355a30b5ff477ad438",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes"
+        },
+        "isp": {
+          "display_file": "sony_case_13_isp.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "63da0c6ae939526ddccff0123b9a0864f93fe097eb4e9b5c7159928cb836ce15",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes"
+        },
+        "official": {
+          "display_file": "sony_case_13_official.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "8222a6a634e6b970f74eb0d47fce176d41c74a569edf9e53404908d16e9c3952",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/comparison_inputs/0001_13_official.png",
+          "source_sha256": "48d9ca33ca70a6540fb7295b01c8e501476de3f93e74a9ac2488afafc6ac4e8b"
+        },
+        "official_crop": {
+          "display_file": "sony_case_13_official_crop.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1280,
+            720
+          ],
+          "crop_xyxy": [
+            1280,
+            720,
+            2560,
+            1440
+          ],
+          "display_sha256": "36bcbd78160dcad2ec8b7084e989d08c47f61ef51fa787aa14417d287f95d5a2",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/comparison_inputs/0001_13_official.png",
+          "source_sha256": "48d9ca33ca70a6540fb7295b01c8e501476de3f93e74a9ac2488afafc6ac4e8b"
+        },
+        "final": {
+          "display_file": "sony_case_13_final.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "a59a4ab9f3253a7e49b5af640c0c918c85d5c96cbf421430313dfd1eafa804eb",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/images/test/0001_13.png",
+          "source_sha256": "755dc2c294159d54cae6e47595d99e2f76e4e113b5d48283401ffd1439f6c16a"
+        },
+        "final_crop": {
+          "display_file": "sony_case_13_final_crop.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1280,
+            720
+          ],
+          "crop_xyxy": [
+            1280,
+            720,
+            2560,
+            1440
+          ],
+          "display_sha256": "c591b9badfb2e9174a6e241859e56400b4023caef57383ae89b0ed705c0c006b",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/images/test/0001_13.png",
+          "source_sha256": "755dc2c294159d54cae6e47595d99e2f76e4e113b5d48283401ffd1439f6c16a"
+        },
+        "gt": {
+          "display_file": "sony_case_13_gt.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "b9a047bd693216b0075f913cda09de91b244d0fbb2b782bbbd96e8252fa79a52",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "data/SIED_dataset/gt 2/13.jpg",
+          "source_sha256": "dcb249ba2979dc9c37d8016ac744eff64b0bfd03ed16aa1b05e371e51211bf7c"
+        },
+        "gt_crop": {
+          "display_file": "sony_case_13_gt_crop.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1280,
+            720
+          ],
+          "crop_xyxy": [
+            1280,
+            720,
+            2560,
+            1440
+          ],
+          "display_sha256": "97d341af6e83e8f06644e7bf7a06e631cc2628b82c0a58d7e4fb293b6dd94497",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "data/SIED_dataset/gt 2/13.jpg",
+          "source_sha256": "dcb249ba2979dc9c37d8016ac744eff64b0bfd03ed16aa1b05e371e51211bf7c"
+        }
+      },
+      "raw_source_sha256": "a7dc28d41d8357bdadfa1dffd66e817fe4af5955c7610eebe13c49e1cdd27adf",
+      "raw_preview": {
+        "gamma": 2.2,
+        "exposure": 1,
+        "white_balance": [
+          1,
+          1,
+          1
+        ]
+      },
+      "classical_display_parameters": {
+        "exposure": 418.2429204376053,
+        "gamma": 1.8,
+        "white_balance": [
+          0.5055360230718786,
+          1.0,
+          0.5044027775062396
+        ],
+        "percentile": 99,
+        "target": 0.9,
+        "white_balance_power": 1
+      },
+      "final_metrics": {
+        "psnr": 31.207283519817757,
+        "ssim": 0.861320436000824,
+        "lpips": 0.24130703508853912,
+        "delta_e2000_mean": 2.5492571387565075,
+        "delta_e2000_p95": 5.3677825927734375,
+        "lightness_mae": 1.5685731172561646,
+        "saturation_mae": 0.029662180691957474,
+        "hue_error_degrees": 15.399994588611882
+      },
+      "official_metrics": {
+        "psnr": 29.969074275182102,
+        "ssim": 0.860809326171875,
+        "lpips": 0.24230919778347015,
+        "delta_e2000_mean": 2.796020409466381,
+        "delta_e2000_p95": 5.596129417419434,
+        "lightness_mae": 2.052924394607544,
+        "saturation_mae": 0.030500106513500214,
+        "hue_error_degrees": 14.55653716520151
+      }
+    },
+    {
+      "index": 2,
+      "key": "15",
+      "views": {
+        "raw": {
+          "display_file": "sony_case_15_raw.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "0bef8cf1903c470e756d928ccd0a69f202a8a5398121f878322ac84f7adb026a",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes"
+        },
+        "isp": {
+          "display_file": "sony_case_15_isp.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "10cf449261ee1b4e93d89bb0b65c11073414d0de66555cea20ef75aba55765c5",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes"
+        },
+        "official": {
+          "display_file": "sony_case_15_official.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "bef4736544b975537ecf644c852fc35a17e5216f349a1e4be666e0be90f73488",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/comparison_inputs/0002_15_official.png",
+          "source_sha256": "388bc9558322717a0ead7cb2bb5752b20391eb7bd3146be407e1910638177e7d"
+        },
+        "official_crop": {
+          "display_file": "sony_case_15_official_crop.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1280,
+            720
+          ],
+          "crop_xyxy": [
+            1280,
+            720,
+            2560,
+            1440
+          ],
+          "display_sha256": "bef8d25c5c9929cfdb8a313a4c7a9d3e7acdcadb0d7518967a24e36c6f6a0c88",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/comparison_inputs/0002_15_official.png",
+          "source_sha256": "388bc9558322717a0ead7cb2bb5752b20391eb7bd3146be407e1910638177e7d"
+        },
+        "final": {
+          "display_file": "sony_case_15_final.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "66f003efcc9cae59c5fe589ed761f3aae2e9af0c845bdb9809cd84f889848d46",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/images/test/0002_15.png",
+          "source_sha256": "31349e5aa6fe1d6efbf6a8018454d6a72b82d3a16048b709435f80f01055407c"
+        },
+        "final_crop": {
+          "display_file": "sony_case_15_final_crop.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1280,
+            720
+          ],
+          "crop_xyxy": [
+            1280,
+            720,
+            2560,
+            1440
+          ],
+          "display_sha256": "81474c25c957e5c875579700c6640fc924c62b1a01c7314bc210292860ea6655",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/images/test/0002_15.png",
+          "source_sha256": "31349e5aa6fe1d6efbf6a8018454d6a72b82d3a16048b709435f80f01055407c"
+        },
+        "gt": {
+          "display_file": "sony_case_15_gt.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "57e3d7aff9d3ec91519fe675b3a2b0bb0b678c2a951cd05b4f9b59444931b69f",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "data/SIED_dataset/gt 2/15.jpg",
+          "source_sha256": "93ecd4cb2201d8a075445c80e7c572b005fa457e912e571a1020187827baf85c"
+        },
+        "gt_crop": {
+          "display_file": "sony_case_15_gt_crop.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1280,
+            720
+          ],
+          "crop_xyxy": [
+            1280,
+            720,
+            2560,
+            1440
+          ],
+          "display_sha256": "b5ece9ace25381cc1b5423cb958a7d8d7d954b9bc47b3014915963c4559c1d76",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "data/SIED_dataset/gt 2/15.jpg",
+          "source_sha256": "93ecd4cb2201d8a075445c80e7c572b005fa457e912e571a1020187827baf85c"
+        }
+      },
+      "raw_source_sha256": "8b931a4d14202aa4d76010d8139787997fde77a584e02640867c141b0453330f",
+      "raw_preview": {
+        "gamma": 2.2,
+        "exposure": 1,
+        "white_balance": [
+          1,
+          1,
+          1
+        ]
+      },
+      "classical_display_parameters": {
+        "exposure": 123.42327719940918,
+        "gamma": 1.8,
+        "white_balance": [
+          2.419993346912265,
+          1.0,
+          1.5930027643320368
+        ],
+        "percentile": 99,
+        "target": 0.9,
+        "white_balance_power": 1
+      },
+      "final_metrics": {
+        "psnr": 19.554197440680532,
+        "ssim": 0.8084656596183777,
+        "lpips": 0.37767723202705383,
+        "delta_e2000_mean": 8.872525138045045,
+        "delta_e2000_p95": 12.914913177490234,
+        "lightness_mae": 9.31777286529541,
+        "saturation_mae": 0.05044959858059883,
+        "hue_error_degrees": 23.841581971319552
+      },
+      "official_metrics": {
+        "psnr": 18.759285421046645,
+        "ssim": 0.8029314875602722,
+        "lpips": 0.38326752185821533,
+        "delta_e2000_mean": 9.617348923089722,
+        "delta_e2000_p95": 13.947761535644531,
+        "lightness_mae": 10.27816104888916,
+        "saturation_mae": 0.05150919780135155,
+        "hue_error_degrees": 23.64977894823743
+      }
+    },
+    {
+      "index": 3,
+      "key": "22",
+      "views": {
+        "raw": {
+          "display_file": "sony_case_22_raw.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "6be6c8a8535cf21d0ea0637612a8c41ce9772f2430b8be8b66edc807ca7d586b",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes"
+        },
+        "isp": {
+          "display_file": "sony_case_22_isp.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "12933da5bb1fa77d5e44a96bc504904da7810a0f3f765d4ea05214674326016f",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes"
+        },
+        "official": {
+          "display_file": "sony_case_22_official.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "4ac0ffc750ad10503848f09d8f0f967854718f558332a91c76bfc1174c5f6b83",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/comparison_inputs/0003_22_official.png",
+          "source_sha256": "1810b7b1505a03101b4a92f37251a526795f3c4afe5dba7b69b40cf1d7356561"
+        },
+        "official_crop": {
+          "display_file": "sony_case_22_official_crop.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1280,
+            720
+          ],
+          "crop_xyxy": [
+            1280,
+            720,
+            2560,
+            1440
+          ],
+          "display_sha256": "64eeea6ec5b4a74f1b24be2ef747903785fa2431da20f716f750e63dc89f5302",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/comparison_inputs/0003_22_official.png",
+          "source_sha256": "1810b7b1505a03101b4a92f37251a526795f3c4afe5dba7b69b40cf1d7356561"
+        },
+        "final": {
+          "display_file": "sony_case_22_final.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "42cb03ce4f3a01adfeadcd207d0f13536ce96d9eba1577aa655a7bc822779cf1",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/images/test/0003_22.png",
+          "source_sha256": "5cc73a9ba15e8eb41799cf049a2691328f12581818ac60c4ea81fcd8ede8413d"
+        },
+        "final_crop": {
+          "display_file": "sony_case_22_final_crop.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1280,
+            720
+          ],
+          "crop_xyxy": [
+            1280,
+            720,
+            2560,
+            1440
+          ],
+          "display_sha256": "6af11adb0781b5f5524cce180f565b8ca1c9dc3a492daf73636c1b6edcf994a3",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/images/test/0003_22.png",
+          "source_sha256": "5cc73a9ba15e8eb41799cf049a2691328f12581818ac60c4ea81fcd8ede8413d"
+        },
+        "gt": {
+          "display_file": "sony_case_22_gt.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "3f345a41a097ceb696b81108a19908e030aef56556d263debae77af25af03e9a",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "data/SIED_dataset/gt 2/22.jpg",
+          "source_sha256": "dd9a8d655a5ad19dcbc2c643e8c8dddb5e5163a6a300aedca49f30502b4d4824"
+        },
+        "gt_crop": {
+          "display_file": "sony_case_22_gt_crop.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1280,
+            720
+          ],
+          "crop_xyxy": [
+            1280,
+            720,
+            2560,
+            1440
+          ],
+          "display_sha256": "c7919e176363ea4f8c2a1b4bb88930a44966594ddf6806e972f5ffbe061716a7",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "data/SIED_dataset/gt 2/22.jpg",
+          "source_sha256": "dd9a8d655a5ad19dcbc2c643e8c8dddb5e5163a6a300aedca49f30502b4d4824"
+        }
+      },
+      "raw_source_sha256": "227bf0f88436c4a3ae8395d53f2d18ab3517b8127508a6561b03821375d78b27",
+      "raw_preview": {
+        "gamma": 2.2,
+        "exposure": 1,
+        "white_balance": [
+          1,
+          1,
+          1
+        ]
+      },
+      "classical_display_parameters": {
+        "exposure": 122.09464422818333,
+        "gamma": 1.8,
+        "white_balance": [
+          2.501766405441363,
+          1.0,
+          1.5200138103433027
+        ],
+        "percentile": 99,
+        "target": 0.9,
+        "white_balance_power": 1
+      },
+      "final_metrics": {
+        "psnr": 24.085724490199205,
+        "ssim": 0.892855167388916,
+        "lpips": 0.2809005081653595,
+        "delta_e2000_mean": 5.407812642095622,
+        "delta_e2000_p95": 9.390317916870117,
+        "lightness_mae": 5.192487716674805,
+        "saturation_mae": 0.06034594029188156,
+        "hue_error_degrees": 24.90186717294168
+      },
+      "official_metrics": {
+        "psnr": 23.028718359782122,
+        "ssim": 0.8910861611366272,
+        "lpips": 0.28459644317626953,
+        "delta_e2000_mean": 5.897757849033342,
+        "delta_e2000_p95": 9.821966171264648,
+        "lightness_mae": 5.9471001625061035,
+        "saturation_mae": 0.05914768949151039,
+        "hue_error_degrees": 24.25173400309032
+      }
+    },
+    {
+      "index": 4,
+      "key": "29",
+      "views": {
+        "raw": {
+          "display_file": "sony_case_29_raw.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "2ded95277c2f22fe206ffb716626d7c3fa5204118ed0df429b2df53bfef59f35",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes"
+        },
+        "isp": {
+          "display_file": "sony_case_29_isp.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "e0bce473edc13ff81d9e2f64781ff053e3d822711f565a6402af536aad11685b",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes"
+        },
+        "official": {
+          "display_file": "sony_case_29_official.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "f950af76c3b1465b4ab8c5b585053a595cc2c441e319724c83b0e7435f61167f",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/comparison_inputs/0004_29_official.png",
+          "source_sha256": "b56075a8959aab59862e4048be70b7d99e958c0bd581bb93b77a3386470e92d3"
+        },
+        "official_crop": {
+          "display_file": "sony_case_29_official_crop.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1280,
+            720
+          ],
+          "crop_xyxy": [
+            1280,
+            720,
+            2560,
+            1440
+          ],
+          "display_sha256": "485f6b8022c64b4a6bfb64e7d876c38df11dd999e3e85c001ca2ca9530cc825c",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/comparison_inputs/0004_29_official.png",
+          "source_sha256": "b56075a8959aab59862e4048be70b7d99e958c0bd581bb93b77a3386470e92d3"
+        },
+        "final": {
+          "display_file": "sony_case_29_final.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "d575d8f63ed4c55cdfd19eed83db340dc87dea0559c0d851a412af6803a98f4c",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/images/test/0004_29.png",
+          "source_sha256": "ca7402f468325b9b1f19fd1d699f627a77ca1545a986e468e03e80c1e2f9cfbc"
+        },
+        "final_crop": {
+          "display_file": "sony_case_29_final_crop.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1280,
+            720
+          ],
+          "crop_xyxy": [
+            1280,
+            720,
+            2560,
+            1440
+          ],
+          "display_sha256": "1e0c532ba4579f6df74dca28c0d10b41a9a15f1d80bd89bd446e8cbb0d4f539d",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/images/test/0004_29.png",
+          "source_sha256": "ca7402f468325b9b1f19fd1d699f627a77ca1545a986e468e03e80c1e2f9cfbc"
+        },
+        "gt": {
+          "display_file": "sony_case_29_gt.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "42db5fc6503956226de9ee66457f2adf1d8e997dd7ffb2a554b64f85482bd818",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "data/SIED_dataset/gt 2/29.jpg",
+          "source_sha256": "1fae2e3d2849e74fd0480ce4465fd1b1d7411925fee391ce5abc8fec1e9041cb"
+        },
+        "gt_crop": {
+          "display_file": "sony_case_29_gt_crop.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1280,
+            720
+          ],
+          "crop_xyxy": [
+            1280,
+            720,
+            2560,
+            1440
+          ],
+          "display_sha256": "d58b7df7cbdb9ef03cb2db0382618eef3d42615ea8c901ee72b5d750b320fc72",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "data/SIED_dataset/gt 2/29.jpg",
+          "source_sha256": "1fae2e3d2849e74fd0480ce4465fd1b1d7411925fee391ce5abc8fec1e9041cb"
+        }
+      },
+      "raw_source_sha256": "4d2bbbdf7e836281d26b7641e0c2bf3e5fef615e60bf4ac5d23746d0865bcfdc",
+      "raw_preview": {
+        "gamma": 2.2,
+        "exposure": 1,
+        "white_balance": [
+          1,
+          1,
+          1
+        ]
+      },
+      "classical_display_parameters": {
+        "exposure": 124.21776157500196,
+        "gamma": 1.8,
+        "white_balance": [
+          2.473317192961226,
+          1.0,
+          1.4469467103882312
+        ],
+        "percentile": 99,
+        "target": 0.9,
+        "white_balance_power": 1
+      },
+      "final_metrics": {
+        "psnr": 27.18335267931152,
+        "ssim": 0.8793366551399231,
+        "lpips": 0.32727131247520447,
+        "delta_e2000_mean": 4.08636595083646,
+        "delta_e2000_p95": 7.707912445068359,
+        "lightness_mae": 3.31680965423584,
+        "saturation_mae": 0.0677686557173729,
+        "hue_error_degrees": 15.429422498505845
+      },
+      "official_metrics": {
+        "psnr": 26.344017594046704,
+        "ssim": 0.8764539361000061,
+        "lpips": 0.32905569672584534,
+        "delta_e2000_mean": 4.364205456407765,
+        "delta_e2000_p95": 8.099120140075684,
+        "lightness_mae": 3.7358903884887695,
+        "saturation_mae": 0.06833503395318985,
+        "hue_error_degrees": 15.145741487742344
+      }
+    },
+    {
+      "index": 5,
+      "key": "41",
+      "views": {
+        "raw": {
+          "display_file": "sony_case_41_raw.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "c89913c89380eb9f9e4d2f2b1c5e05f9533a57cfc939c349009be17f8ecabd51",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes"
+        },
+        "isp": {
+          "display_file": "sony_case_41_isp.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "ca758072bb0d8b087e8781a38e6a91bb2bbe0bec9bd21a9929c8f43e7cca99ad",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes"
+        },
+        "official": {
+          "display_file": "sony_case_41_official.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "83c91c5ecc72738944d4c1fd4922a3c442dcd513f80174bfb3944c35e8c8f0f0",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/comparison_inputs/0005_41_official.png",
+          "source_sha256": "9fa5757872556d88095464a72453e901e1090b44ba75f185c665c9f86c8e68b3"
+        },
+        "official_crop": {
+          "display_file": "sony_case_41_official_crop.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1280,
+            720
+          ],
+          "crop_xyxy": [
+            1280,
+            720,
+            2560,
+            1440
+          ],
+          "display_sha256": "83b88e918a06744cf8456f31cc156f4a87bd5afc9d3796e5ae7569cb0ab4304a",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/comparison_inputs/0005_41_official.png",
+          "source_sha256": "9fa5757872556d88095464a72453e901e1090b44ba75f185c665c9f86c8e68b3"
+        },
+        "final": {
+          "display_file": "sony_case_41_final.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "c99980b4db92f936eacbd0acc62520afbe1a4f7dac37867aa8e8dc51bca43863",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/images/test/0005_41.png",
+          "source_sha256": "9dae6a697b562900458a9dd2b4147e2ec8f923ce0dca005fd3611a67d22ee057"
+        },
+        "final_crop": {
+          "display_file": "sony_case_41_final_crop.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1280,
+            720
+          ],
+          "crop_xyxy": [
+            1280,
+            720,
+            2560,
+            1440
+          ],
+          "display_sha256": "bdd6f9fb74c1d36d95f8a4a52079fda8abfe97a219bd4ccb0ff2366d3b7e1cf8",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "submission1000_native/images/test/0005_41.png",
+          "source_sha256": "9dae6a697b562900458a9dd2b4147e2ec8f923ce0dca005fd3611a67d22ee057"
+        },
+        "gt": {
+          "display_file": "sony_case_41_gt.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1440,
+            810
+          ],
+          "crop_xyxy": null,
+          "display_sha256": "a7163d9ea34c9fa9307ebda6a05be0d35ce45eadbe813334ccd4ccc0d004a153",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "data/SIED_dataset/gt 2/41.jpg",
+          "source_sha256": "8f22964ada3510da24a4de142f0d6861335d6ccd92cec4905e527205ea443bb5"
+        },
+        "gt_crop": {
+          "display_file": "sony_case_41_gt_crop.jpg",
+          "native_size": [
+            3840,
+            2160
+          ],
+          "display_size": [
+            1280,
+            720
+          ],
+          "crop_xyxy": [
+            1280,
+            720,
+            2560,
+            1440
+          ],
+          "display_sha256": "ace15d6bd948dd4a486b605f350fc5c5df4257979d42b3d6f9a24c0ddc24a7d7",
+          "processing": "Equal-aspect display resize and JPEG95; no additional tone/color changes",
+          "source": "data/SIED_dataset/gt 2/41.jpg",
+          "source_sha256": "8f22964ada3510da24a4de142f0d6861335d6ccd92cec4905e527205ea443bb5"
+        }
+      },
+      "raw_source_sha256": "92fe562a937653825e84549f7b1ea4f5cd369b3bc01612e51e7d932627d9fbda",
+      "raw_preview": {
+        "gamma": 2.2,
+        "exposure": 1,
+        "white_balance": [
+          1,
+          1,
+          1
+        ]
+      },
+      "classical_display_parameters": {
+        "exposure": 652.4176162947543,
+        "gamma": 1.8,
+        "white_balance": [
+          0.4845330969705749,
+          1.0,
+          0.48196506906285375
+        ],
+        "percentile": 99,
+        "target": 0.9,
+        "white_balance_power": 1
+      },
+      "final_metrics": {
+        "psnr": 31.1765329655565,
+        "ssim": 0.9536299705505371,
+        "lpips": 0.17840108275413513,
+        "delta_e2000_mean": 2.4009098619368126,
+        "delta_e2000_p95": 5.969905853271484,
+        "lightness_mae": 1.6817295551300049,
+        "saturation_mae": 0.0212932750582695,
+        "hue_error_degrees": 14.873602252956374
+      },
+      "official_metrics": {
+        "psnr": 29.05474781239763,
+        "ssim": 0.9526064395904541,
+        "lpips": 0.18012912571430206,
+        "delta_e2000_mean": 3.1634266988564725,
+        "delta_e2000_p95": 6.438241004943848,
+        "lightness_mae": 2.700970411300659,
+        "saturation_mae": 0.02191738970577717,
+        "hue_error_degrees": 14.888988702909803
+      }
+    }
+  ],
+  "source_binding_sha256": "93ec76aabd954190faf3496ae26511f683f48d9e36b977c1f106a9b60abdc7e0",
+  "source_metrics_sha256": "3dbad15d8c4b0c0eb54694aa4cd49e32b4303127dc5783da68bb4ca7e2260177",
+  "script_sha256": "3e8ff99e832acdc1b2b20ec06e121118826b84545d985ed69501c3134976d8ae",
+  "note": "All numerical scores come from sealed native-float metrics; JPEG files are display copies."
+}

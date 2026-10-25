@@ -1,0 +1,16 @@
+{
+  "executor_sha256": "7e2ac8a27b33eca76b8086e76815dd08f0ef233d0b97b7f83abb4988f913e5da",
+  "base_inference_code_sha256": {
+    "cloud/sony1000_pipeline.py": "055744645fd3bbd460bc8a8a76bb0c212e85ed63b381e962e9494662b337f036",
+    "cloud/prepare_sony1000.py": "47b7750dec85b48f40e3b6257fc8056020843854ca1b36ef7eb79e22166ef3d1",
+    "cloud/evaluate_sied1000.py": "c01208b9eb06018c8cdf8eaf731ae97c9726a764ebb1accb6dac4f17f0c66df2",
+    "src/dip_course/cli/infer_official_sied.py": "ec12cef0ded0f29fe3ad9598a47ecf3557c456f97ccfd2aeb2a6499f2a34ddac",
+    "src/dip_course/enhancement/adaptive_lut.py": "af920b8d6d94f97ea148ba9024c9ab1fbd71f6181c3b9f34f3e48717af1cdeba",
+    "src/dip_course/io.py": "05f79e0134f99b0e62110f1f6c4618c0fb22e440685ef9ea081721d3632a1ebc",
+    "src/dip_course/metrics.py": "84cc25742db56989fdb3256e3beb6bddeee05c1431a4cbf00176a6ff0e4c321f"
+  },
+  "equivalence_proof_sha256": "72d6c07c1b232444833318287cea6c208205473c885b3302ab1d7252d552f401",
+  "model_binding_sha256": "93ec76aabd954190faf3496ae26511f683f48d9e36b977c1f106a9b60abdc7e0",
+  "workers": 4,
+  "note": "Bounded CPU scoring/I/O workers. Native prediction, model, seeds, metrics and PNG encoding unchanged."
+}

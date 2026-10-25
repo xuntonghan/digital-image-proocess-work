@@ -40,3 +40,17 @@ def test_display_rejects_crop_outside_native_frame(exporter, tmp_path):
     with pytest.raises(ValueError, match='native image'):
         exporter.save_display(image, path, crop=(0, 0, 21, 12))
     assert not path.exists()
+
+
+def test_real_raw_preview_calls_use_the_explicit_sensor_spec(exporter, tmp_path):
+    import numpy as np
+
+    from dip_course.io import RawSpec
+    spec = RawSpec(width=8, height=8)
+    raw = np.linspace(512, 6000, 64).reshape(8, 8).astype('<u2')
+    path = tmp_path / 'sensor.raw'
+    path.write_bytes(raw.tobytes())
+    preview, isp, parameters = exporter.raw_display_views(path, spec)
+    assert preview.shape == isp.shape == (8, 8, 3)
+    assert np.isfinite(preview).all() and np.isfinite(isp).all()
+    assert float(preview.max()) > 0 and parameters['gamma'] == 1.8

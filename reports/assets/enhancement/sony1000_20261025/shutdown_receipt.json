@@ -1,0 +1,11 @@
+{
+  "requested_at": "2026-10-25T19:41:26.084891+08:00",
+  "signal": "SIGTERM",
+  "supervisor_pid": 1183,
+  "start_ticks": "1970084578",
+  "all_unique_results_verified_on_mac": true,
+  "action": "Normal supervisor termination; no shutdown wrapper or Trash cleanup",
+  "backup_receipt_sha256": "60edcf4733d99ea94c7fe23d387cd96beaf6ba4b7319932e825be380d8809cc8",
+  "first_ssh_recheck_offline": true,
+  "second_ssh_recheck_pending": true
+}

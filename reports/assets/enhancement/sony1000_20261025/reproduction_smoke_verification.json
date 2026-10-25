@@ -1,0 +1,24 @@
+{
+  "train_image_count": 3,
+  "keys": [
+    "222",
+    "808",
+    "83"
+  ],
+  "native_png_sha256_equal": true,
+  "metric_max_absolute_difference": {
+    "psnr": 0.0,
+    "ssim": 0.0,
+    "delta_e2000_mean": 0.0,
+    "delta_e2000_p95": 0.0,
+    "lightness_mae": 0.0,
+    "saturation_mae": 0.0,
+    "hue_error_degrees": 0.0,
+    "lpips": 0.0
+  },
+  "all_eight_metrics_exactly_equal": true,
+  "same_camera_model_and_seeds": true,
+  "held_out_test_rerun": false,
+  "sealed_binding_sha256": "93ec76aabd954190faf3496ae26511f683f48d9e36b977c1f106a9b60abdc7e0",
+  "reproduction_binding_sha256": "d3b75982a7026431bac83aa55e4fb0a29acb10df2b782aeba7d03cbf79739be8"
+}

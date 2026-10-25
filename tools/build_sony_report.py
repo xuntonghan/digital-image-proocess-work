@@ -80,6 +80,8 @@ def main():
 
 本轮补齐Sony 0.001数据的全部1000张。使用Sony专用SIED权重和Sony专用色彩表，不使用Canon精修权重。Sony与Canon分别报告，两个相机的成绩不合成一个均值。
 
+Sony评价使用RTX4090 24GB，Python 3.12、PyTorch 2.8.0与CUDA 12.8。NumPy为2.3.2，Pillow为11.3.0，scikit-image为0.26.0，LPIPS为0.1.4。
+
 \subsection{数据与参数}
 
 原始划分为822张训练、91张验证和87张测试。2000个配对文件共18,653,873,890字节，与原始审计一致。RAW尺寸、黑电平、白电平和RGGB打包方式与前文相同。正式PSNR和SSIM在原生3840乘2160浮点RGB上计算，之后才保存PNG。全部1000张逐图取算术平均。
@@ -116,6 +118,11 @@ def main():
         [label, verified['splits'][split]['count'], f"{verified['splits'][split]['psnr_mean']:.6f}",
          f"{verified['splits'][split]['ssim_mean']:.9f}", f"{verified['splits'][split]['lpips_mean']:.9f}"]
         for split, label in [('train','训练'),('val','验证'),('test','留出测试')]])
+    test_base = [old[r['key']] for r in rows if r['split'] == 'test']
+    test_psnr = statistics.fmean(float(r['psnr']) for r in test_base)
+    test_ssim = statistics.fmean(float(r['ssim']) for r in test_base)
+    section += (f"\n87张留出测试的官方PSNR为{test_psnr:.6f}\\,dB，最终为{verified['splits']['test']['psnr_mean']:.6f}\\,dB。"
+                f"SSIM由{test_ssim:.9f}变为{verified['splits']['test']['ssim_mean']:.9f}。两项留出测试主指标均提高。\n")
     colors = [('delta_e2000_mean','平均色差'),('delta_e2000_p95_mean','逐图色差P95均值'),
               ('lightness_mae_mean','亮度MAE'),('saturation_mae_mean','饱和度MAE'),('hue_error_degrees_mean','色相误差 / 度')]
     section += table('Sony全部1000张的补充颜色指标', ['指标', '官方Sony', '最终方案'], [

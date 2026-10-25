@@ -1,0 +1,102 @@
+{
+  "camera": "sony",
+  "exposure": "0.001",
+  "counts": {
+    "train": 822,
+    "val": 91,
+    "test": 87
+  },
+  "official_commit": "fb7af94ac831e91c647415bf1ca0b1a75931833a",
+  "official_sha256": "7379cdec9401b92ea28b26568a5b33f7e72be06a0e7c12d1c76f76e3499f693d",
+  "protocol": {
+    "sampling_steps": 20,
+    "ensemble_size": 3,
+    "precision": "fp16",
+    "seed": 3407,
+    "seed_indexing": "original split-local index",
+    "native_rgb": [
+      2160,
+      3840,
+      3
+    ],
+    "metric_input": "float32 before PNG encoding"
+  },
+  "train_cache": "lossless FP32 deflate1, at most 40 GiB; uncached bases are regenerated",
+  "preparation_execution": "one seeded diffusion producer, two bounded metric/I/O workers",
+  "all_manifest_sha256": "ea62153f02ff3b6aa65979c4f6f89261a31652bc5a1d1d0aef8af150cd4c9120",
+  "split_manifests_sha256": {
+    "train": "939f4d4d3db24447a96e96ba5705d76dca2daaca636fa0c851b490430f4b50fc",
+    "val": "24558995839bfeb24e988e4c92a18e3ac875b0163d9dd695dc7974a81803c44e",
+    "test": "30b4b709f4326e6f17bbcb2f8a9a4cf7e4d7548eff9fcdc122e4d7fbe8359fd3"
+  },
+  "data_receipt_sha256": "1feb680c661ec968aa02095f52945a0b8332b6e3b589267f69747395226a415f",
+  "code_sha256": {
+    "cloud/sony1000_pipeline.py": "055744645fd3bbd460bc8a8a76bb0c212e85ed63b381e962e9494662b337f036",
+    "cloud/prepare_sony1000.py": "47b7750dec85b48f40e3b6257fc8056020843854ca1b36ef7eb79e22166ef3d1",
+    "cloud/evaluate_sied1000.py": "c01208b9eb06018c8cdf8eaf731ae97c9726a764ebb1accb6dac4f17f0c66df2",
+    "src/dip_course/cli/infer_official_sied.py": "ec12cef0ded0f29fe3ad9598a47ecf3557c456f97ccfd2aeb2a6499f2a34ddac",
+    "src/dip_course/enhancement/adaptive_lut.py": "af920b8d6d94f97ea148ba9024c9ab1fbd71f6181c3b9f34f3e48717af1cdeba",
+    "src/dip_course/io.py": "05f79e0134f99b0e62110f1f6c4618c0fb22e440685ef9ea081721d3632a1ebc",
+    "src/dip_course/metrics.py": "84cc25742db56989fdb3256e3beb6bddeee05c1431a4cbf00176a6ff0e4c321f"
+  },
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "packages": {
+    "torch": "2.8.0+cu128",
+    "torchvision": "0.23.0+cu128",
+    "numpy": "2.3.2",
+    "Pillow": "11.3.0",
+    "scikit-image": "0.26.0",
+    "lpips": "0.1.4"
+  },
+  "interpretation": "Overall includes 822 train and 91 official-pretraining-exposed val images; not independent generalization. Report the 87 test images separately.",
+  "selection": {
+    "baseline_binding_sha256": "2b754494bb2a8725cc21ffd6fa92fe524886f399acbe5632334cd1a473ce90e5",
+    "selected": {
+      "name": "official_sony_sied_plus_sony_lut",
+      "checkpoint": "research/sony_lut/best.pt",
+      "checkpoint_sha256": "13bce17147874633d9b7618d75f8f6b201825d04dab43a89a9a5181ac36c5f01"
+    },
+    "pilot_indices": [
+      9,
+      18,
+      25,
+      28,
+      46,
+      48,
+      52,
+      54,
+      56,
+      73,
+      86,
+      88
+    ],
+    "full_val_baseline": {
+      "count": 91,
+      "psnr_mean": 26.500226090113127,
+      "ssim_mean": 0.8520033189228603,
+      "delta_e2000_mean": 4.900627334018593,
+      "delta_e2000_p95_mean": 8.652441014300337,
+      "lightness_mae_mean": 4.350790601510268,
+      "saturation_mae_mean": 0.05205586964039357,
+      "hue_error_degrees_mean": 17.573643371240866,
+      "lpips_mean": 0.3989718809396356
+    },
+    "full_val_candidate": {
+      "count": 91,
+      "psnr_mean": 27.00013386711808,
+      "ssim_mean": 0.8533573471582853,
+      "delta_e2000_mean": 4.691610091350634,
+      "delta_e2000_p95_mean": 8.425323255769499,
+      "lightness_mae_mean": 3.9992687106132507,
+      "saturation_mae_mean": 0.05200516231931173,
+      "hue_error_degrees_mean": 17.46984875904309,
+      "lpips_mean": 0.3977747873945551
+    },
+    "best_step": 1000,
+    "training_seconds": 991.9833994098008,
+    "test_used_for_selection": false,
+    "selection_uses_all_91_native_validation_images": true
+  },
+  "selection_sha256": "5184105af5557ca14a0ba5fc4a82ef07f3ee52210c2ee8588f122299fc76400b",
+  "aggregation": "Arithmetic mean of 1000 per-image PSNR and SSIM values"
+}
