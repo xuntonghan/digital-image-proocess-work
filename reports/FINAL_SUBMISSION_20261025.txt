@@ -1,8 +1,10 @@
 韩勋同 2025312132086
 数字图像处理课程实习综合报告
 
-最终PDF为43页，包含图像增强、几何校正和图像压缩。
-包含12组增强、8组几何、5组压缩对比图。
+最终PDF为37页，包含图像增强、几何校正和图像压缩。
+包含12组增强、8组几何、5组压缩对比图。正文删减重复说明，完整操作移至完整复现命令.txt。
+PDF封面和复现部分均提供可点击的GitHub仓库链接。
+https://github.com/xuntonghan/digital-image-proocess-work
 
 PDF、Overleaf工程和固定代码与指标包位于reports/deliverables。
 Overleaf工程
@@ -10,7 +12,7 @@ https://www.overleaf.com/project/6add596b98e1731c2180da9c
 编译器为XeLaTeX。8个TeX文件及145个图像和图表已经与浏览器导出文件核对。
 
 私有仓库下载附件
-https://github.com/xuntonghan/digital-image-proocess-work/releases/tag/course-submission-20261025
+https://github.com/xuntonghan/digital-image-proocess-work/releases/tag/course-submission-20261025-v2
 完整课程提交包和5个自训增强权重作为下载附件提供。
 大型官方SIED模型和原始课程数据未重新分发。
 

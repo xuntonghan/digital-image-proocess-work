@@ -23,12 +23,17 @@ def main():
     weights={name:item for name,item in data['weights'].items() if not name.startswith('official')}
     notes = """韩勋同 2025312132086  数字图像处理课程实习
 
+GitHub私有仓库
+https://github.com/xuntonghan/digital-image-proocess-work
+附件下载
+https://github.com/xuntonghan/digital-image-proocess-work/releases
+
 一 代码
 project目录为固定提交beebb3454e99f039dfd98bc848aa7fafb9772f46的源码。
 新增reproduce_statistics.py只复算1000张封存CSV，不需要GPU。
 新增cloud/reproduce_sied_submission.py用于原始RAW的独立固定权重推理。
 新增入口不使用原86GiB缓存，未在本次报告编写期间重跑CUDA全量评价。
-先在project中安装依赖，再按PDF逐项执行。
+安装和运行步骤见完整复现命令.txt。PDF保留方法、参数、结果和简要复现入口。
 
 二 权重
 将自训增强权重包解压到project中，得到submission_weights目录。
@@ -92,6 +97,9 @@ print('All five included weights verified. Official SIED is obtained separately.
                  'tools/prepare_final_pdf_assets.py','tools/build_final_pdf_tables.py',
                  'tools/prepare_course_report_assets.py','tools/package_course_submission.py']:
         materials[name]=(ROOT/name).read_bytes()
+    command_appendix = OUT/'完整复现命令.txt'
+    if command_appendix.exists():
+        materials['完整复现命令.txt'] = command_appendix.read_bytes()
     manifest={name:{'bytes':len(raw),'sha256':digest(raw)} for name,raw in sorted(materials.items())}
     with zipfile.ZipFile(OUT/'代码与指标.zip','w',compression=zipfile.ZIP_DEFLATED,compresslevel=6) as z:
         with zipfile.ZipFile(snapshot) as old:

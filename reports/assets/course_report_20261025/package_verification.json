@@ -1,18 +1,18 @@
 {
+  "Overleaf_LaTeX工程.zip": {
+    "entries": 157,
+    "bytes": 24607258,
+    "sha256": "9c2907682abfab74babd362a03ec9bbd692173107def12a734ac7c1b737d9cc7"
+  },
   "代码与指标.zip": {
-    "entries": 318,
-    "bytes": 1810985,
-    "sha256": "96fc1eb648336a6f3549657de9a34c9ca05234e1cd02a8e31871a4487f8e4175"
+    "entries": 319,
+    "bytes": 1813825,
+    "sha256": "3b6de263764bfbaa47fa9475b1e084cbc3098ffeef105e78af11c46715de0bae"
   },
   "自训增强权重.zip": {
     "entries": 8,
     "bytes": 34140051,
     "sha256": "e86ff2ec24ff6dbe994f2bca8e8ca047d4772aab6202f32168e0c9c24c72a7bd"
-  },
-  "Overleaf_LaTeX工程.zip": {
-    "entries": 157,
-    "bytes": 24613596,
-    "sha256": "d51e17f4969c190d8866df3bd7d346f76ed8a0fe4aa43d62ff33d011a070bfdf"
   },
   "portable_statistics": {
     "count": 1000,
@@ -229,14 +229,58 @@
       "compression_01_1_2.jpg": true,
       "compression_24_2_2.jpg": true
     },
-    "overleaf_export_sha256": "aa763eba19c173ab24be12052440f3e7eb8af3d62aa67a14a955210cc69ae239",
-    "vector_plot_note": "Vector drawing streams matched; local metadata mirror copied from actual Overleaf export."
+    "all_145_images_match": true,
+    "compile_errors": 0,
+    "compile_warnings": [
+      "cmex font size substitution",
+      "size substitution up to 0.41063pt"
+    ],
+    "export_sha256": "e4e2ebd5c715dc6856f9688c4ac984ce06c255a4ff7a1eb3b8a6d0947d6fcb60"
   },
-  "final_pdf": {
-    "pages": 43,
-    "bytes": 25156172,
-    "sha256": "886d1f60c56295df6b3fc691f7d0d8df31cad1778a3d416030bee4dca7779d06",
+  "pdf": {
+    "pages": 37,
+    "bytes": 25097013,
+    "sha256": "735d227f945c05d2eb7ef50074a1da46144ed3e4e7909cdb337903a3d2771591",
     "origin": "Overleaf XeLaTeX browser compilation",
-    "path": "output/pdf/韩勋同-2025312132086-数字图像处理课程实习综合报告.pdf"
-  }
+    "path": "output/pdf/韩勋同-2025312132086-数字图像处理课程实习综合报告.pdf",
+    "github_links": [
+      {
+        "page": 1,
+        "url": "https://github.com/xuntonghan/digital-image-proocess-work"
+      },
+      {
+        "page": 18,
+        "url": "https://github.com/xuntonghan/digital-image-proocess-work"
+      },
+      {
+        "page": 18,
+        "url": "https://github.com/xuntonghan/digital-image-proocess-work/releases"
+      },
+      {
+        "page": 36,
+        "url": "https://github.com/xuntonghan/digital-image-proocess-work"
+      },
+      {
+        "page": 36,
+        "url": "https://github.com/xuntonghan/digital-image-proocess-work/releases"
+      }
+    ],
+    "rendered_pages": 37,
+    "rendered_page_pixels_equal_reviewed_local": false,
+    "previous_pages": 43,
+    "comparison_groups": {
+      "enhancement": 12,
+      "geometry": 8,
+      "compression": 5
+    },
+    "visual_qa": {
+      "all_37_overleaf_pages_reviewed": true,
+      "comparison_images_unchanged": true,
+      "result_tables_byte_identical_to_original": true,
+      "layout_issues_found": 0
+    }
+  },
+  "weight_verification_script_passed": true,
+  "result_tables_unchanged": true,
+  "revision": "v2 shortened existing results; no new inference or training"
 }

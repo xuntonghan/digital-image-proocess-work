@@ -1,7 +1,43 @@
 {
-  "pages": 43,
-  "bytes": 25156172,
-  "sha256": "886d1f60c56295df6b3fc691f7d0d8df31cad1778a3d416030bee4dca7779d06",
+  "pages": 37,
+  "bytes": 25097013,
+  "sha256": "735d227f945c05d2eb7ef50074a1da46144ed3e4e7909cdb337903a3d2771591",
   "origin": "Overleaf XeLaTeX browser compilation",
-  "path": "output/pdf/韩勋同-2025312132086-数字图像处理课程实习综合报告.pdf"
+  "path": "output/pdf/韩勋同-2025312132086-数字图像处理课程实习综合报告.pdf",
+  "github_links": [
+    {
+      "page": 1,
+      "url": "https://github.com/xuntonghan/digital-image-proocess-work"
+    },
+    {
+      "page": 18,
+      "url": "https://github.com/xuntonghan/digital-image-proocess-work"
+    },
+    {
+      "page": 18,
+      "url": "https://github.com/xuntonghan/digital-image-proocess-work/releases"
+    },
+    {
+      "page": 36,
+      "url": "https://github.com/xuntonghan/digital-image-proocess-work"
+    },
+    {
+      "page": 36,
+      "url": "https://github.com/xuntonghan/digital-image-proocess-work/releases"
+    }
+  ],
+  "rendered_pages": 37,
+  "rendered_page_pixels_equal_reviewed_local": false,
+  "previous_pages": 43,
+  "comparison_groups": {
+    "enhancement": 12,
+    "geometry": 8,
+    "compression": 5
+  },
+  "visual_qa": {
+    "all_37_overleaf_pages_reviewed": true,
+    "comparison_images_unchanged": true,
+    "result_tables_byte_identical_to_original": true,
+    "layout_issues_found": 0
+  }
 }

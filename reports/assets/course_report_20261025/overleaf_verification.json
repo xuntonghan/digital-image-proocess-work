@@ -160,6 +160,11 @@
     "compression_01_1_2.jpg": true,
     "compression_24_2_2.jpg": true
   },
-  "overleaf_export_sha256": "aa763eba19c173ab24be12052440f3e7eb8af3d62aa67a14a955210cc69ae239",
-  "vector_plot_note": "Vector drawing streams matched; local metadata mirror copied from actual Overleaf export."
+  "all_145_images_match": true,
+  "compile_errors": 0,
+  "compile_warnings": [
+    "cmex font size substitution",
+    "size substitution up to 0.41063pt"
+  ],
+  "export_sha256": "e4e2ebd5c715dc6856f9688c4ac984ce06c255a4ff7a1eb3b8a6d0947d6fcb60"
 }

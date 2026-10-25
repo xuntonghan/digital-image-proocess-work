@@ -1,0 +1,141 @@
+三项目详细操作与复现命令
+
+韩勋同 2025312132086
+
+先进入代码包解压后的project目录，再按对应小节执行。以下只保留实际操作命令。
+GeoCorrection原数据和旧分割权重未随包提供，相关命令需先补齐这些资料。
+固定源码版本 beebb3454e99f039dfd98bc848aa7fafb9772f46
+
+项目一 图像增强
+
+本机复算1000张均值
+python3 reproduce_statistics.py
+
+准备完整推理环境
+python3.12 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install torch==2.8.0 torchvision==0.23.0 \
+  --index-url https://download.pytorch.org/whl/cu128
+python -m pip install -e '.[sied,train,dev]' requests
+python -m pip install numpy==2.3.2 Pillow==11.3.0 \
+  scikit-image==0.26.0 lpips==0.1.4
+
+获取官方SIED并检查数据
+git clone https://github.com/JianghaiSCU/SIED.git third_party/SIED-official
+git -C third_party/SIED-official checkout --detach \
+  fb7af94ac831e91c647415bf1ca0b1a75931833a
+python -m dip_course.cli.audit_dataset \
+  --data-root data/SIED_dataset \
+  --manifest manifests/source/canon_all.txt \
+  --output-json audit.json
+
+从原始数据独立运行最终模型
+python cloud/reproduce_sied_submission.py \
+  --data-root data/SIED_dataset \
+  --official-repo third_party/SIED-official \
+  --official-checkpoint checkpoints/official/canon_0.0001.pt \
+  --refiner-checkpoint submission_weights/canon_naf_phase4.pt \
+  --lut-checkpoint submission_weights/canon_color_lut_1250.pt \
+  --output-dir outputs/reproduce_submission1000 --limit-new 3
+
+项目二与三 几何和压缩
+
+几何环境与传统校正
+python -m pip install -e '.[geometry-ml,geometry-ocr]'
+python -m pip install transformers==5.19.0 \
+  paddleocr==3.7.0 paddlex==3.7.2
+dip-audit-geocorrection \
+  --data-root data/geocorrection/GeoCorrection \
+  --output-json outputs/reproduce_geo/audit.json \
+  --output-csv outputs/reproduce_geo/pairs.csv --expected-count 200
+dip-rectify-classical \
+  --data-root data/geocorrection/GeoCorrection \
+  --output-dir outputs/reproduce_geo/classical \
+  --max-side 1200 --expected-count 200
+
+自动页面分割
+dip-infer-page-segmentation \
+  --data-root data/geocorrection/GeoCorrection \
+  --checkpoint checkpoints/geocorrection/page_mask_unet/best.pt \
+  --output-dir outputs/reproduce_geo/predicted \
+  --split test --device cuda --precision bf16 --threshold 0.5
+python -c 'import json; d=json.load(open("reports/assets/geocorrection/page_mask_unet/split.json")); print(",".join(d["test"]))'
+
+使用预测掩膜进行校正
+TEST_KEYS=$(python -c 'import json; d=json.load(open("reports/assets/geocorrection/page_mask_unet/split.json")); print(",".join(d["test"]))')
+dip-rectify-classical \
+  --data-root data/geocorrection/GeoCorrection \
+  --mask-subdir "$(pwd)/outputs/reproduce_geo/predicted/masks" \
+  --mask-source-label 'PageMaskUNet held-out predictions' \
+  --keys "$TEST_KEYS" --expected-count 200 --max-side 1400 \
+  --output-dir outputs/reproduce_geo/automatic_test
+
+重新训练页面分割
+dip-train-page-segmentation \
+  --data-root data/geocorrection/GeoCorrection \
+  --output-dir outputs/reproduce_geo/training \
+  --input-size 512 --base-channels 32 --epochs 100 \
+  --batch-size 8 --learning-rate 3e-4 --weight-decay 1e-4 \
+  --num-workers 4 --seed 20261018 --patience 20 \
+  --device cuda --precision bf16 --require-cuda
+
+UVDoc与OCR评价
+dip-infer-uvdoc \
+  --data-root data/geocorrection/GeoCorrection \
+  --output-dir outputs/reproduce_geo/uvdoc \
+  --model-id PaddlePaddle/UVDoc_safetensors \
+  --model-revision bfa6aad03b549c7e2cf89cefd2fb02ba3bef2ae4 \
+  --device cuda --expected-count 200
+dip-rectify-classical \
+  --data-root outputs/reproduce_geo/uvdoc \
+  --image-subdir rectified --mask-subdir rectified_masks \
+  --output-dir outputs/reproduce_geo/hybrid \
+  --max-side 1200 --expected-count 200
+dip-eval-geocorrection-ocr \
+  --data-root data/geocorrection/GeoCorrection \
+  --keys-manifest manifests/geocorrection/ocr_test_40.txt \
+  --classical-dir outputs/reproduce_geo/classical/corrected \
+  --uvdoc-dir outputs/reproduce_geo/uvdoc/rectified \
+  --hybrid-dir outputs/reproduce_geo/hybrid/corrected \
+  --output-dir outputs/reproduce_geo/ocr40 \
+  --device gpu --engine transformers --max-side 1200
+
+取得数据并检查
+git clone https://github.com/MohamedBakrAli/Kodak-Lossless-True-Color-Image-Suite.git kodak_source
+git -C kodak_source checkout --detach \
+  dd2e1105fe8d9afe1120cd7e4c0e5e41f509a81b
+mkdir -p data/compression/kodak
+cp kodak_source/PhotoCD_PCD0992/*.png data/compression/kodak/
+cd data/compression/kodak
+shasum -a 256 -c ../../../manifests/compression/kodak.sha256
+cd ../../..
+
+依次运行四种方法
+dip-compress-benchmark \
+  --data-dir data/compression/kodak \
+  --output-dir outputs/reproduce_compression/jpeg \
+  --qualities 30 50 70 90 --subsampling 420 \
+  --repeats 7 --warmup 2
+dip-dct-benchmark \
+  --data-dir data/compression/kodak \
+  --output-dir outputs/reproduce_compression/dctc_v1 \
+  --qualities 30 50 70 90 --subsampling 420 \
+  --stream-format rle --entropy-level 9 --repeats 3 --warmup 1
+dip-dct-benchmark \
+  --data-dir data/compression/kodak \
+  --output-dir outputs/reproduce_compression/dctc_v2 \
+  --qualities 30 50 70 90 --subsampling 420 \
+  --stream-format trimmed --entropy-level 1 --repeats 3 --warmup 1
+python -m pip install -e '.[compression-ml]'
+python -m pip install compressai==1.2.8
+dip-learned-compression-benchmark \
+  --data-dir data/compression/kodak \
+  --output-dir outputs/reproduce_compression/cheng_anchor \
+  --architecture cheng2020-anchor --qualities 1 3 6 --metric mse \
+  --device cuda --repeats 1 --warmup 0 \
+  --baseline-summary reports/assets/compression/jpeg_baseline/summary.json
+
+增强正式推理
+3张检查完成后，重复同一推理命令并去掉--limit-new 3，继续处理1000张。
+
