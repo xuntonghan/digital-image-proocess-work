@@ -1,0 +1,26 @@
+{
+  "release_url": "https://github.com/xuntonghan/digital-image-proocess-work/releases/tag/course-submission-20261025-v2",
+  "target_commit": "6752c66abb90afa2066c24999ad30bfa1de792c1",
+  "private_repository": true,
+  "all_remote_asset_sizes_and_sha256_match": true,
+  "assets": [
+    {
+      "name": "han-xuntong-2025312132086-dip-course-report-v2.pdf",
+      "size": 25097013,
+      "digest": "sha256:735d227f945c05d2eb7ef50074a1da46144ed3e4e7909cdb337903a3d2771591",
+      "browser_download_url": "https://github.com/xuntonghan/digital-image-proocess-work/releases/download/course-submission-20261025-v2/han-xuntong-2025312132086-dip-course-report-v2.pdf"
+    },
+    {
+      "name": "han-xuntong-2025312132086-dip-course-submission-v2.zip",
+      "size": 85678668,
+      "digest": "sha256:683cf4e2c1f3da26f9bc51cf6217e32cc697295f6496571e5699edd659e4a34f",
+      "browser_download_url": "https://github.com/xuntonghan/digital-image-proocess-work/releases/download/course-submission-20261025-v2/han-xuntong-2025312132086-dip-course-submission-v2.zip"
+    },
+    {
+      "name": "release_sha256.txt",
+      "size": 238,
+      "digest": "sha256:c02160bcbf6c99ed1836505efbe1c1d98b911ed70213defe23d7947d19f8799c",
+      "browser_download_url": "https://github.com/xuntonghan/digital-image-proocess-work/releases/download/course-submission-20261025-v2/release_sha256.txt"
+    }
+  ]
+}
