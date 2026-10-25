@@ -1,0 +1,783 @@
+{
+  "verified": true,
+  "checked_at": "2026-10-25T18:27:08.679099+08:00",
+  "file_count": 193,
+  "remote_and_local_sha256_equal": true,
+  "native_validation_count": 91,
+  "all_8_validation_means_recomputed": true,
+  "final_1000_complete": false,
+  "files": {
+    "research/sony_lut/best.pt": {
+      "bytes": 316693,
+      "sha256": "13bce17147874633d9b7618d75f8f6b201825d04dab43a89a9a5181ac36c5f01"
+    },
+    "research/sony_lut/full_val/images/0000_3.png": {
+      "bytes": 7554043,
+      "sha256": "3da131ca9d55ce7e55f241063acac24a6ef0b7eab9d158d9ea87ba55095c87fc"
+    },
+    "research/sony_lut/full_val/images/0001_767.png": {
+      "bytes": 5511230,
+      "sha256": "0497eb87044fd2b1d8828b4a5ef0b2df9ed1f2682ab5a49a912a339688c40e70"
+    },
+    "research/sony_lut/full_val/images/0002_400.png": {
+      "bytes": 3167295,
+      "sha256": "9a3eb128157e201bfabf6422877ef690922da56e2c92fb6f938291ef3805074e"
+    },
+    "research/sony_lut/full_val/images/0003_212.png": {
+      "bytes": 4848390,
+      "sha256": "debeb3411267b232acd8bbe0dd499f6f144aee174e7907da4f85ca1631a9eb24"
+    },
+    "research/sony_lut/full_val/images/0004_773.png": {
+      "bytes": 4988965,
+      "sha256": "f63efe9b0483948067e53f569f980454963383fd9ddda205f0cc71e7143cf3fc"
+    },
+    "research/sony_lut/full_val/images/0005_823.png": {
+      "bytes": 5937600,
+      "sha256": "001c74badf90e45e95550fb9dadfa0fa4c391eb441b9668f386daaaaf9370e92"
+    },
+    "research/sony_lut/full_val/images/0006_263.png": {
+      "bytes": 4466105,
+      "sha256": "95f835a7a45bf8783118f8d87781ab34dc0f53afc118a0dab7806f366c3ca5cc"
+    },
+    "research/sony_lut/full_val/images/0007_622.png": {
+      "bytes": 4415311,
+      "sha256": "9270328cd9cdff55dab3f89b8cd5c6ff4b3eafe6e9e3afadcc37f7b8c261eb61"
+    },
+    "research/sony_lut/full_val/images/0008_683.png": {
+      "bytes": 4865196,
+      "sha256": "1ef51fc666c41480ed661dc539b6ffefd46875781af1f41cb2fdf9ffc554cb1e"
+    },
+    "research/sony_lut/full_val/images/0009_34.png": {
+      "bytes": 6178782,
+      "sha256": "ed0de3c804a0220c10e56130ce29603ffdb3d72162bed0ff57814239973822ce"
+    },
+    "research/sony_lut/full_val/images/0010_610.png": {
+      "bytes": 6624974,
+      "sha256": "099b8a405be9c7d2f4d40116f97d20b5659f010c30b026eafe25f77e4866af21"
+    },
+    "research/sony_lut/full_val/images/0011_340.png": {
+      "bytes": 4562018,
+      "sha256": "e0df6ddec566dac4c906f2af6eea0acf219721bbda40e7b1b07b9d07067cfdec"
+    },
+    "research/sony_lut/full_val/images/0012_227.png": {
+      "bytes": 5925214,
+      "sha256": "d122c5a4b4e570054bd4133479f7b8a7067ef3efc92156e526a6c8f651d39ad7"
+    },
+    "research/sony_lut/full_val/images/0013_325.png": {
+      "bytes": 5881814,
+      "sha256": "37b68af2ee385108feb51cf7e61c1f54227e9820d4ce5732817522560d2648f1"
+    },
+    "research/sony_lut/full_val/images/0014_485.png": {
+      "bytes": 4048394,
+      "sha256": "a6f2a3a72d821e99ef18a5d46480c9f969734cb5dedc96e762f39ea8585f6deb"
+    },
+    "research/sony_lut/full_val/images/0015_655.png": {
+      "bytes": 3485385,
+      "sha256": "b8374060e1d72cffe125d11f54d090bc4ec4298116bd3ad7661e91ad2c00ebed"
+    },
+    "research/sony_lut/full_val/images/0016_521.png": {
+      "bytes": 4615479,
+      "sha256": "7ac073fcf4702bd54adf9246a10d7fb2b642e411d8446bc4763beda022ee27e1"
+    },
+    "research/sony_lut/full_val/images/0017_508.png": {
+      "bytes": 3296803,
+      "sha256": "0b54c411e6f29f9880a8039004f15cfde0e04e0fd65a06092c1b29dfa132b4a2"
+    },
+    "research/sony_lut/full_val/images/0018_54.png": {
+      "bytes": 6007620,
+      "sha256": "d5c1c7a7be34009b08b426d66fafaa297abc8f45fdfccee6aff8d7d4bc11022f"
+    },
+    "research/sony_lut/full_val/images/0019_150.png": {
+      "bytes": 7230570,
+      "sha256": "44e025d5d3f76374732ac260673cb6619b360efdccfdc6fa2168db61db0921c5"
+    },
+    "research/sony_lut/full_val/images/0020_619.png": {
+      "bytes": 5316059,
+      "sha256": "f6f1934b40c7d3f55bade63bc5dde45503eeb19605dc594a9b21b74157a08362"
+    },
+    "research/sony_lut/full_val/images/0021_876.png": {
+      "bytes": 6474922,
+      "sha256": "7990e1dd199e8dd0d3db265b99230bdf2dac0dbe80aa9c09f04f580c34cb9910"
+    },
+    "research/sony_lut/full_val/images/0022_697.png": {
+      "bytes": 6667362,
+      "sha256": "a9df2abea21d4235abed6d8be26287b9c230c9ef6dac1b64209f7c9e383c5292"
+    },
+    "research/sony_lut/full_val/images/0023_275.png": {
+      "bytes": 4662106,
+      "sha256": "66ce1b505ea8101d8175ac5541851b937082022c96c059b249bcf46f5b420436"
+    },
+    "research/sony_lut/full_val/images/0024_502.png": {
+      "bytes": 4100682,
+      "sha256": "fad982c2553feaf62bfdff22ddf37b1fef672a6dd618c1dd0301b5b0dd81936c"
+    },
+    "research/sony_lut/full_val/images/0025_900.png": {
+      "bytes": 5512527,
+      "sha256": "aa68e578bab3f87f46022583c2646e2219f29ad24998ad94b3c937f27de9298c"
+    },
+    "research/sony_lut/full_val/images/0026_570.png": {
+      "bytes": 4744579,
+      "sha256": "8c4e81421a9888e9d41f2444a43b3cbcbf8bb0a9f93e759783a2843805427591"
+    },
+    "research/sony_lut/full_val/images/0027_226.png": {
+      "bytes": 4849366,
+      "sha256": "983374885a483c2d0a4dae3ebe291a1f4979169ffe0413da95a755fef3009f70"
+    },
+    "research/sony_lut/full_val/images/0028_137.png": {
+      "bytes": 4433931,
+      "sha256": "d16b0284f1d08d289c53a2c547fe333ca0c8d1e8c39fb163b7233ffc627ef44d"
+    },
+    "research/sony_lut/full_val/images/0029_50.png": {
+      "bytes": 6492280,
+      "sha256": "d4b2ef9ee0613a58a1855f53e55a1323f4677c73d70c312270175a64dc1d5b48"
+    },
+    "research/sony_lut/full_val/images/0030_983.png": {
+      "bytes": 6333546,
+      "sha256": "c1a0179c78e805f1686581dbc8a781b9a60974bf81a13fddb2af395f278822a2"
+    },
+    "research/sony_lut/full_val/images/0031_208.png": {
+      "bytes": 6971552,
+      "sha256": "8a3d6aca5f5db06421e09e4e5f5cfd6a5871a9b476386324411d2286c36de36b"
+    },
+    "research/sony_lut/full_val/images/0032_934.png": {
+      "bytes": 3846700,
+      "sha256": "fe2a84bfe81a768a18ff222e669aab0f1c009495126c94ab0b5b185b9a7f9d6f"
+    },
+    "research/sony_lut/full_val/images/0033_2.png": {
+      "bytes": 5935654,
+      "sha256": "1d616d4b5b5afda9da6a2d26a65a5dcc3d3bb75aa467723bf488723ba9db8005"
+    },
+    "research/sony_lut/full_val/images/0034_85.png": {
+      "bytes": 6775689,
+      "sha256": "4df6b05ea646c8e3e418164e173f77491f738678cc881b7fca143007834e5e4f"
+    },
+    "research/sony_lut/full_val/images/0035_939.png": {
+      "bytes": 4122764,
+      "sha256": "b58134077132cb6a2453fc88700c10dc32cee1f0b3a3358a87c0dd33d1431e40"
+    },
+    "research/sony_lut/full_val/images/0036_372.png": {
+      "bytes": 3679476,
+      "sha256": "d41e128721ce1528d903a382ea3c7939490964b4c5f86c5e57b99f7c065709ac"
+    },
+    "research/sony_lut/full_val/images/0037_553.png": {
+      "bytes": 4246338,
+      "sha256": "57fe61349adb930282fe80d203de54fc2278b3b948bed4700edf7aa9647c98ee"
+    },
+    "research/sony_lut/full_val/images/0038_1000.png": {
+      "bytes": 6917590,
+      "sha256": "5ebcff3f6dc155c58a4d76895b1077b5d1328002f9fba7f51d44ba461800390d"
+    },
+    "research/sony_lut/full_val/images/0039_100.png": {
+      "bytes": 7994755,
+      "sha256": "6ff4db98f1227f1af282a997c94307b4546027e663c4dee8e0bb72c8e51d07a3"
+    },
+    "research/sony_lut/full_val/images/0040_674.png": {
+      "bytes": 4929974,
+      "sha256": "0f62fb3808d5c95010da775c31cc924a7e451d4ee27c40b2a6beda026136f1bc"
+    },
+    "research/sony_lut/full_val/images/0041_764.png": {
+      "bytes": 7023501,
+      "sha256": "bed832a52915f89900f926153d97bb4cd99cac842411879a97102350422a0c6e"
+    },
+    "research/sony_lut/full_val/images/0042_474.png": {
+      "bytes": 4580529,
+      "sha256": "cddb8dcd12533889ce18d15572cfad55dc6a0f83be3685183fa56a259f947ff5"
+    },
+    "research/sony_lut/full_val/images/0043_839.png": {
+      "bytes": 6295152,
+      "sha256": "d1e42969f8abc553ce929cdf19fbce36c5490f75b1dd0d042b2210e52ddeea5b"
+    },
+    "research/sony_lut/full_val/images/0044_528.png": {
+      "bytes": 7518207,
+      "sha256": "68f042248e28bb9f522025e2abd787a1745848a896eee16eca1be8d7d971a110"
+    },
+    "research/sony_lut/full_val/images/0045_182.png": {
+      "bytes": 7308654,
+      "sha256": "8ab199c67c3c78b6e039c85f5568acaec6a55f89f72b33c3db2e2f921120e6e2"
+    },
+    "research/sony_lut/full_val/images/0046_52.png": {
+      "bytes": 5101127,
+      "sha256": "238fb8b9e7565a3d8c6fb62cccc39d7d15558dbb603a87c14b91b21152e4ace9"
+    },
+    "research/sony_lut/full_val/images/0047_81.png": {
+      "bytes": 5127348,
+      "sha256": "ebbb1485e175e4e5bead88528b24e919b7f37b113c785fab42c9489056661dc6"
+    },
+    "research/sony_lut/full_val/images/0048_423.png": {
+      "bytes": 3553327,
+      "sha256": "4a131097f522517098819bc90ff79e8e48e055ac89ba024ca637fc05bc6451dd"
+    },
+    "research/sony_lut/full_val/images/0049_814.png": {
+      "bytes": 6792918,
+      "sha256": "ac38897a87cc25c33fae625101bb5ceb2940da3dd9bb3c469e77ffa0459eeaf5"
+    },
+    "research/sony_lut/full_val/images/0050_69.png": {
+      "bytes": 5895413,
+      "sha256": "fef20802de36ea9090ec3d2bfb13941143b5c605b4b48754ee13425b1695c144"
+    },
+    "research/sony_lut/full_val/images/0051_312.png": {
+      "bytes": 7938505,
+      "sha256": "c207342573b52a0171eeb9cfa377b6547c70fee0504f967e35c874ce59d4d3d5"
+    },
+    "research/sony_lut/full_val/images/0052_94.png": {
+      "bytes": 6000351,
+      "sha256": "dd378dc18e26da6ed21d1e336983c02c296fdc176b3f97a0cc9be2a7cc77f8e9"
+    },
+    "research/sony_lut/full_val/images/0053_630.png": {
+      "bytes": 6291482,
+      "sha256": "5a063c21350c749469dbf94ab2f5e42834a18a3a83b49e9464cc0b0e7aed20c8"
+    },
+    "research/sony_lut/full_val/images/0054_292.png": {
+      "bytes": 4044069,
+      "sha256": "ced80987428f620e8741a172aa8d5b93921bb543f601414f742121bda191877a"
+    },
+    "research/sony_lut/full_val/images/0055_108.png": {
+      "bytes": 6578450,
+      "sha256": "aa09fbe8187576e2c4c182e734b126e903fc0c2cd4d2dded030aa186093760f8"
+    },
+    "research/sony_lut/full_val/images/0056_679.png": {
+      "bytes": 5516961,
+      "sha256": "5fdd46ee6b2eff9650da4764e77c32cbc7cb9a5ce2968f7628e5642a86b049a5"
+    },
+    "research/sony_lut/full_val/images/0057_531.png": {
+      "bytes": 8137602,
+      "sha256": "9198fa2cbca25577744ed06f435e76fa175d465c724f09d5c7a9df9a4340e06f"
+    },
+    "research/sony_lut/full_val/images/0058_67.png": {
+      "bytes": 4163189,
+      "sha256": "87f5175c00f909862d1031558db9275050b4df22defd85c2c38a187de0ceb85d"
+    },
+    "research/sony_lut/full_val/images/0059_545.png": {
+      "bytes": 4346583,
+      "sha256": "9ef1ad61b6e9af31c93279bba851f99d9d78708aa50e6cbc654563b40223343b"
+    },
+    "research/sony_lut/full_val/images/0060_730.png": {
+      "bytes": 5313062,
+      "sha256": "9f032ee520ddb7ae2b38acb5f10e04934735a701cfd42620d3b11bbec57a2bfa"
+    },
+    "research/sony_lut/full_val/images/0061_282.png": {
+      "bytes": 3476752,
+      "sha256": "a04087bdf4a4b2a02b301c82570d82a998896a126925658aa8082f59f6448dc7"
+    },
+    "research/sony_lut/full_val/images/0062_173.png": {
+      "bytes": 6723449,
+      "sha256": "266d9a328f840ea925b3b219a371ad5edcc7345cddaece661b14e1e29dbe071a"
+    },
+    "research/sony_lut/full_val/images/0063_818.png": {
+      "bytes": 7449655,
+      "sha256": "d9f93a55b5d18720124dfca6f55d15e9fda35728e0c975b1bcde6eca323ade63"
+    },
+    "research/sony_lut/full_val/images/0064_552.png": {
+      "bytes": 4805615,
+      "sha256": "8a39105db7da08a20587421630fd0d067169da2d818573c11ec4060ba3619ffb"
+    },
+    "research/sony_lut/full_val/images/0065_567.png": {
+      "bytes": 6369625,
+      "sha256": "e4962b6e59d01ed4d74c10d8249f0cbeb66386d21ac67a59429df57b1b805175"
+    },
+    "research/sony_lut/full_val/images/0066_739.png": {
+      "bytes": 3776987,
+      "sha256": "4c637b3778df0d89bbb474eed0d0c8de234571f81f76b3c9ba074207b7bef48d"
+    },
+    "research/sony_lut/full_val/images/0067_358.png": {
+      "bytes": 3792294,
+      "sha256": "ab9c39953e7019d98fca2ebaa88da7a89282542ae8f91f918ce341d63aa055d8"
+    },
+    "research/sony_lut/full_val/images/0068_176.png": {
+      "bytes": 6324952,
+      "sha256": "e6496561708642ec9018e5e42110651a83f8cdf6a5885c7e2618a71e82b7ce64"
+    },
+    "research/sony_lut/full_val/images/0069_895.png": {
+      "bytes": 4533249,
+      "sha256": "ff4dcc0de274764e708333e013d952e716c36eb46c5e2a3386fd0c4129864def"
+    },
+    "research/sony_lut/full_val/images/0070_228.png": {
+      "bytes": 5457389,
+      "sha256": "34e7fb049b6e96d308f273b2407205586c20a736d3c08d2c75c9ac44496230a4"
+    },
+    "research/sony_lut/full_val/images/0071_690.png": {
+      "bytes": 4416921,
+      "sha256": "02497e97a050845c6e86f734b913b7608c06bb1d58117f55a1d24341a8564eba"
+    },
+    "research/sony_lut/full_val/images/0072_352.png": {
+      "bytes": 3670545,
+      "sha256": "b0a20f7b390f8b605f43a96b74be5e597c4dce87e9113a1b22685bde97195784"
+    },
+    "research/sony_lut/full_val/images/0073_888.png": {
+      "bytes": 4686801,
+      "sha256": "891ac398a15f9e573a39576270560b6708b84de6711e32875e92bab253969c9c"
+    },
+    "research/sony_lut/full_val/images/0074_826.png": {
+      "bytes": 5179993,
+      "sha256": "198f73dab1c35ca3b1350c57a92a4814f0363f37e3be183c41c06854a4135922"
+    },
+    "research/sony_lut/full_val/images/0075_986.png": {
+      "bytes": 5226434,
+      "sha256": "479dfb391df0a8909260f0d4c8d17f8dc626a188d430a66db80b3f5d934fe831"
+    },
+    "research/sony_lut/full_val/images/0076_806.png": {
+      "bytes": 4062506,
+      "sha256": "221bf9d838bdf7839d41ad222f4b9e75e16d577c49b04062ccc2c9738cfe12f1"
+    },
+    "research/sony_lut/full_val/images/0077_269.png": {
+      "bytes": 5066059,
+      "sha256": "7df4cf223ef878633c63e1d1e31a177bb092f1a75e2c450339b1631f384d22a4"
+    },
+    "research/sony_lut/full_val/images/0078_714.png": {
+      "bytes": 3909508,
+      "sha256": "409c0ab15dcf2939fbb736757092a11a016969b89f3505d352dc07dc569f6390"
+    },
+    "research/sony_lut/full_val/images/0079_780.png": {
+      "bytes": 4367138,
+      "sha256": "317849a0501606f0e6c61821a4e1b50526c56c335058cff7a6e44430d7087fb0"
+    },
+    "research/sony_lut/full_val/images/0080_801.png": {
+      "bytes": 6193808,
+      "sha256": "17e8f72232c959abd708bcd7ae5bae2fbf9aba5a0ab4438591de94ad64550d67"
+    },
+    "research/sony_lut/full_val/images/0081_429.png": {
+      "bytes": 3827298,
+      "sha256": "a2990fdf2fd18eab72036753b8a9b9fa260c6e334d820f409fe1982cb66772e4"
+    },
+    "research/sony_lut/full_val/images/0082_549.png": {
+      "bytes": 4455119,
+      "sha256": "9eb9efdf14bc550666be2610472d7f1a6543100976301dbbd8e1ccf16826d13f"
+    },
+    "research/sony_lut/full_val/images/0083_995.png": {
+      "bytes": 5960984,
+      "sha256": "f79ee142c589f4646fa3dfc1ab55e6249a621fc20b67863a88c90a2af825fd35"
+    },
+    "research/sony_lut/full_val/images/0084_201.png": {
+      "bytes": 6958120,
+      "sha256": "09a52c4a4f6f9bcc2cdfe398eb2df09bf551df17d1eaa24d8170ee0657c15a5b"
+    },
+    "research/sony_lut/full_val/images/0085_10.png": {
+      "bytes": 7262576,
+      "sha256": "75a1c4d38198da241ad9a5b3731adc3a48ba0b5630d1fe6a00162492825155a3"
+    },
+    "research/sony_lut/full_val/images/0086_102.png": {
+      "bytes": 5385474,
+      "sha256": "6dd1d7845406d0f4b51ab5d7edfc288be532c13e9a656207ab4fba2e20d12310"
+    },
+    "research/sony_lut/full_val/images/0087_785.png": {
+      "bytes": 9338231,
+      "sha256": "ccbbdd6686f5a8c786941e3bf4b33db88e10cbcffbd52e1d2a86472f09e3ac25"
+    },
+    "research/sony_lut/full_val/images/0088_8.png": {
+      "bytes": 7584340,
+      "sha256": "24c89869dfb3fa292f945128f0da9fea44b5f1bc1d08d3fea2e5dfa85c39c2f9"
+    },
+    "research/sony_lut/full_val/images/0089_905.png": {
+      "bytes": 4674400,
+      "sha256": "f6630c325a7a3250bae246879faac3d81e2ea60d40c41c0dfc5ca6085cb7da86"
+    },
+    "research/sony_lut/full_val/images/0090_23.png": {
+      "bytes": 4423024,
+      "sha256": "897a0d4c3817afb5b60dfaf5f1473a2024a37b6447c707f0ba5ec0ad93032daf"
+    },
+    "research/sony_lut/full_val/metrics.json": {
+      "bytes": 33926,
+      "sha256": "9a7f9ad40149c5834c8e8f2d2f7785dba3cde9d4c7eab82c1f7ed6a8bd520364"
+    },
+    "research/sony_lut/full_val/rows/0000_3.json": {
+      "bytes": 344,
+      "sha256": "3cc3bd8d04040ead78d489483d9aa61882d702ed0ae22d00440289508772b862"
+    },
+    "research/sony_lut/full_val/rows/0001_767.json": {
+      "bytes": 345,
+      "sha256": "7f22dfeecf53b64eed420a835bab7fe5784000e072a8658f4d6e1afa659d7db8"
+    },
+    "research/sony_lut/full_val/rows/0002_400.json": {
+      "bytes": 344,
+      "sha256": "337124e7d4881dcfa94af1e242f5087f12650124e7ee1e76915088730e158ba1"
+    },
+    "research/sony_lut/full_val/rows/0003_212.json": {
+      "bytes": 345,
+      "sha256": "7af2e1f943bb2a52a0c7f33b93eb5d8297732109cf4303fceca831559a2aa31f"
+    },
+    "research/sony_lut/full_val/rows/0004_773.json": {
+      "bytes": 344,
+      "sha256": "50f893edc6ec1bb5773a89befc311446127569e99685af743cec57f483afc218"
+    },
+    "research/sony_lut/full_val/rows/0005_823.json": {
+      "bytes": 345,
+      "sha256": "83bbd1d1845fa0a31be5ced507e54d83e2e596c2b08fbe30e79e84fca18fb344"
+    },
+    "research/sony_lut/full_val/rows/0006_263.json": {
+      "bytes": 344,
+      "sha256": "6e293cf44fbae545fb26385c50d6a00d3d0f937174b3a0c9ca326c3f03ea5d1d"
+    },
+    "research/sony_lut/full_val/rows/0007_622.json": {
+      "bytes": 346,
+      "sha256": "f81a83a32e82e849381bd15ec9a67874b479492218b1f2a3f8401d79889cdc03"
+    },
+    "research/sony_lut/full_val/rows/0008_683.json": {
+      "bytes": 343,
+      "sha256": "00d87c3f8a52c6654c5f98e1ec8074a40a69e3fc3437c396da6b9023c4764784"
+    },
+    "research/sony_lut/full_val/rows/0009_34.json": {
+      "bytes": 345,
+      "sha256": "e1de361cf10019b7f4b7eca69430e477662056682e920b5d3aa1c4bf1f5395d3"
+    },
+    "research/sony_lut/full_val/rows/0010_610.json": {
+      "bytes": 349,
+      "sha256": "9726b58a2341518aafd85b12acbfe19504d4b9ee38d5cc2d81f38fd035a734a8"
+    },
+    "research/sony_lut/full_val/rows/0011_340.json": {
+      "bytes": 345,
+      "sha256": "f8809c95e174c71527d7005d24fb07e857ffbfd267221537326824d15e510432"
+    },
+    "research/sony_lut/full_val/rows/0012_227.json": {
+      "bytes": 348,
+      "sha256": "db8636634741f3e8260905af3749994912657c6099e1f48ca9384a0ececaa7ef"
+    },
+    "research/sony_lut/full_val/rows/0013_325.json": {
+      "bytes": 348,
+      "sha256": "da059c74c0748175d383da27266c97ebd2d5f016e2804d90451a4f3b2bd31bab"
+    },
+    "research/sony_lut/full_val/rows/0014_485.json": {
+      "bytes": 345,
+      "sha256": "71522ff628ae33c3045f84b672b5fdd8029c3a3afded75694771e8d3b1df3898"
+    },
+    "research/sony_lut/full_val/rows/0015_655.json": {
+      "bytes": 342,
+      "sha256": "60a9b9fcd4ec8f6268decf645922b53e3d8ee44f1282459aa36582842da04e1d"
+    },
+    "research/sony_lut/full_val/rows/0016_521.json": {
+      "bytes": 344,
+      "sha256": "67b75f8840da410311ade48303f0e11d3210b724ab48b9103ac929a712a59a26"
+    },
+    "research/sony_lut/full_val/rows/0017_508.json": {
+      "bytes": 346,
+      "sha256": "6dbb67ff7e9d7be074464e01711ef9eacbc53d2bd1df5da065efc3f0ed5bdbfd"
+    },
+    "research/sony_lut/full_val/rows/0018_54.json": {
+      "bytes": 343,
+      "sha256": "e77a04a2d27a6a4d3bbb65b9fbfa938d2da41f3ae9b90ff5373be7dd49bb3980"
+    },
+    "research/sony_lut/full_val/rows/0019_150.json": {
+      "bytes": 346,
+      "sha256": "830fcd1bdd9d4bd1b7bd4a0c14980fdb44f06b3b3977834b6cabe2c37462f317"
+    },
+    "research/sony_lut/full_val/rows/0020_619.json": {
+      "bytes": 346,
+      "sha256": "d10bb6a3aac9cc14b46aea9197c1ebc955eed3baaff809215e8db99229f16bac"
+    },
+    "research/sony_lut/full_val/rows/0021_876.json": {
+      "bytes": 346,
+      "sha256": "a9efee8fea1c7f8ecb3fb81f75f539af6af9185d5d1e6c370917bce998afd5d5"
+    },
+    "research/sony_lut/full_val/rows/0022_697.json": {
+      "bytes": 347,
+      "sha256": "b567d42b93bfec78516f870edc92741810e718856290d15429cb77702b8b6c0e"
+    },
+    "research/sony_lut/full_val/rows/0023_275.json": {
+      "bytes": 339,
+      "sha256": "e596b6d32dd0ad4f2bbafbefc4ea188541a922a246424b1ab6c5ca59f3f4f887"
+    },
+    "research/sony_lut/full_val/rows/0024_502.json": {
+      "bytes": 347,
+      "sha256": "720fee5cf69452f385095d5247e42a43d6cab3b0bc11eb710643ea9dbd75fbc1"
+    },
+    "research/sony_lut/full_val/rows/0025_900.json": {
+      "bytes": 346,
+      "sha256": "e45615c71f6b814072f0ab57d5fa247c88fe8d5c0f734c8ece894de1a3125feb"
+    },
+    "research/sony_lut/full_val/rows/0026_570.json": {
+      "bytes": 348,
+      "sha256": "493ea6ac37d87a4c839174caff9821fddda47b6b958a07d7bed8efaa94fa8f19"
+    },
+    "research/sony_lut/full_val/rows/0027_226.json": {
+      "bytes": 346,
+      "sha256": "1cd2736fd3c36c894b28e992f3656f3b3e4425b3ee3be111b84d5fcce175d4cf"
+    },
+    "research/sony_lut/full_val/rows/0028_137.json": {
+      "bytes": 348,
+      "sha256": "b41c2bac1498e3cdc0bf1e715ebb8d3352f1597fa6609edbb545786f722ed7c4"
+    },
+    "research/sony_lut/full_val/rows/0029_50.json": {
+      "bytes": 344,
+      "sha256": "523f8cbc71ce0353e5d1688541c6a54bfb8529d4b40d6b0c936009c89ba2c643"
+    },
+    "research/sony_lut/full_val/rows/0030_983.json": {
+      "bytes": 345,
+      "sha256": "1ee04820231d02310630f22d2da8a967d3882007297ff3e53d162cb2ada4081a"
+    },
+    "research/sony_lut/full_val/rows/0031_208.json": {
+      "bytes": 346,
+      "sha256": "777d9a668f95cc8c4932374f0f8854057fe64fbac22a3b258d73fa53a10a4dde"
+    },
+    "research/sony_lut/full_val/rows/0032_934.json": {
+      "bytes": 348,
+      "sha256": "df2f35190425bd8b80e9d6f882396c22a48661929cd094e2ef28686d234dad2c"
+    },
+    "research/sony_lut/full_val/rows/0033_2.json": {
+      "bytes": 343,
+      "sha256": "f63509b32471e1be4256bea5050e301e6c2a0d966ef3dc072c7852191aae8804"
+    },
+    "research/sony_lut/full_val/rows/0034_85.json": {
+      "bytes": 345,
+      "sha256": "d15d21d890fd43397b93133c6120a14d1b36233c3aafbd288eebfc9ba20df25c"
+    },
+    "research/sony_lut/full_val/rows/0035_939.json": {
+      "bytes": 346,
+      "sha256": "fb784b56f17a9ed34d5ba0854190bdd939a17e7bd08b431b0274e6f96cf674ae"
+    },
+    "research/sony_lut/full_val/rows/0036_372.json": {
+      "bytes": 345,
+      "sha256": "47bc82ff68f6c1c4790885161f1ee799181722ef06171a88ab592a158d8bcb78"
+    },
+    "research/sony_lut/full_val/rows/0037_553.json": {
+      "bytes": 347,
+      "sha256": "b8d97b15d3e7c4914675e3117925ce5ad68c415bb4f93598b0b1351839874967"
+    },
+    "research/sony_lut/full_val/rows/0038_1000.json": {
+      "bytes": 347,
+      "sha256": "7f178080839784470298aad38998efdbdc06917653db88d6fb289fd3bc7df862"
+    },
+    "research/sony_lut/full_val/rows/0039_100.json": {
+      "bytes": 347,
+      "sha256": "e800e26db4fc296d4ed1da9f45618e355a067158384e15f92ae4ea758f56cddc"
+    },
+    "research/sony_lut/full_val/rows/0040_674.json": {
+      "bytes": 343,
+      "sha256": "ffa8535f6afb42cd9490049542855b3bc99582e497517916a2b1b5dbe77602ae"
+    },
+    "research/sony_lut/full_val/rows/0041_764.json": {
+      "bytes": 345,
+      "sha256": "277b465e388db8e94fa110df28c366b5d160b08fd9f8322538d535efb5cb52e5"
+    },
+    "research/sony_lut/full_val/rows/0042_474.json": {
+      "bytes": 344,
+      "sha256": "370faf4e6247ecc7e0024500b87aaebf727d5fc5989f70ade7be24eb90445abe"
+    },
+    "research/sony_lut/full_val/rows/0043_839.json": {
+      "bytes": 348,
+      "sha256": "faaf1241bc15c724ed8c3c928bd404d113d2cfadab28c6a285d46fb4a3a0ff7e"
+    },
+    "research/sony_lut/full_val/rows/0044_528.json": {
+      "bytes": 342,
+      "sha256": "ac45643d5d9d3af83fbcb8ade14955113d5422d4be7ff4e6e3e5acb91f4f1b99"
+    },
+    "research/sony_lut/full_val/rows/0045_182.json": {
+      "bytes": 344,
+      "sha256": "970ac46d1917c1f6af527c3651f1290ab5761950d63ea11545ec4fbf3d9ec93c"
+    },
+    "research/sony_lut/full_val/rows/0046_52.json": {
+      "bytes": 345,
+      "sha256": "7736be08210a5a00801a2ad9f2fd6976f83f888cae09caf3650237ff567e8c07"
+    },
+    "research/sony_lut/full_val/rows/0047_81.json": {
+      "bytes": 345,
+      "sha256": "8fbd8358c444574bd054fdd6e303af351f70de940efad69eb341f5333a4ebd4e"
+    },
+    "research/sony_lut/full_val/rows/0048_423.json": {
+      "bytes": 345,
+      "sha256": "f089c458fee5a93c5f7ab140987c0d21d3da0864692cc8829b8364ae321f0cc6"
+    },
+    "research/sony_lut/full_val/rows/0049_814.json": {
+      "bytes": 345,
+      "sha256": "93e9901ddfcd30de33dff6c4867bf924e95c9d44412deceeb61fd74230773027"
+    },
+    "research/sony_lut/full_val/rows/0050_69.json": {
+      "bytes": 347,
+      "sha256": "dea019cf970c80cc4207fad040b3a5c87ec1842be769bf6466fe7678a3873432"
+    },
+    "research/sony_lut/full_val/rows/0051_312.json": {
+      "bytes": 350,
+      "sha256": "3a1b51d9af6758309b6dadc7800de28b75cdc05e83fafc8e7b669fbae1dfa09b"
+    },
+    "research/sony_lut/full_val/rows/0052_94.json": {
+      "bytes": 346,
+      "sha256": "35daf9545c93c0ba80696d1bbad7407da86364dade3b4663103b3ef6ffc42ca7"
+    },
+    "research/sony_lut/full_val/rows/0053_630.json": {
+      "bytes": 344,
+      "sha256": "e0527ecd20ae5c4acf46b4316071b40cb19228d09bd77d9596b094e505ca7f48"
+    },
+    "research/sony_lut/full_val/rows/0054_292.json": {
+      "bytes": 346,
+      "sha256": "f6167f41b635584edd081d6303abefc2983db12be6e35161106bae3601f4de04"
+    },
+    "research/sony_lut/full_val/rows/0055_108.json": {
+      "bytes": 347,
+      "sha256": "71f8a48cc306a00f63d0a1bc4ae99c54ca411692ab1035c4e22355f3971cf7cd"
+    },
+    "research/sony_lut/full_val/rows/0056_679.json": {
+      "bytes": 347,
+      "sha256": "77f6c3baeeb5d806d5c4b1568481ecb59f9f59eb86a037c57261de2453810b4e"
+    },
+    "research/sony_lut/full_val/rows/0057_531.json": {
+      "bytes": 347,
+      "sha256": "85e7381e4b1ea8c6924e932313614cad7d7663cb089c1848875e38a69b78ba2c"
+    },
+    "research/sony_lut/full_val/rows/0058_67.json": {
+      "bytes": 344,
+      "sha256": "74e92ebe798199574a4989633b8d082d540105950e60a84403f0f53acc95748e"
+    },
+    "research/sony_lut/full_val/rows/0059_545.json": {
+      "bytes": 345,
+      "sha256": "becd19625914cb2b6516ab5a6a93279753f2cf3edf41fc37ca4780c294a58fc2"
+    },
+    "research/sony_lut/full_val/rows/0060_730.json": {
+      "bytes": 344,
+      "sha256": "dcc5714bfdfc43f322f46c7a3699afbfe82754895328a9170c6fb3f5c02dcb12"
+    },
+    "research/sony_lut/full_val/rows/0061_282.json": {
+      "bytes": 347,
+      "sha256": "1155fc5f21e972bc30a0a9f14b49542edb082e7229b499ac920c708de51ddb64"
+    },
+    "research/sony_lut/full_val/rows/0062_173.json": {
+      "bytes": 348,
+      "sha256": "c4b094a452f868fd09712ecdc831089f648285317d46be81c5dc989739662c7d"
+    },
+    "research/sony_lut/full_val/rows/0063_818.json": {
+      "bytes": 342,
+      "sha256": "c0b21fc5383b2f2e9255c186945e976d2ae607cbadd462bb58c6b88108913e80"
+    },
+    "research/sony_lut/full_val/rows/0064_552.json": {
+      "bytes": 347,
+      "sha256": "f692eb3793425c4f86ce293ba3e931fe1d1f832b07ab187afa54050a61521441"
+    },
+    "research/sony_lut/full_val/rows/0065_567.json": {
+      "bytes": 344,
+      "sha256": "cd17cca1582941b1756fd07e3d4fd1fe4eaa7dc61f18736cecfdccf7105283df"
+    },
+    "research/sony_lut/full_val/rows/0066_739.json": {
+      "bytes": 349,
+      "sha256": "f05183cdcdce8a256d993260ad1f011290b88a245ed50d2e580c07d598d83df7"
+    },
+    "research/sony_lut/full_val/rows/0067_358.json": {
+      "bytes": 347,
+      "sha256": "00ae357e551f8902a86609d566517e587616a68f16661fbaffc72079d3e9339b"
+    },
+    "research/sony_lut/full_val/rows/0068_176.json": {
+      "bytes": 347,
+      "sha256": "f8f430c6a86ae8cb5c9d3e2db9082bc24a4c1c7475a7f153f1bda9c130ec704b"
+    },
+    "research/sony_lut/full_val/rows/0069_895.json": {
+      "bytes": 346,
+      "sha256": "d8f67a04136ad3696bf187118e61785e0279636fe56be9a402d5e5687e786f6f"
+    },
+    "research/sony_lut/full_val/rows/0070_228.json": {
+      "bytes": 344,
+      "sha256": "fdc4019b686887cae49b45c40734a9e63ee5998f352f30f546d2b38886147fdb"
+    },
+    "research/sony_lut/full_val/rows/0071_690.json": {
+      "bytes": 348,
+      "sha256": "0bfcdaea9020400e77475f2483e4640e7a0ba6ed43dcead548a70372474877ba"
+    },
+    "research/sony_lut/full_val/rows/0072_352.json": {
+      "bytes": 345,
+      "sha256": "a5de006caa103ed8dacadea21bd53fb2b414e95c9603154a945a070e91540b70"
+    },
+    "research/sony_lut/full_val/rows/0073_888.json": {
+      "bytes": 349,
+      "sha256": "a71861fdc38388979029ea70faaebdfc926368c2df716b4e4672cb933d5d65e7"
+    },
+    "research/sony_lut/full_val/rows/0074_826.json": {
+      "bytes": 347,
+      "sha256": "026772e1504abe402fffac11501aa15b45530a2b5d738a94e6f2b8efe424bf5b"
+    },
+    "research/sony_lut/full_val/rows/0075_986.json": {
+      "bytes": 349,
+      "sha256": "3ac06bbb5f394f2827b83b18f51dde4ae8663c932ea0e0e720f002c6a3bb1d67"
+    },
+    "research/sony_lut/full_val/rows/0076_806.json": {
+      "bytes": 346,
+      "sha256": "05838562059100e1be2deffd32f1edd605273ac48b005e95924348e5755d36b3"
+    },
+    "research/sony_lut/full_val/rows/0077_269.json": {
+      "bytes": 347,
+      "sha256": "cf6b40971bcd66991112b3e9bbf09caecaca8387ce6995cc888bf326affed1e7"
+    },
+    "research/sony_lut/full_val/rows/0078_714.json": {
+      "bytes": 346,
+      "sha256": "a0d60e85820d68c6049fae7fddb96a12d339084c41a09ef12e9e934ea9b139da"
+    },
+    "research/sony_lut/full_val/rows/0079_780.json": {
+      "bytes": 346,
+      "sha256": "ad6a895241a2a1d04f6fbad38ca39bd278cb686da9c0c3b4b429f45ce423b9c6"
+    },
+    "research/sony_lut/full_val/rows/0080_801.json": {
+      "bytes": 346,
+      "sha256": "eb7cfb0941567fa0319413768368083caabc615251c3e9983e32e899fa0ee296"
+    },
+    "research/sony_lut/full_val/rows/0081_429.json": {
+      "bytes": 345,
+      "sha256": "36bc0af0dc69630eae4b71ce5a1a38088a81243ac2b1dd3c2a4d9a33b2d0e6cf"
+    },
+    "research/sony_lut/full_val/rows/0082_549.json": {
+      "bytes": 347,
+      "sha256": "9d96263da5205782f4eb2e6a401ae39cc50fd1c2d99a5dc9c58343abbcdc451e"
+    },
+    "research/sony_lut/full_val/rows/0083_995.json": {
+      "bytes": 345,
+      "sha256": "356f01ddbecf8f38d0d81d22a36bbc29a0a8d942e0385bc0160c1cdca9175b6c"
+    },
+    "research/sony_lut/full_val/rows/0084_201.json": {
+      "bytes": 347,
+      "sha256": "48edfbca6e53223cc2eee84524fbd2c2c4ed040ad1847f91c6f2880dd65b1b62"
+    },
+    "research/sony_lut/full_val/rows/0085_10.json": {
+      "bytes": 348,
+      "sha256": "3f456249a0a1bd7ef5aa8d7aac9afe6df61363df81e7bab64a897bd6b22c93a6"
+    },
+    "research/sony_lut/full_val/rows/0086_102.json": {
+      "bytes": 347,
+      "sha256": "b78142cd0dec0d2ad45d4af4c7919e6c07fc936814159ccf0b1d6a93a65eadd1"
+    },
+    "research/sony_lut/full_val/rows/0087_785.json": {
+      "bytes": 346,
+      "sha256": "ee4feab1df31a899f8d4e366f576bf7742601d3559a7e1ab72e41b6ab3246a5b"
+    },
+    "research/sony_lut/full_val/rows/0088_8.json": {
+      "bytes": 346,
+      "sha256": "e89acf73828551e8201225ef7e5c3d456ec77d43dd41909f3d4c68ba6d44fb82"
+    },
+    "research/sony_lut/full_val/rows/0089_905.json": {
+      "bytes": 347,
+      "sha256": "6aae739b06b025a04046c7b1de90f9aa44f04d6d815d895378d7f14753b3b02f"
+    },
+    "research/sony_lut/full_val/rows/0090_23.json": {
+      "bytes": 348,
+      "sha256": "1f2857aaf84f449a9009f7e2278fde9d4e4954b6f94d868a497836120be4e75b"
+    },
+    "research/sony_lut/full_val/summary.json": {
+      "bytes": 346,
+      "sha256": "e462bc8f7c0e77b27a7fb133ac1e9e204961353ffb77f1008da0e8655a07948e"
+    },
+    "research/sony_lut/result.json": {
+      "bytes": 1366,
+      "sha256": "5184105af5557ca14a0ba5fc4a82ef07f3ee52210c2ee8588f122299fc76400b"
+    },
+    "research/sony_lut/started.json": {
+      "bytes": 219,
+      "sha256": "eeb4e1bd368961eaa7bdf43a376ddda4130e781d686f9bb3ddefb4673f9fbf4f"
+    },
+    "research/sony_lut/training.jsonl": {
+      "bytes": 1619,
+      "sha256": "6c4d2a79fb3881c4cf4c7d5e8d3a77f0e088f26b494b0bc4e636e375e4b00acd"
+    },
+    "research/sony_lut/validation_1000.json": {
+      "bytes": 347,
+      "sha256": "fa6d4c19ae269153fdb66dc7aafefb99afab847a55308685063c8ab236254d91"
+    },
+    "research/sony_lut/validation_250.json": {
+      "bytes": 347,
+      "sha256": "c294716ca124949d2d904288512ccb04e6a63687078e01d2590e1cc24d306700"
+    },
+    "research/sony_lut/validation_500.json": {
+      "bytes": 345,
+      "sha256": "75ae73248cde7f75fc44c4876773dd7c4ac69a3435f96dbd4d0e99a006fc8600"
+    },
+    "research/sony_lut/validation_750.json": {
+      "bytes": 346,
+      "sha256": "c67c1ed8e000d90c38a037b8cada56e6f412fa41876f35e1c76a2702dbfa7474"
+    },
+    "selection.json": {
+      "bytes": 1366,
+      "sha256": "5184105af5557ca14a0ba5fc4a82ef07f3ee52210c2ee8588f122299fc76400b"
+    }
+  }
+}

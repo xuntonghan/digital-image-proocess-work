@@ -1,0 +1,12 @@
+{
+  "verified": true,
+  "checked_at": "2026-10-25T18:26:28.532284+08:00",
+  "step": 1000,
+  "bytes": 316693,
+  "sha256": "13bce17147874633d9b7618d75f8f6b201825d04dab43a89a9a5181ac36c5f01",
+  "baseline_binding_sha256": "2b754494bb2a8725cc21ffd6fa92fe524886f399acbe5632334cd1a473ce90e5",
+  "cpu_weights_only_load": true,
+  "all_tensors_finite": true,
+  "snapshot": "outputs/sony1000_20261025/research/sony_lut/snapshots/step_001000_13bce1714787.pt",
+  "final_1000_complete": false
+}
