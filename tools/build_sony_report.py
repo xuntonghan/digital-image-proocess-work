@@ -203,14 +203,27 @@ python3 cloud/verify_sony1000.py
         content = content.replace(r'\bibitem{uvdoc}', r'\bibitem{gtmean} Jingxi Liao, Shijie Hao, Richang Hong, Meng Wang. GT-Mean Loss: A Simple Yet Effective Solution for Brightness Mismatch in Low-Light Image Enhancement. ICCV, 2025, 6112--6121. \url{https://github.com/jingxiLiao/GT-mean-loss}.' + '\n' + r'\bibitem{uvdoc}')
     content = content.replace(r'\begin{thebibliography}{9}', r'\begin{thebibliography}{99}')
     main_path.write_text(content)
+    appendix_path = REPORT / 'geometry_compression.tex'
+    appendix_original = appendix_path.read_text()
+    appendix_updated = appendix_original.replace('25组对比图与参考资料', '31组对比图与参考资料').replace(
+        'NAF、最终LUT、两个色彩表对照和光度v2，附SHA256核验脚本',
+        'Canon原5份权重、Sony最终色彩表和两个未采用对照，共8份，附SHA256核验脚本')
+    # Only the submission inventory changes. Keep all prior experiment text intact.
+    inventory_start = r'\part{提交与复核}'
+    assert appendix_original.split(inventory_start)[0] == appendix_updated.split(inventory_start)[0]
+    appendix_path.write_text(appendix_updated)
     metadata = {'camera': 'sony', 'statistics': verified, 'summary': summary, 'binding': binding,
                 'visualizations': visual, 'followup_research': research, 'execution_equivalence': speed,
                 'source_commit': commit, 'selected_weight': {'source': str(weight.relative_to(ROOT)),
                 'packaged_name': 'sony_color_lut_selected.pt', 'bytes': weight.stat().st_size,
-                'sha256': sha(weight)}, 'original_other_tex_and_images_sha256': before}
+                'sha256': sha(weight)}, 'original_other_tex_and_images_sha256': before,
+                'submission_inventory_updated': True}
     (REPORT / 'sony_report_data.json').write_text(json.dumps(metadata, ensure_ascii=False, indent=2)+'\n')
-    assert all(sha(REPORT / name) == value for name, value in before.items())
-    print(json.dumps({'verified_count':1000,'sony_examples':6,'new_tex_files':2,'old_other_sources_and_images_unchanged':True},ensure_ascii=False))
+    assert all(sha(REPORT / name) == value for name, value in before.items()
+               if name != 'geometry_compression.tex')
+    print(json.dumps({'verified_count':1000,'sony_examples':6,'new_tex_files':2,
+                      'original_experiment_text_and_images_unchanged':True,
+                      'submission_inventory_updated':True},ensure_ascii=False))
 
 
 if __name__ == '__main__':
