@@ -1,0 +1,26 @@
+{
+  "count": 12,
+  "split": "train",
+  "native_float_predictions_bit_identical": true,
+  "native_png_bytes_identical": true,
+  "float32_color_pairs_identical": true,
+  "maximum_metric_absolute_difference": {
+    "psnr": 0.0,
+    "ssim": 0.0,
+    "delta_e2000_mean": 0.0,
+    "delta_e2000_p95": 0.0,
+    "lightness_mae": 0.0,
+    "saturation_mae": 0.0,
+    "hue_error_degrees": 0.0,
+    "lpips": 0.0
+  },
+  "serial_summed_row_wall_seconds": 151.77966181188822,
+  "parallel_prepare_wall_seconds": 82.84612710773945,
+  "serial_seconds_per_image": 12.648305150990685,
+  "parallel_seconds_per_image_throughput": 6.903843925644954,
+  "observed_preparation_throughput_ratio": 1.8320670755616895,
+  "caveat": "Fixed 12-image preparation pilot, includes startup/cache conditions; not a full-experiment or model-training speedup.",
+  "new_source_sha256": "055744645fd3bbd460bc8a8a76bb0c212e85ed63b381e962e9494662b337f036",
+  "old_binding_sha256": "ebfd170579a6a3e27b2ec49a9066634f99c75c1a2860d18f422aa9bc44e82418",
+  "new_binding_sha256": "2b754494bb2a8725cc21ffd6fa92fe524886f399acbe5632334cd1a473ce90e5"
+}

@@ -1,0 +1,7 @@
+{
+  "pairs": 1000,
+  "files": 2000,
+  "checked_bytes": 18653873890,
+  "matches_original_sony_audit_byte_total": true,
+  "official_checkpoint_sha256": "7379cdec9401b92ea28b26568a5b33f7e72be06a0e7c12d1c76f76e3499f693d"
+}

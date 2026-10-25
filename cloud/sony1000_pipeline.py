@@ -14,8 +14,11 @@ import math
 import os
 import random
 import shutil
+import threading
 import time
 import zipfile
+from collections import deque
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from evaluate_sied1000 import METRICS, make_color_training_pair, sha256, summarize
@@ -95,6 +98,8 @@ class Experiment:
         from dip_course.io import RawSpec, read_pair_manifest
         from dip_course.metrics import LPIPSMetric
         self.torch = torch
+        self.cache_lock = threading.Lock()
+        self.lpips_lock = threading.Lock()
         self.limit_new = limit_new
         self.root = root.resolve()
         self.project = self.root / 'project'
@@ -129,6 +134,7 @@ class Experiment:
             'official_commit': OFFICIAL_COMMIT, 'official_sha256': sha256(self.checkpoint),
             'protocol': self.protocol,
             'train_cache': 'lossless FP32 deflate1, at most 40 GiB; uncached bases are regenerated',
+            'preparation_execution': 'one seeded diffusion producer, two bounded metric/I/O workers',
             'all_manifest_sha256': sha256(self.project / 'manifests/source/sony_all.txt'),
             'split_manifests_sha256': {s: sha256(self.project / f'manifests/enhancement/sony_{s}.txt')
                                      for s in COUNTS},
@@ -189,7 +195,10 @@ class Experiment:
     def metrics(self, prediction, target):
         from dip_course.metrics import color_fidelity_metrics, psnr_rgb, ssim_rgb
         result = {'psnr': psnr_rgb(prediction, target), 'ssim': ssim_rgb(prediction, target),
-                  **color_fidelity_metrics(prediction, target), 'lpips': self.lpips(prediction, target)}
+                  **color_fidelity_metrics(prediction, target)}
+        # LPIPS is shared across CPU workers; only its GPU forward is serialized.
+        with self.lpips_lock:
+            result['lpips'] = self.lpips(prediction, target)
         if not all(math.isfinite(float(v)) for v in result.values()):
             raise ValueError('Nonfinite image metric; refusing to drop the image')
         return result
@@ -213,59 +222,88 @@ class Experiment:
         summarize([row])
         return row
 
-    def prepare(self):
+    def prepare_row(self, split, index, record, prediction, seeds, started, inference_seconds):
         from dip_course.io import save_rgb
-        completed = 0
-        new_count = 0
-        for split in ['train', 'val']:
-            for index, record in enumerate(self.records[split]):
-                name = f'{index:04d}_{record.key}'
-                row_path = self.prepared / f'rows/{split}/{name}.json'
-                if row_path.exists():
-                    self.load_prepared(split, index, record)
-                    completed += 1
-                    continue
-                self.check_space()
-                started = time.perf_counter()
-                prediction, seeds = self.infer(split, index, record)
-                # The reference is opened after the blind prediction has been fixed.
-                target = self.target(record)
-                row = {'split': split, 'index': index, 'key': record.key,
-                       'binding_sha256': self.binding_hash, 'seeds': seeds,
-                       'base_tensor_sha256': tensor_digest(prediction),
-                       **self.metrics(prediction, target)}
-                artifacts = {'color_pair': (f'color_pairs/{split}/{name}.npy',
-                                           make_color_training_pair(prediction, target))}
-                if split == 'val':
-                    artifacts['native_val'] = (f'native_val/{name}.npy', prediction)
-                for field, (relative, array) in artifacts.items():
-                    array_save(self.prepared / relative, array)
-                    row[field] = relative
-                    row[field + '_sha256'] = sha256(self.prepared / relative)
-                if split == 'train' and self.native_cache_bytes + prediction.nbytes < 40 * 1024**3:
-                    cache_started = time.perf_counter()
-                    relative = f'native_train/{name}.npz'
-                    compressed_array_save(self.prepared / relative, prediction)
-                    row['native_train'] = relative
-                    row['native_train_sha256'] = sha256(self.prepared / relative)
-                    cache_size = (self.prepared / relative).stat().st_size
-                    self.native_cache_bytes += cache_size
-                    row['native_cache_bytes'] = cache_size
-                    row['native_cache_seconds'] = time.perf_counter() - cache_started
-                row['png'] = f'images/{split}/{name}.png'
-                save_rgb(self.prepared / row['png'], prediction)
-                row['png_sha256'] = sha256(self.prepared / row['png'])
-                row['wall_seconds'] = time.perf_counter() - started
-                write_json(row_path, row)
-                completed += 1
-                new_count += 1
-                progress = {'state': 'preparing_train_val', 'completed': completed, 'total': 913,
-                            'last_split': split, 'last_key': record.key, 'wall_seconds': row['wall_seconds']}
-                write_json(self.root / 'logs/progress.json', progress)
-                print(json.dumps(progress), flush=True)
-                if self.limit_new and new_count >= self.limit_new:
-                    print('TRAIN_PILOT_ONLY: no partial overall score', flush=True)
-                    return
+
+        name = f'{index:04d}_{record.key}'
+        target = self.target(record)  # Already-predicted RGB only; no GT-conditioned inference.
+        row = {'split': split, 'index': index, 'key': record.key,
+               'binding_sha256': self.binding_hash, 'seeds': seeds,
+               'inference_seconds': inference_seconds,
+               'base_tensor_sha256': tensor_digest(prediction),
+               **self.metrics(prediction, target)}
+        artifacts = {'color_pair': (f'color_pairs/{split}/{name}.npy',
+                                   make_color_training_pair(prediction, target))}
+        if split == 'val':
+            artifacts['native_val'] = (f'native_val/{name}.npy', prediction)
+        for field, (relative, array) in artifacts.items():
+            array_save(self.prepared / relative, array)
+            row[field] = relative
+            row[field + '_sha256'] = sha256(self.prepared / relative)
+        reserve = 0
+        with self.cache_lock:
+            if split == 'train' and self.native_cache_bytes + prediction.nbytes < 40 * 1024**3:
+                reserve = prediction.nbytes
+                self.native_cache_bytes += reserve
+        if reserve:
+            cache_started = time.perf_counter()
+            relative = f'native_train/{name}.npz'
+            compressed_array_save(self.prepared / relative, prediction)
+            row['native_train'] = relative
+            row['native_train_sha256'] = sha256(self.prepared / relative)
+            cache_size = (self.prepared / relative).stat().st_size
+            with self.cache_lock:
+                self.native_cache_bytes += cache_size - reserve
+            row['native_cache_bytes'] = cache_size
+            row['native_cache_seconds'] = time.perf_counter() - cache_started
+        row['png'] = f'images/{split}/{name}.png'
+        save_rgb(self.prepared / row['png'], prediction)
+        row['png_sha256'] = sha256(self.prepared / row['png'])
+        row['wall_seconds'] = time.perf_counter() - started
+        write_json(self.prepared / f'rows/{split}/{name}.json', row)
+        return row
+
+    def prepare(self):
+        completed, new_count, scheduled = 0, 0, 0
+        pending = deque()
+        run_started = time.perf_counter()
+
+        def commit(row):
+            nonlocal completed, new_count
+            completed += 1
+            new_count += 1
+            progress = {'state': 'preparing_train_val', 'completed': completed, 'total': 913,
+                        'last_split': row['split'], 'last_key': row['key'],
+                        'wall_seconds': row['wall_seconds'],
+                        'new_images_per_second': new_count / (time.perf_counter() - run_started)}
+            write_json(self.root / 'logs/progress.json', progress)
+            print(json.dumps(progress), flush=True)
+
+        # Bounded futures keep at most two metric/I/O jobs and one producer image in RAM.
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            for split in ['train', 'val']:
+                for index, record in enumerate(self.records[split]):
+                    path = self.prepared / f'rows/{split}/{index:04d}_{record.key}.json'
+                    if path.exists():
+                        self.load_prepared(split, index, record)
+                        completed += 1
+                        continue
+                    if self.limit_new and scheduled >= self.limit_new:
+                        while pending:
+                            commit(pending.popleft().result())
+                        print('TRAIN_PILOT_ONLY: no partial overall score', flush=True)
+                        return
+                    self.check_space()
+                    started = time.perf_counter()
+                    prediction, seeds = self.infer(split, index, record)
+                    inference_seconds = time.perf_counter() - started
+                    pending.append(pool.submit(self.prepare_row, split, index, record,
+                                               prediction, seeds, started, inference_seconds))
+                    scheduled += 1
+                    if len(pending) >= 2:
+                        commit(pending.popleft().result())
+            while pending:
+                commit(pending.popleft().result())
         write_json(self.prepared / 'complete.json', {'count': completed, 'binding_sha256': self.binding_hash})
 
     def validate(self, model, indices, out):
@@ -526,7 +564,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', type=Path, required=True)
     parser.add_argument('--phase', choices=['prepare', 'research', 'finalize'], required=True)
-    parser.add_argument('--limit-new', type=int, choices=[0, 3], default=0)
+    parser.add_argument('--limit-new', type=int, choices=[0, 3, 12], default=0)
     args = parser.parse_args()
     if args.limit_new and args.phase != 'prepare':
         parser.error('--limit-new is a train-only preparation smoke run')
