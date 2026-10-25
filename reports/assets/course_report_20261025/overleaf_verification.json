@@ -2,11 +2,18 @@
   "project": "https://www.overleaf.com/project/6add596b98e1731c2180da9c",
   "compiler": "XeLaTeX",
   "sony_1000_count": 1000,
-  "tex_files": 10,
+  "tex_files": 11,
   "figure_files": 193,
   "all_tex_and_figures_byte_identical": true,
-  "browser_source_zip_sha256": "0a5075080a7ee6f943356b8523ceb7737bea5439bdc2230d6931a50beb6bb980",
+  "browser_source_zip_sha256": "b7b85348b87d626a3252d6e85bd5f9a82fae63a0934507a4169fb87c90e68673",
   "source_commit": "ef3c0b46b86177890dde9def4c581215dd9f4e2e",
   "old_source_backed_up_before_overwrite": true,
-  "submission_inventory_updated_to_31_groups_8_weights": true
+  "submission_inventory_updated_to_31_groups_8_weights": true,
+  "first_part_structure": [
+    "Canon实验",
+    "Sony实验",
+    "图像增强实验总结"
+  ],
+  "other_tasks_unchanged": true,
+  "report_revision": "v4"
 }

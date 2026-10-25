@@ -1,0 +1,17 @@
+{
+  "revision": "v4",
+  "pdf_pages": 44,
+  "physical_page_locations": {
+    "canon": 4,
+    "sony": 19,
+    "enhancement_summary": 26,
+    "geometry": 27,
+    "compression": 34,
+    "submission": 43
+  },
+  "outer_bytes": 124492083,
+  "outer_sha256": "6c442f68228c98a1e6a383e1955000698c61d463dfa7a767cd4fab87d1350918",
+  "all_zip_crc_and_inner_manifest_hashes_verified": true,
+  "all_weights_and_model_metrics_unchanged": true,
+  "independent_unpack_completed": true
+}

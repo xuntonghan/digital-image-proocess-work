@@ -1,5 +1,5 @@
 {
-  "revision": "v3 Sony1000 complete",
+  "revision": "v4 separate Canon and Sony experiments",
   "sony_statistics": {
     "verified": true,
     "count": 1000,
@@ -64,34 +64,34 @@
   "sony_source_commit": "ef3c0b46b86177890dde9def4c581215dd9f4e2e",
   "eight_canon_frozen_sources_match": true,
   "pdf": {
-    "pages": 43,
-    "bytes": 43898363,
-    "sha256": "4cb6e791f7817f646b4bfaf16b8c2bc1aa993002ad2adf711a7f94d222f46fc0",
+    "pages": 44,
+    "bytes": 43900414,
+    "sha256": "8a874eb4e961c9a3a9a1b5ea9c1de8b615a20b921fec34b2643efedeb5fc79c9",
     "origin": "Overleaf XeLaTeX browser compilation",
     "path": "output/pdf/韩勋同-2025312132086-数字图像处理课程实习综合报告.pdf",
     "source_commit": "ef3c0b46b86177890dde9def4c581215dd9f4e2e",
     "sony_1000_count": 1000,
     "all_pages_visual_qa_passed": true,
-    "rendered_pages": 43,
+    "rendered_pages": 44,
     "github_links": [
       {
         "page": 1,
         "url": "https://github.com/xuntonghan/digital-image-proocess-work"
       },
       {
-        "page": 18,
+        "page": 17,
         "url": "https://github.com/xuntonghan/digital-image-proocess-work"
       },
       {
-        "page": 18,
+        "page": 17,
         "url": "https://github.com/xuntonghan/digital-image-proocess-work/releases"
       },
       {
-        "page": 42,
+        "page": 43,
         "url": "https://github.com/xuntonghan/digital-image-proocess-work"
       },
       {
-        "page": 42,
+        "page": 43,
         "url": "https://github.com/xuntonghan/digital-image-proocess-work/releases"
       }
     ],
@@ -102,49 +102,57 @@
       "compression": 5
     },
     "visual_qa": {
-      "all_43_pages_reviewed": true,
-      "latest_changed_pages_1_22_42_reviewed_at_full_size": true,
-      "all_original_experiment_text_and_145_images_preserved": true,
-      "submission_table_updated_to_31_groups_8_weights": true,
+      "all_44_overleaf_pages_reviewed": true,
+      "summary_reviewed_at_full_size": true,
+      "original_geometry_and_compression_sources_unchanged": true,
+      "all_193_images_unchanged": true,
       "layout_issues_found": 0
     },
-    "render_directory": "tmp/pdfs/sony_overleaf_render"
+    "render_directory": "tmp/pdfs/camera_split_overleaf_final_render",
+    "revision": "v4 Canon and Sony separate experiments"
   },
   "overleaf": {
     "project": "https://www.overleaf.com/project/6add596b98e1731c2180da9c",
     "compiler": "XeLaTeX",
     "sony_1000_count": 1000,
-    "tex_files": 10,
+    "tex_files": 11,
     "figure_files": 193,
     "all_tex_and_figures_byte_identical": true,
-    "browser_source_zip_sha256": "0a5075080a7ee6f943356b8523ceb7737bea5439bdc2230d6931a50beb6bb980",
+    "browser_source_zip_sha256": "b7b85348b87d626a3252d6e85bd5f9a82fae63a0934507a4169fb87c90e68673",
     "source_commit": "ef3c0b46b86177890dde9def4c581215dd9f4e2e",
     "old_source_backed_up_before_overwrite": true,
-    "submission_inventory_updated_to_31_groups_8_weights": true
+    "submission_inventory_updated_to_31_groups_8_weights": true,
+    "first_part_structure": [
+      "Canon实验",
+      "Sony实验",
+      "图像增强实验总结"
+    ],
+    "other_tasks_unchanged": true,
+    "report_revision": "v4"
   },
   "included_weight_count": 8,
   "代码与指标.zip": {
-    "bytes": 2289264,
-    "sha256": "005b961117475a8f1902d701895547ca26641449607cae60ccf5101dbf31d390"
+    "bytes": 2290265,
+    "sha256": "722a8efe91d3c709eacb8bf1473220d39033b474f9c1df22ed32d7cd58973f7a"
   },
   "自训增强权重.zip": {
     "bytes": 34861303,
     "sha256": "7cba40b91e93de778ae0503430f8bc317335845e674ccdbf2ed350c41d326820"
   },
   "Overleaf_LaTeX工程.zip": {
-    "bytes": 43401407,
-    "sha256": "a9f796b845f7eb5a8b8cf2641d4a053a39b6b7197dc187a22816ca894f6b41d4"
+    "bytes": 43403710,
+    "sha256": "89286cc23bf3d10cadf04336f7cdbeb6f380f8134794632313fff5898cb6c028"
   },
   "independent_unpack": {
     "verified": true,
     "zip_crc": {
       "Overleaf_LaTeX工程.zip": {
-        "entries": 208,
-        "sha256": "a9f796b845f7eb5a8b8cf2641d4a053a39b6b7197dc187a22816ca894f6b41d4"
+        "entries": 210,
+        "sha256": "89286cc23bf3d10cadf04336f7cdbeb6f380f8134794632313fff5898cb6c028"
       },
       "代码与指标.zip": {
-        "entries": 382,
-        "sha256": "005b961117475a8f1902d701895547ca26641449607cae60ccf5101dbf31d390"
+        "entries": 383,
+        "sha256": "722a8efe91d3c709eacb8bf1473220d39033b474f9c1df22ed32d7cd58973f7a"
       },
       "自训增强权重.zip": {
         "entries": 11,
@@ -305,10 +313,44 @@
         "原GeoCorrection数据和旧PageMaskUNet权重未附带，保留历史指标、划分与源码。"
       ]
     },
-    "report_pdf_pages": 43,
+    "report_pdf_pages": 44,
     "comparison_groups": 31,
     "required_metrics_present": true,
-    "standalone_deployment_document_added": true
+    "standalone_deployment_document_added": true,
+    "report_structure": [
+      "Canon实验",
+      "Sony实验",
+      "图像增强实验总结"
+    ],
+    "report_physical_pages": {
+      "canon": 4,
+      "sony": 19,
+      "enhancement_summary": 26,
+      "geometry": 27,
+      "compression": 34,
+      "submission": 43
+    }
   },
-  "standalone_deployment_document": "部署说明.txt"
+  "standalone_deployment_document": "部署说明.txt",
+  "report_revision": {
+    "updated_at": "2026-10-25T20:51:28.338957+08:00",
+    "new_structure": [
+      "Canon实验",
+      "Sony实验",
+      "图像增强实验总结"
+    ],
+    "non_enhancement_main_prefix_and_suffix_unchanged": true,
+    "protected_sources_sha256": {
+      "geometry_examples.tex": "4b61a3da2e0682bb7eec37a79daeeb237aaefe9dad9f00101e846d10bd0e5603",
+      "course_tables.tex": "21cb0963824f10ab9aefb0424f235a10efdb9941706c44d479304c3aab6f4fe4",
+      "compression_examples.tex": "17fba286cfc92796007811aa45a080de4a7bbb8d23a11b264a8afe9402dc410d",
+      "checkpoints.tex": "3208953ed46cc1a9bf59961ddeced7e7d9cd889bf5829fd9658a40b7f32fe932",
+      "geometry_compression.tex": "38bebe4f7e9d4671ddf3d79da74fe447a6684f3bb623a440f9cea7b6e038461d",
+      "tables.tex": "ff07b333fbc6025fbd9397f9007563e0c742ca1c96ca5a4ab1ff6a93b2c524b7"
+    },
+    "all_193_images_unchanged": true,
+    "metrics_and_models_unchanged": true,
+    "pdf_skill_operation_marked_once": true
+  },
+  "all_model_weights_and_sealed_metrics_unchanged_from_v3": true
 }

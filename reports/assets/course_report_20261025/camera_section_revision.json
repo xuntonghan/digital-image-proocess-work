@@ -1,0 +1,20 @@
+{
+  "updated_at": "2026-10-25T20:51:28.338957+08:00",
+  "new_structure": [
+    "Canon实验",
+    "Sony实验",
+    "图像增强实验总结"
+  ],
+  "non_enhancement_main_prefix_and_suffix_unchanged": true,
+  "protected_sources_sha256": {
+    "geometry_examples.tex": "4b61a3da2e0682bb7eec37a79daeeb237aaefe9dad9f00101e846d10bd0e5603",
+    "course_tables.tex": "21cb0963824f10ab9aefb0424f235a10efdb9941706c44d479304c3aab6f4fe4",
+    "compression_examples.tex": "17fba286cfc92796007811aa45a080de4a7bbb8d23a11b264a8afe9402dc410d",
+    "checkpoints.tex": "3208953ed46cc1a9bf59961ddeced7e7d9cd889bf5829fd9658a40b7f32fe932",
+    "geometry_compression.tex": "38bebe4f7e9d4671ddf3d79da74fe447a6684f3bb623a440f9cea7b6e038461d",
+    "tables.tex": "ff07b333fbc6025fbd9397f9007563e0c742ca1c96ca5a4ab1ff6a93b2c524b7"
+  },
+  "all_193_images_unchanged": true,
+  "metrics_and_models_unchanged": true,
+  "pdf_skill_operation_marked_once": true
+}

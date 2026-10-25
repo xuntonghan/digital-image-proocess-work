@@ -92,8 +92,21 @@
       "原GeoCorrection数据和旧PageMaskUNet权重未附带，保留历史指标、划分与源码。"
     ]
   },
-  "report_pdf_pages": 43,
+  "report_pdf_pages": 44,
   "comparison_groups": 31,
   "required_metrics_present": true,
-  "standalone_deployment_document_added": true
+  "standalone_deployment_document_added": true,
+  "report_structure": [
+    "Canon实验",
+    "Sony实验",
+    "图像增强实验总结"
+  ],
+  "report_physical_pages": {
+    "canon": 4,
+    "sony": 19,
+    "enhancement_summary": 26,
+    "geometry": 27,
+    "compression": 34,
+    "submission": 43
+  }
 }
