@@ -1,0 +1,7 @@
+{
+  "pid": 37836,
+  "command": "/usr/bin/caffeinate -i -t 28800",
+  "started": "2026-10-25T16:18:07.869946+08:00",
+  "hours": 8,
+  "display_sleep_prevented": false
+}

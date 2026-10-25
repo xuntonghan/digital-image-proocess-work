@@ -1,0 +1,14 @@
+{
+  "host": "connect.nmb1.seetacloud.com",
+  "port": 26592,
+  "all_five_files_match": true,
+  "sha256": {
+    "cloud/prepare_sony1000.py": "47b7750dec85b48f40e3b6257fc8056020843854ca1b36ef7eb79e22166ef3d1",
+    "cloud/sony1000_pipeline.py": "1e1c198d0c4778b98151fc8799e7a4e467b7e19b3bfcc777958a50d835663cf8",
+    "cloud/run_sony1000.sh": "ae24ed5a60daf948f9932398720a2efc3083449eab72006c5375353b3295a7aa",
+    "cloud/verify_sony1000.py": "538ecccb0b9d6aa0110e82d287ff9928ab1d93c3638956f1dd825377ef6b0de5",
+    "tests/test_sony_submission.py": "4839dfb07e72cbd142b9a354bf2636500bf9822f0ea962ee347a9d063333a64c"
+  },
+  "preflight_tests_passed": 29,
+  "original_source_machine_37497_ssh_offline_verified": true
+}

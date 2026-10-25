@@ -1,0 +1,34 @@
+{
+  "data": [
+    {
+      "name": "Sony_0.0001.zip",
+      "bytes": 9718487615
+    },
+    {
+      "name": "Sony_0.001.zip",
+      "bytes": 11489809753
+    },
+    {
+      "name": "Sony_0.01.zip",
+      "bytes": 12597306985
+    },
+    {
+      "name": "Sony_gt.zip",
+      "bytes": 3540159732
+    }
+  ],
+  "weights": [
+    {
+      "name": "sony_0.0001.pt",
+      "bytes": 2610974590
+    },
+    {
+      "name": "sony_0.001.pt",
+      "bytes": 2610974590
+    },
+    {
+      "name": "sony_0.01.pt",
+      "bytes": 2610974590
+    }
+  ]
+}

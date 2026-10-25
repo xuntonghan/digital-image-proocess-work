@@ -1,5 +1,6 @@
 .DS_Store
 .venv/
+.venv_sony/
 .pytest_cache/
 .ruff_cache/
 __pycache__/

@@ -1,0 +1,8 @@
+{
+  "source": "37497",
+  "destination": "26592",
+  "verified_files": 3425,
+  "all_environment_and_official_source_hashes_match": true,
+  "alexnet_sha256": "7be5be791159472b1fbf3c69796f7cb30dca7ad8466c2df70058c37116cdee02",
+  "intentionally_excluded": "Official README figure images; not model or dataset inputs"
+}

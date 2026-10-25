@@ -1,0 +1,17 @@
+{
+  "commit": "fb7af94ac831e91c647415bf1ca0b1a75931833a",
+  "source": "https://github.com/JianghaiSCU/SIED",
+  "all_python_files_match_github_git_blobs": true,
+  "files": {
+    "dataset/dataloader.py": "8abb373ac0298fbbe68bfbfd6b3d91a8f193af8d",
+    "inference.py": "54449ad62c8a43abcc4fb7ff5e011bc924c4416b",
+    "metric.py": "549c5e318691de7591d6faee6bfa4e7df938f79d",
+    "models/__init__.py": "d0132bf7eed84a8436aba44f60d52c01200a64d9",
+    "models/attend.py": "333b751135daed889697d29c98565113c37b1dd1",
+    "models/color_loss.py": "79fd4ee1a740015c70bed78680346992516c0f27",
+    "models/denoising_diffusion_pytorch.py": "0d3900ab91a6f650aad3a13444eaa2a0cd3c3dbe",
+    "models/encoder_decoder.py": "e460844fca7a2f504fd39d7d224226ef0687a3ba",
+    "models/version.py": "4c354e07079ec8d52c143cf599e5b411262af12e",
+    "train.py": "84dd6aa6224601ee17689f3338eaf9483cb15d49"
+  }
+}
