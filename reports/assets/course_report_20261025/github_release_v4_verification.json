@@ -1,0 +1,31 @@
+{
+  "release_url": "https://github.com/xuntonghan/digital-image-proocess-work/releases/tag/course-submission-20261025-v4",
+  "report_commit": "d4e45f8277c7c3a1953fb39c14caa9b642e63caf",
+  "tag_commit": "d4e45f8277c7c3a1953fb39c14caa9b642e63caf",
+  "all_remote_asset_sha256_match": true,
+  "assets": [
+    {
+      "name": "han-xuntong-2025312132086-dip-course-report-v4.pdf",
+      "bytes": 43900414,
+      "sha256": "8a874eb4e961c9a3a9a1b5ea9c1de8b615a20b921fec34b2643efedeb5fc79c9",
+      "matched": true
+    },
+    {
+      "name": "han-xuntong-2025312132086-dip-course-submission-v4.zip",
+      "bytes": 124492083,
+      "sha256": "6c442f68228c98a1e6a383e1955000698c61d463dfa7a767cd4fab87d1350918",
+      "matched": true
+    },
+    {
+      "name": "release_sha256.txt",
+      "bytes": 238,
+      "sha256": "3b2a10788517a35aea6efed4ce795795bc09a8980ee850bf8e6bae2e557a195f",
+      "matched": true
+    }
+  ],
+  "v3_release_assets_preserved": true,
+  "report_pages": 44,
+  "revision_scope": "Canon and Sony separate experiments, results and images, followed by a common summary",
+  "geometry_compression_sources_and_all_images_unchanged": true,
+  "completed_at": "2026-10-25T21:10:15.978845+08:00"
+}
