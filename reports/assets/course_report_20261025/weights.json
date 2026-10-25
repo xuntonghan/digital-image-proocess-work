@@ -1,0 +1,42 @@
+{
+  "included_in_weight_release": {
+    "canon_naf_phase4.pt": {
+      "source": "checkpoints/sied30_resume_snapshot/final/best.pt",
+      "bytes": 36230265,
+      "sha256": "337acc11705e8ae1f170d22263161b210a0ed0d4272a647db4e82ccbb611f2d8"
+    },
+    "canon_color_lut_1250.pt": {
+      "source": "outputs/sied1000_20261024/research/color_lut_tlc/best_lut.pt",
+      "bytes": 317445,
+      "sha256": "2cfd72ec81addd4a091ea199c613c4bc47e27e562a098971db7302510a1db609"
+    },
+    "ablation_global3d_750.pt": {
+      "source": "outputs/sied1000_20261024/research/iccv_pairwise/global3d/best.pt",
+      "bytes": 316869,
+      "sha256": "47580a832b66a43bcedf6276678f11a3a1969b47d15c9e2568bad1238f472323"
+    },
+    "ablation_pairwise_rank4_1000.pt": {
+      "source": "outputs/sied1000_20261024/research/iccv_pairwise/pairwise_rank4/best.pt",
+      "bytes": 154946,
+      "sha256": "7ab0c534f3b353adf919d35529679d1d27874a98d5bbdf0b9697c6f7cbfebda9"
+    },
+    "photometric_v2.pt": {
+      "source": "reports/assets/enhancement/refiner_v2/best.pt",
+      "bytes": 193785,
+      "sha256": "0428cdb082979ed960cfd5925a78ae558a635dfd8eaf0f783023272f65b27afa"
+    }
+  },
+  "official_sied_separate": {
+    "source": "checkpoints/sied30_resume_snapshot/official/canon_0.0001.pt",
+    "bytes": 2610348582,
+    "sha256": "40014f1f71dfdcd9a8969074097f675a54d2598aec26b183c0874bfcd5c26238",
+    "redistributed": false,
+    "obtain_from": "https://github.com/JianghaiSCU/SIED",
+    "reason": "Author checkpoint, obtain from original publisher and verify SHA256"
+  },
+  "page_mask_unet": {
+    "included": false,
+    "status": "not found in current workspace",
+    "recorded_sha256": "250789695f3c92b3acaa2c373fb6a51083cf0dfa54093ed3acd3c2cd084eccc6"
+  }
+}

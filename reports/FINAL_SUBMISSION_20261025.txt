@@ -1,0 +1,39 @@
+韩勋同 2025312132086
+数字图像处理课程实习综合报告
+
+最终PDF为43页，包含图像增强、几何校正和图像压缩。
+包含12组增强、8组几何、5组压缩对比图。
+
+PDF、Overleaf工程和固定代码与指标包位于reports/deliverables。
+Overleaf工程
+https://www.overleaf.com/project/6add596b98e1731c2180da9c
+编译器为XeLaTeX。8个TeX文件及145个图像和图表已经与浏览器导出文件核对。
+
+私有仓库下载附件
+https://github.com/xuntonghan/digital-image-proocess-work/releases/tag/course-submission-20261025
+完整课程提交包和5个自训增强权重作为下载附件提供。
+大型官方SIED模型和原始课程数据未重新分发。
+
+Canon原始1000张逐图算术平均
+PSNR 26.707356438407885 dB
+SSIM 0.8435157579481601
+LPIPS 0.3243558964841068
+包含832张训练和92张官方预训练已见验证图，不能作为独立测试成绩。
+SSIM略降，76张留出测试的PSNR和SSIM也下降，报告已说明。
+
+几何校正保留了200张真值掩膜辅助实验和22张自动方法隔离测试。
+原GeoCorrection数据和PageMaskUNet旧权重当前未在工作目录找到。
+报告保留原SHA256、训练代码、划分、日志和指标，未声称缺失权重已经附带。
+
+Cheng-A Q6为0.8056369357638888 bpp、36.704702429433745 dB、0.9468630403280258 SSIM。
+RGB负载压缩比29.790094，PNG文件负载压缩比16.198257。
+学习式码率统计真实熵负载，不包含共享模型和独立文件容器头。
+
+固定推理核心代码版本
+beebb3454e99f039dfd98bc848aa7fafb9772f46
+新增reproduce_statistics.py核对全部8项总体及分项均值、哈希、划分、种子。
+新增cloud/reproduce_sied_submission.py不要求历史缓存，直接使用固定最终模型。
+独立入口完成本机语法、参数和固定源码检查，本次没有再次运行CUDA全量推理。
+
+本次没有重新开云机，没有训练几何和压缩，没有合入另外两项目未提交的开发文件。
+校验资料位于reports/assets/course_report_20261025。
