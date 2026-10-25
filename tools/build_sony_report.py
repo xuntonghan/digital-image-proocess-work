@@ -149,9 +149,7 @@ python3 cloud/verify_sony1000.py
 \end{lstlisting}
 从RAW重跑使用\Path{cloud/reproduce_sony_submission.py}，不依赖40\,GiB训练缓存。先检查3张训练图，再在新目录完成全部1000张。完整参数、数据获取和权重检查命令随包提供。正式输出保留1000行CSV、种子、划分、模型绑定和PNG哈希。
 
-\subsection{Sony六组固定留出样例}
-
-样例按原清单前6张测试图确定，不按分数筛选。RAW预览使用曝光1和Gamma 2.2，传统ISP示意使用Gamma 1.8、亮度第99百分位和目标0.9。官方模型、最终模型和参考图只作等比例显示缩放，不另行调色。局部区域统一为$(1280,720)$至$(2560,1440)$。所列分数来自PNG编码前的原生浮点记录。
+{\small\noindent\textbf{Sony对比图说明}\quad 六组样例取原测试清单前6张。RAW预览采用曝光1和Gamma 2.2，ISP采用Gamma 1.8、99百分位和目标0.9。模型图只作等比例缩放，局部固定为$(1280,720)$至$(2560,1440)$。}
 
 {\small\linespread{1.04}\selectfont\setlength{\parskip}{0.1em}
 \input{sony_examples}}
@@ -181,8 +179,10 @@ python3 cloud/verify_sony1000.py
         backup.write_text(original)
     content = original.replace('实验数据 & SIED Canon 1000张、GeoCorrection 200张、Kodak 24张',
         r'实验数据 & \cell{SIED Canon 1000张和Sony 1000张\\GeoCorrection 200张、Kodak 24张}')
-    content = content.replace(r'代码版本 & \texttt{beebb345}，完整版本号见复现部分',
-        r'代码版本 & Canon \texttt{beebb345}，Sony \texttt{' + commit[:8] + '}')
+    version_start = content.index('代码版本 &')
+    version_end = content.index('\n', version_start)
+    content = (content[:version_start] + r'代码版本 & Canon \texttt{beebb345}，Sony \texttt{'
+               + commit[:8] + r'}\\' + content[version_end:])
     content = content.replace('正式成绩采用Canon全部1000张的逐图平均PSNR、SSIM和LPIPS。Sony只保留87张历史测试记录。',
         '正式成绩分别采用Canon和Sony各1000张的逐图平均PSNR和SSIM，同时报告LPIPS和颜色指标。')
     content = content.replace('图像增强采用Canon全部1000张结果，几何校正和压缩采用已保存的评价。',
