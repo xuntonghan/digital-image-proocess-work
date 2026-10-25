@@ -280,3 +280,13 @@ PDF更新准备
 新打包器已确认未满1000时拒绝写附件，v2代码包字节与8个Canon核心源码保持原样。
 19时01分实查最终评价360/1000，续算240张约646秒，用户已获当前速度与半小时到一小时评价预估。
 当前没有再训练或新候选，等待这一轮完整1000，继续备份。
+
+19时10分已排队自动收尾资料
+新增cloud/finish_sony_assets.py和screen sony_final_assets，目前只等待最终1000，不占GPU。
+它等待主控制器COMPLETE并确认没有活动GPU进程，之后共享原sony_gpu.lock执行前3张训练RAW复现。
+它自动生成reproduction_smoke/verification_comparison.json，核对PNG、种子和全部8项指标。
+然后运行CPU对比图导出，完成后logs/final_assets_status.txt为ASSETS_READY_PENDING_MAC_VERIFIED_BACKUP。
+日志为logs/final_assets.log。此程序不关机，必须等Mac下载并独立SHA验证唯一资料后再由本聊天关机。
+不要与它重复启动复现或导出。若该screen失败，读日志保存证据再修复，不能跳过3张复现或6组图。
+如果复现不等价，会保存差异证明并停止，绝不虚报完全一致或关闭未备份云机。
+此收尾入口也已列入最终Sony代码包。

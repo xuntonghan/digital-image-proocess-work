@@ -24,6 +24,7 @@ SONY_SOURCES = ['cloud/prepare_sony1000.py', 'cloud/sony1000_pipeline.py', 'clou
                 'cloud/verify_sony1000.py', 'cloud/check_sony_parallel_pilot.py',
                 'cloud/export_sony_visualizations.py', 'cloud/reproduce_sony_submission.py',
                 'cloud/sony_deadline.py', 'cloud/run_sony_deadline.sh',
+                'cloud/finish_sony_assets.py',
                 'cloud/download_official_sied_assets.py', 'tests/test_sony_submission.py',
                 'tests/test_sony_visualizations.py', 'tests/test_sony_reproduction.py',
                 'tests/test_sony_deadline.py', 'tools/build_sony_report.py',
