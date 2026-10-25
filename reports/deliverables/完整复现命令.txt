@@ -139,3 +139,36 @@ dip-learned-compression-benchmark \
 增强正式推理
 3张检查完成后，重复同一推理命令并去掉--limit-new 3，继续处理1000张。
 
+
+
+Sony全部1000张补充复现
+
+Sony源码追加版本 ef3c0b46b86177890dde9def4c581215dd9f4e2e
+Sony与Canon分别用各自1000张，不能互换相机权重。
+先安装前述Python3.12与PyTorch2.8.0等固定依赖，以下命令在project目录执行。
+只复算保存的Sony1000张指标不需要GPU。
+python3 cloud/verify_sony1000.py
+
+如需要重新下载Sony原始数据和官方模型，准备至少70GiB空闲空间。
+SONY_RUN="$(pwd)/outputs/sony_reproduce"
+mkdir -p "$SONY_RUN/third_party"
+test -e "$SONY_RUN/project" || ln -s "$(pwd)" "$SONY_RUN/project"
+python cloud/prepare_sony1000.py --root "$SONY_RUN"
+git clone https://github.com/JianghaiSCU/SIED.git "$SONY_RUN/third_party/SIED-official"
+git -C "$SONY_RUN/third_party/SIED-official" checkout --detach fb7af94ac831e91c647415bf1ca0b1a75931833a
+
+解压自训增强权重包到project中，然后检查全部附件权重。
+python submission_weights/verify_weights.py
+
+Sony原始RAW独立推理，不使用训练缓存，先检查3张训练图。
+python cloud/reproduce_sony_submission.py \
+  --data-root "$SONY_RUN/data/SIED_dataset" \
+  --official-repo "$SONY_RUN/third_party/SIED-official" \
+  --official-checkpoint "$SONY_RUN/checkpoints/official/sony_0.001.pt" \
+  --lut-checkpoint submission_weights/sony_color_lut_selected.pt \
+  --output-dir "$SONY_RUN/reproduced" --limit-new 3
+
+完整1000张使用同样参数并去掉--limit-new 3，程序保留已完成的前3张，继续原始822/91/87清单。
+新输出写入reproduced，不覆盖报告中的封存指标。每张预测后才读参考图评分。
+GT-Mean追加训练未达到预设收益门槛，最终模型保留原1000步Sony色彩表。
+两组追加对照的源码、声明、权重和逐项指标均随附件保留。

@@ -1,248 +1,78 @@
 {
-  "Overleaf_LaTeX工程.zip": {
-    "entries": 157,
-    "bytes": 24607258,
-    "sha256": "9c2907682abfab74babd362a03ec9bbd692173107def12a734ac7c1b737d9cc7"
-  },
-  "代码与指标.zip": {
-    "entries": 319,
-    "bytes": 1813825,
-    "sha256": "3b6de263764bfbaa47fa9475b1e084cbc3098ffeef105e78af11c46715de0bae"
-  },
-  "自训增强权重.zip": {
-    "entries": 8,
-    "bytes": 34140051,
-    "sha256": "e86ff2ec24ff6dbe994f2bca8e8ca047d4772aab6202f32168e0c9c24c72a7bd"
-  },
-  "portable_statistics": {
+  "revision": "v3 Sony1000 complete",
+  "sony_statistics": {
+    "verified": true,
     "count": 1000,
     "splits": {
       "train": {
-        "count": 832,
-        "psnr_mean": 27.011915311087588,
-        "ssim_mean": 0.8474396014442811,
-        "lpips_mean": 0.3204456016089982,
-        "delta_e2000_mean": 4.3627467730164975,
-        "delta_e2000_p95_mean": 7.7816513025989895,
-        "lightness_mae_mean": 4.249130374680345,
-        "saturation_mae_mean": 0.03495672291375321,
-        "hue_error_degrees_mean": 10.778888712513584
+        "count": 822,
+        "psnr_mean": 26.864293724803137,
+        "ssim_mean": 0.8554363568333814,
+        "lpips_mean": 0.41547231242024407,
+        "delta_e2000_mean": 4.8574740785973205,
+        "delta_e2000_p95_mean": 8.842668163805403,
+        "lightness_mae_mean": 4.215060627300954,
+        "saturation_mae_mean": 0.05217218133813527,
+        "hue_error_degrees_mean": 17.334433574681153
       },
       "val": {
-        "count": 92,
-        "psnr_mean": 26.84298007594317,
-        "ssim_mean": 0.8562605620726295,
-        "lpips_mean": 0.31313677456067956,
-        "delta_e2000_mean": 4.4730772902137845,
-        "delta_e2000_p95_mean": 7.8514255673989,
-        "lightness_mae_mean": 4.419811154837194,
-        "saturation_mae_mean": 0.033107693205871015,
-        "hue_error_degrees_mean": 11.199809099761511
+        "count": 91,
+        "psnr_mean": 27.00013386711808,
+        "ssim_mean": 0.8533573471582853,
+        "lpips_mean": 0.3977747873945551,
+        "delta_e2000_mean": 4.691610091350634,
+        "delta_e2000_p95_mean": 8.425323255769499,
+        "lightness_mae_mean": 3.9992687106132507,
+        "saturation_mae_mean": 0.05200516231931173,
+        "hue_error_degrees_mean": 17.46984875904309
       },
       "test": {
-        "count": 76,
-        "psnr_mean": 23.209062271003162,
-        "ssim_mean": 0.7851320767873212,
-        "lpips_mean": 0.3807443774452335,
-        "delta_e2000_mean": 7.027097743672978,
-        "delta_e2000_p95_mean": 12.798537837831597,
-        "lightness_mae_mean": 6.470454325801448,
-        "saturation_mae_mean": 0.0674847329623605,
-        "hue_error_degrees_mean": 24.860905259987955
+        "count": 87,
+        "psnr_mean": 25.084786861095626,
+        "ssim_mean": 0.8327788381740965,
+        "lpips_mean": 0.4162735718077627,
+        "delta_e2000_mean": 5.956916911914362,
+        "delta_e2000_p95_mean": 11.47886072082081,
+        "lightness_mae_mean": 4.847036504197395,
+        "saturation_mae_mean": 0.07655936824264882,
+        "hue_error_degrees_mean": 23.822087927859307
       }
     },
     "overall": {
       "count": 1000,
-      "psnr_mean": 26.707356438407885,
-      "ssim_mean": 0.8435157579481601,
-      "lpips_mean": 0.3243558964841068,
-      "delta_e2000_mean": 4.5753878543685405,
-      "delta_e2000_p95_mean": 8.16935391163826,
-      "lightness_mae_mean": 4.433653626739979,
-      "saturation_mae_mean": 0.037258740944322195,
-      "hue_error_degrees_mean": 11.887846645748445
+      "psnr_mean": 26.721838080611242,
+      "ssim_mean": 0.8532759628295898,
+      "lpips_mean": 0.4139315472096205,
+      "delta_e2000_mean": 4.9380319822564545,
+      "delta_e2000_p95_mean": 9.034038529634476,
+      "lightness_mae_mean": 4.250405464172363,
+      "saturation_mae_mean": 0.054278667868115006,
+      "hue_error_degrees_mean": 17.91118228518459
     },
-    "verified": true,
-    "note": "Arithmetic means include training images; not independent generalization."
+    "official_baseline_overall": {
+      "count": 1000,
+      "psnr_mean": 26.293513513261832,
+      "ssim_mean": 0.8523840713500976,
+      "lpips_mean": 0.4151367082297802,
+      "delta_e2000_mean": 5.152938707964684,
+      "delta_e2000_p95_mean": 9.265305627703667,
+      "lightness_mae_mean": 4.577381716012955,
+      "saturation_mae_mean": 0.054523587323725226,
+      "hue_error_degrees_mean": 18.04123386593243
+    }
   },
-  "eight_frozen_sources_match": true,
-  "fresh_inference_cli_help_ok": true,
-  "overleaf_source": {
-    "project": "https://www.overleaf.com/project/6add596b98e1731c2180da9c",
-    "compiler": "XeLaTeX",
-    "source_files": 153,
-    "all_eight_tex_match": true,
-    "tex_matches": {
-      "examples.tex": true,
-      "geometry_examples.tex": true,
-      "course_tables.tex": true,
-      "compression_examples.tex": true,
-      "main.tex": true,
-      "checkpoints.tex": true,
-      "geometry_compression.tex": true,
-      "tables.tex": true
-    },
-    "images": {
-      "case_904_gt_crop.jpg": true,
-      "case_21_baseline.jpg": true,
-      "compression_04_1_2.jpg": true,
-      "case_10_final.jpg": true,
-      "case_10_isp.jpg": true,
-      "case_141_final_crop.jpg": true,
-      "case_57_baseline.jpg": true,
-      "compression_04_1_1.jpg": true,
-      "case_10_gt.jpg": true,
-      "compression_04_1_0.jpg": true,
-      "case_10_baseline.jpg": true,
-      "case_28_final.jpg": true,
-      "case_57_gt.jpg": true,
-      "case_57_final_crop.jpg": true,
-      "case_680_baseline.jpg": true,
-      "case_6_final.jpg": true,
-      "case_904_baseline_crop.jpg": true,
-      "case_8_isp.jpg": true,
-      "compression_23_1_2.jpg": true,
-      "case_28_gt.jpg": true,
-      "case_680_baseline_crop.jpg": true,
-      "compression_23_1_0.jpg": true,
-      "case_8_baseline.jpg": true,
-      "compression_23_1_1.jpg": true,
-      "case_904_final_crop.jpg": true,
-      "case_127_gt_crop.jpg": true,
-      "compression_04_0_1.jpg": true,
-      "geo_auto_2.jpg": true,
-      "case_671_gt.jpg": true,
-      "case_10_raw.jpg": true,
-      "case_904_final.jpg": true,
-      "case_127_baseline.jpg": true,
-      "geo_auto_3.jpg": true,
-      "compression_04_0_0.jpg": true,
-      "compression_04_2_2.jpg": true,
-      "case_671_final_crop.jpg": true,
-      "compression_04_2_0.jpg": true,
-      "compression_04_0_2.jpg": true,
-      "geo_auto_1.jpg": true,
-      "case_904_baseline.jpg": true,
-      "geo_auto_0.jpg": true,
-      "case_141_gt_crop.jpg": true,
-      "compression_04_2_1.jpg": true,
-      "compression_23_0_0.jpg": true,
-      "compression_23_2_2.jpg": true,
-      "case_680_gt.jpg": true,
-      "case_127_final.jpg": true,
-      "case_8_raw.jpg": true,
-      "compression_23_0_1.jpg": true,
-      "case_680_final_crop.jpg": true,
-      "case_141_gt.jpg": true,
-      "compression_23_2_1.jpg": true,
-      "delta_distribution.pdf": true,
-      "case_57_baseline_crop.jpg": true,
-      "case_14_gt.jpg": true,
-      "case_127_final_crop.jpg": true,
-      "compression_23_2_0.jpg": true,
-      "compression_23_0_2.jpg": true,
-      "case_57_gt_crop.jpg": true,
-      "case_14_raw.jpg": true,
-      "case_21_isp.jpg": true,
-      "geo_1_3.jpg": true,
-      "case_127_gt.jpg": true,
-      "compression_13_1_0.jpg": true,
-      "geo_3_1.jpg": true,
-      "geo_3_0.jpg": true,
-      "compression_13_1_1.jpg": true,
-      "compression_rd.pdf": true,
-      "geo_1_2.jpg": true,
-      "case_671_final.jpg": true,
-      "case_680_gt_crop.jpg": true,
-      "case_6_baseline.jpg": true,
-      "case_28_isp.jpg": true,
-      "case_680_final.jpg": true,
-      "case_671_baseline.jpg": true,
-      "geo_1_0.jpg": true,
-      "case_141_final.jpg": true,
-      "geo_3_2.jpg": true,
-      "geo_3_3.jpg": true,
-      "compression_13_1_2.jpg": true,
-      "geo_1_1.jpg": true,
-      "geo_5_1.jpg": true,
-      "case_14_final.jpg": true,
-      "compression_24_1_1.jpg": true,
-      "compression_01_2_1.jpg": true,
-      "case_671_gt_crop.jpg": true,
-      "compression_01_2_0.jpg": true,
-      "compression_24_1_0.jpg": true,
-      "compression_01_0_2.jpg": true,
-      "case_6_isp.jpg": true,
-      "geo_5_0.jpg": true,
-      "case_21_final.jpg": true,
-      "geo_5_2.jpg": true,
-      "case_28_baseline.jpg": true,
-      "compression_01_0_0.jpg": true,
-      "case_141_baseline.jpg": true,
-      "compression_24_1_2.jpg": true,
-      "compression_01_2_2.jpg": true,
-      "compression_01_0_1.jpg": true,
-      "geo_5_3.jpg": true,
-      "geo_2_2.jpg": true,
-      "geo_0_0.jpg": true,
-      "compression_13_2_1.jpg": true,
-      "case_671_baseline_crop.jpg": true,
-      "case_6_gt.jpg": true,
-      "case_141_baseline_crop.jpg": true,
-      "case_21_raw.jpg": true,
-      "compression_13_2_0.jpg": true,
-      "geo_0_1.jpg": true,
-      "case_14_isp.jpg": true,
-      "geo_2_3.jpg": true,
-      "compression_13_0_2.jpg": true,
-      "case_127_baseline_crop.jpg": true,
-      "compression_13_0_0.jpg": true,
-      "geo_2_1.jpg": true,
-      "geo_0_3.jpg": true,
-      "compression_13_2_2.jpg": true,
-      "case_14_baseline.jpg": true,
-      "case_21_gt.jpg": true,
-      "geo_0_2.jpg": true,
-      "geo_2_0.jpg": true,
-      "compression_13_0_1.jpg": true,
-      "case_28_raw.jpg": true,
-      "case_6_raw.jpg": true,
-      "compression_24_2_0.jpg": true,
-      "compression_01_1_0.jpg": true,
-      "compression_24_0_2.jpg": true,
-      "geo_6_0.jpg": true,
-      "geo_4_2.jpg": true,
-      "geo_4_3.jpg": true,
-      "geo_6_1.jpg": true,
-      "case_904_gt.jpg": true,
-      "compression_01_1_1.jpg": true,
-      "compression_24_2_1.jpg": true,
-      "compression_24_0_1.jpg": true,
-      "geo_6_3.jpg": true,
-      "geo_4_1.jpg": true,
-      "case_8_gt.jpg": true,
-      "geo_4_0.jpg": true,
-      "case_57_final.jpg": true,
-      "geo_6_2.jpg": true,
-      "compression_24_0_0.jpg": true,
-      "case_8_final.jpg": true,
-      "compression_01_1_2.jpg": true,
-      "compression_24_2_2.jpg": true
-    },
-    "all_145_images_match": true,
-    "compile_errors": 0,
-    "compile_warnings": [
-      "cmex font size substitution",
-      "size substitution up to 0.41063pt"
-    ],
-    "export_sha256": "e4e2ebd5c715dc6856f9688c4ac984ce06c255a4ff7a1eb3b8a6d0947d6fcb60"
-  },
+  "sony_source_commit": "ef3c0b46b86177890dde9def4c581215dd9f4e2e",
+  "eight_canon_frozen_sources_match": true,
   "pdf": {
-    "pages": 37,
-    "bytes": 25097013,
-    "sha256": "735d227f945c05d2eb7ef50074a1da46144ed3e4e7909cdb337903a3d2771591",
+    "pages": 43,
+    "bytes": 43898363,
+    "sha256": "4cb6e791f7817f646b4bfaf16b8c2bc1aa993002ad2adf711a7f94d222f46fc0",
     "origin": "Overleaf XeLaTeX browser compilation",
     "path": "output/pdf/韩勋同-2025312132086-数字图像处理课程实习综合报告.pdf",
+    "source_commit": "ef3c0b46b86177890dde9def4c581215dd9f4e2e",
+    "sony_1000_count": 1000,
+    "all_pages_visual_qa_passed": true,
+    "rendered_pages": 43,
     "github_links": [
       {
         "page": 1,
@@ -257,30 +87,228 @@
         "url": "https://github.com/xuntonghan/digital-image-proocess-work/releases"
       },
       {
-        "page": 36,
+        "page": 42,
         "url": "https://github.com/xuntonghan/digital-image-proocess-work"
       },
       {
-        "page": 36,
+        "page": 42,
         "url": "https://github.com/xuntonghan/digital-image-proocess-work/releases"
       }
     ],
-    "rendered_pages": 37,
-    "rendered_page_pixels_equal_reviewed_local": false,
-    "previous_pages": 43,
     "comparison_groups": {
-      "enhancement": 12,
+      "canon": 12,
+      "sony": 6,
       "geometry": 8,
       "compression": 5
     },
     "visual_qa": {
-      "all_37_overleaf_pages_reviewed": true,
-      "comparison_images_unchanged": true,
-      "result_tables_byte_identical_to_original": true,
+      "all_43_pages_reviewed": true,
+      "latest_changed_pages_1_22_42_reviewed_at_full_size": true,
+      "all_original_experiment_text_and_145_images_preserved": true,
+      "submission_table_updated_to_31_groups_8_weights": true,
       "layout_issues_found": 0
+    },
+    "render_directory": "tmp/pdfs/sony_overleaf_render"
+  },
+  "overleaf": {
+    "project": "https://www.overleaf.com/project/6add596b98e1731c2180da9c",
+    "compiler": "XeLaTeX",
+    "sony_1000_count": 1000,
+    "tex_files": 10,
+    "figure_files": 193,
+    "all_tex_and_figures_byte_identical": true,
+    "browser_source_zip_sha256": "0a5075080a7ee6f943356b8523ceb7737bea5439bdc2230d6931a50beb6bb980",
+    "source_commit": "ef3c0b46b86177890dde9def4c581215dd9f4e2e",
+    "old_source_backed_up_before_overwrite": true,
+    "submission_inventory_updated_to_31_groups_8_weights": true
+  },
+  "included_weight_count": 8,
+  "代码与指标.zip": {
+    "bytes": 2289264,
+    "sha256": "005b961117475a8f1902d701895547ca26641449607cae60ccf5101dbf31d390"
+  },
+  "自训增强权重.zip": {
+    "bytes": 34861303,
+    "sha256": "7cba40b91e93de778ae0503430f8bc317335845e674ccdbf2ed350c41d326820"
+  },
+  "Overleaf_LaTeX工程.zip": {
+    "bytes": 43401407,
+    "sha256": "a9f796b845f7eb5a8b8cf2641d4a053a39b6b7197dc187a22816ca894f6b41d4"
+  },
+  "independent_unpack": {
+    "verified": true,
+    "zip_crc": {
+      "Overleaf_LaTeX工程.zip": {
+        "entries": 208,
+        "sha256": "a9f796b845f7eb5a8b8cf2641d4a053a39b6b7197dc187a22816ca894f6b41d4"
+      },
+      "代码与指标.zip": {
+        "entries": 382,
+        "sha256": "005b961117475a8f1902d701895547ca26641449607cae60ccf5101dbf31d390"
+      },
+      "自训增强权重.zip": {
+        "entries": 11,
+        "sha256": "7cba40b91e93de778ae0503430f8bc317335845e674ccdbf2ed350c41d326820"
+      }
+    },
+    "cameras": {
+      "canon": {
+        "count": 1000,
+        "splits": {
+          "train": 832,
+          "val": 92,
+          "test": 76
+        },
+        "eight_arithmetic_means": {
+          "psnr": 26.707356438407885,
+          "ssim": 0.8435157579481601,
+          "lpips": 0.3243558964841068,
+          "delta_e2000_mean": 4.5753878543685405,
+          "delta_e2000_p95": 8.16935391163826,
+          "lightness_mae": 4.433653626739979,
+          "saturation_mae": 0.037258740944322195,
+          "hue_error_degrees": 11.887846645748445
+        },
+        "packaged_statistics_verified": true,
+        "frozen_source_count": 8,
+        "frozen_source_hashes_match": true
+      },
+      "sony": {
+        "count": 1000,
+        "splits": {
+          "train": 822,
+          "val": 91,
+          "test": 87
+        },
+        "eight_arithmetic_means": {
+          "psnr": 26.721838080611242,
+          "ssim": 0.8532759628295898,
+          "lpips": 0.4139315472096205,
+          "delta_e2000_mean": 4.9380319822564545,
+          "delta_e2000_p95": 9.034038529634476,
+          "lightness_mae": 4.250405464172363,
+          "saturation_mae": 0.054278667868115006,
+          "hue_error_degrees": 17.91118228518459
+        },
+        "packaged_statistics_verified": true,
+        "frozen_source_count": 7,
+        "frozen_source_hashes_match": true
+      }
+    },
+    "fresh_cli_help": {
+      "canon": true,
+      "sony": true
+    },
+    "original_five_canon_weights_byte_identical": true,
+    "weights": {
+      "canon_naf_phase4.pt": "337acc11705e8ae1f170d22263161b210a0ed0d4272a647db4e82ccbb611f2d8",
+      "canon_color_lut_1250.pt": "2cfd72ec81addd4a091ea199c613c4bc47e27e562a098971db7302510a1db609",
+      "ablation_global3d_750.pt": "47580a832b66a43bcedf6276678f11a3a1969b47d15c9e2568bad1238f472323",
+      "ablation_pairwise_rank4_1000.pt": "7ab0c534f3b353adf919d35529679d1d27874a98d5bbdf0b9697c6f7cbfebda9",
+      "photometric_v2.pt": "0428cdb082979ed960cfd5925a78ae558a635dfd8eaf0f783023272f65b27afa",
+      "sony_color_lut_selected.pt": "13bce17147874633d9b7618d75f8f6b201825d04dab43a89a9a5181ac36c5f01",
+      "sony_ablation_control_1250.pt": "0c52e3be2e642c111ef8cfa81b93240d33923b73b36f6527184016958b8e458b",
+      "sony_ablation_gtmean_1250.pt": "8fdbb6f93a565c864365649fcdd04134d54f963fafd9c2c4b4911a82a31831e0"
     }
   },
-  "weight_verification_script_passed": true,
-  "result_tables_unchanged": true,
-  "revision": "v2 shortened existing results; no new inference or training"
+  "course_requirement_audit": {
+    "assignment_sha256": "a6f72928ba8c9babe44b3ad92e108bcf0b66a1d21a67ec41874ded5af5fece9f",
+    "requirement_pages": {
+      "enhancement": [
+        8,
+        9
+      ],
+      "geometry": [
+        10,
+        11
+      ],
+      "compression": [
+        12,
+        13
+      ],
+      "package": [
+        14
+      ]
+    },
+    "enhancement": {
+      "canon": {
+        "count": 1000,
+        "psnr": 26.707356438407885,
+        "ssim": 0.8435157579481601,
+        "lpips": 0.3243558964841068,
+        "arithmetic_means_verified": true,
+        "all_three_required_metrics_in_pdf": true
+      },
+      "sony": {
+        "count": 1000,
+        "psnr": 26.721838080611242,
+        "ssim": 0.8532759628295898,
+        "lpips": 0.4139315472096205,
+        "arithmetic_means_verified": true,
+        "all_three_required_metrics_in_pdf": true
+      }
+    },
+    "compression": {
+      "jpeg_baseline": {
+        "count_per_quality": 24,
+        "qualities": [
+          30,
+          50,
+          70,
+          90
+        ],
+        "compression_ratios_psnr_ssim_encode_decode_times_in_pdf": true,
+        "all_means_and_byte_ratios_recomputed": true
+      },
+      "dctc_v1": {
+        "count_per_quality": 24,
+        "qualities": [
+          30,
+          50,
+          70,
+          90
+        ],
+        "compression_ratios_psnr_ssim_encode_decode_times_in_pdf": true,
+        "all_means_and_byte_ratios_recomputed": true
+      },
+      "dctc_v2_fast": {
+        "count_per_quality": 24,
+        "qualities": [
+          30,
+          50,
+          70,
+          90
+        ],
+        "compression_ratios_psnr_ssim_encode_decode_times_in_pdf": true,
+        "all_means_and_byte_ratios_recomputed": true
+      },
+      "cheng2020_anchor": {
+        "count_per_quality": 24,
+        "qualities": [
+          1,
+          3,
+          6
+        ],
+        "compression_ratios_psnr_ssim_encode_decode_times_in_pdf": true,
+        "all_means_and_byte_ratios_recomputed": true
+      }
+    },
+    "geometry": {
+      "historical_dataset_count": 200,
+      "held_out_automatic_count": 22,
+      "ocr_fixed_subset_count": 40,
+      "before_after_images_in_pdf": true,
+      "text_line_skew_in_pdf": true,
+      "ocr_counts_and_confidence_in_pdf": true,
+      "no_transcripts_no_cer_or_recognition_accuracy_claim": true,
+      "limitations": [
+        "原GeoCorrection数据和旧PageMaskUNet权重未附带，保留历史指标、划分与源码。"
+      ]
+    },
+    "report_pdf_pages": 43,
+    "comparison_groups": 31,
+    "required_metrics_present": true,
+    "standalone_deployment_document_added": true
+  },
+  "standalone_deployment_document": "部署说明.txt"
 }

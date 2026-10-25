@@ -1,9 +1,13 @@
 {
-  "pages": 37,
-  "bytes": 25097013,
-  "sha256": "735d227f945c05d2eb7ef50074a1da46144ed3e4e7909cdb337903a3d2771591",
+  "pages": 43,
+  "bytes": 43898363,
+  "sha256": "4cb6e791f7817f646b4bfaf16b8c2bc1aa993002ad2adf711a7f94d222f46fc0",
   "origin": "Overleaf XeLaTeX browser compilation",
   "path": "output/pdf/韩勋同-2025312132086-数字图像处理课程实习综合报告.pdf",
+  "source_commit": "ef3c0b46b86177890dde9def4c581215dd9f4e2e",
+  "sony_1000_count": 1000,
+  "all_pages_visual_qa_passed": true,
+  "rendered_pages": 43,
   "github_links": [
     {
       "page": 1,
@@ -18,26 +22,26 @@
       "url": "https://github.com/xuntonghan/digital-image-proocess-work/releases"
     },
     {
-      "page": 36,
+      "page": 42,
       "url": "https://github.com/xuntonghan/digital-image-proocess-work"
     },
     {
-      "page": 36,
+      "page": 42,
       "url": "https://github.com/xuntonghan/digital-image-proocess-work/releases"
     }
   ],
-  "rendered_pages": 37,
-  "rendered_page_pixels_equal_reviewed_local": false,
-  "previous_pages": 43,
   "comparison_groups": {
-    "enhancement": 12,
+    "canon": 12,
+    "sony": 6,
     "geometry": 8,
     "compression": 5
   },
   "visual_qa": {
-    "all_37_overleaf_pages_reviewed": true,
-    "comparison_images_unchanged": true,
-    "result_tables_byte_identical_to_original": true,
+    "all_43_pages_reviewed": true,
+    "latest_changed_pages_1_22_42_reviewed_at_full_size": true,
+    "all_original_experiment_text_and_145_images_preserved": true,
+    "submission_table_updated_to_31_groups_8_weights": true,
     "layout_issues_found": 0
-  }
+  },
+  "render_directory": "tmp/pdfs/sony_overleaf_render"
 }

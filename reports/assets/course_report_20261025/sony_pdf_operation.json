@@ -4,6 +4,11 @@
   "marker_successful": true,
   "marked_at": "2026-10-25T18:57:54.686956+08:00",
   "expected_output_count": 1,
-  "actual_pdf_or_tex_changed": false,
-  "current_authoring": "tools/build_sony_report.py prepared; guard refuses partial1000 before any TeX writes"
+  "actual_pdf_or_tex_changed": true,
+  "current_authoring": "Verified1000 source generated; local compile and Overleaf export/QA pending",
+  "authored_at": "2026-10-25T19:47:23.121618+08:00",
+  "new_tex_files": [
+    "sony_section.tex",
+    "sony_examples.tex"
+  ]
 }

@@ -1,0 +1,99 @@
+{
+  "assignment_sha256": "a6f72928ba8c9babe44b3ad92e108bcf0b66a1d21a67ec41874ded5af5fece9f",
+  "requirement_pages": {
+    "enhancement": [
+      8,
+      9
+    ],
+    "geometry": [
+      10,
+      11
+    ],
+    "compression": [
+      12,
+      13
+    ],
+    "package": [
+      14
+    ]
+  },
+  "enhancement": {
+    "canon": {
+      "count": 1000,
+      "psnr": 26.707356438407885,
+      "ssim": 0.8435157579481601,
+      "lpips": 0.3243558964841068,
+      "arithmetic_means_verified": true,
+      "all_three_required_metrics_in_pdf": true
+    },
+    "sony": {
+      "count": 1000,
+      "psnr": 26.721838080611242,
+      "ssim": 0.8532759628295898,
+      "lpips": 0.4139315472096205,
+      "arithmetic_means_verified": true,
+      "all_three_required_metrics_in_pdf": true
+    }
+  },
+  "compression": {
+    "jpeg_baseline": {
+      "count_per_quality": 24,
+      "qualities": [
+        30,
+        50,
+        70,
+        90
+      ],
+      "compression_ratios_psnr_ssim_encode_decode_times_in_pdf": true,
+      "all_means_and_byte_ratios_recomputed": true
+    },
+    "dctc_v1": {
+      "count_per_quality": 24,
+      "qualities": [
+        30,
+        50,
+        70,
+        90
+      ],
+      "compression_ratios_psnr_ssim_encode_decode_times_in_pdf": true,
+      "all_means_and_byte_ratios_recomputed": true
+    },
+    "dctc_v2_fast": {
+      "count_per_quality": 24,
+      "qualities": [
+        30,
+        50,
+        70,
+        90
+      ],
+      "compression_ratios_psnr_ssim_encode_decode_times_in_pdf": true,
+      "all_means_and_byte_ratios_recomputed": true
+    },
+    "cheng2020_anchor": {
+      "count_per_quality": 24,
+      "qualities": [
+        1,
+        3,
+        6
+      ],
+      "compression_ratios_psnr_ssim_encode_decode_times_in_pdf": true,
+      "all_means_and_byte_ratios_recomputed": true
+    }
+  },
+  "geometry": {
+    "historical_dataset_count": 200,
+    "held_out_automatic_count": 22,
+    "ocr_fixed_subset_count": 40,
+    "before_after_images_in_pdf": true,
+    "text_line_skew_in_pdf": true,
+    "ocr_counts_and_confidence_in_pdf": true,
+    "no_transcripts_no_cer_or_recognition_accuracy_claim": true,
+    "limitations": [
+      "原GeoCorrection数据和旧PageMaskUNet权重未附带，保留历史指标、划分与源码。"
+    ]
+  },
+  "report_pdf_pages": 43,
+  "comparison_groups": 31,
+  "required_metrics_present": true,
+  "standalone_deployment_document_added": true
+}

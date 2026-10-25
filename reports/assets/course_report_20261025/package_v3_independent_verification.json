@@ -1,0 +1,76 @@
+{
+  "verified": true,
+  "zip_crc": {
+    "Overleaf_LaTeX工程.zip": {
+      "entries": 208,
+      "sha256": "a9f796b845f7eb5a8b8cf2641d4a053a39b6b7197dc187a22816ca894f6b41d4"
+    },
+    "代码与指标.zip": {
+      "entries": 382,
+      "sha256": "005b961117475a8f1902d701895547ca26641449607cae60ccf5101dbf31d390"
+    },
+    "自训增强权重.zip": {
+      "entries": 11,
+      "sha256": "7cba40b91e93de778ae0503430f8bc317335845e674ccdbf2ed350c41d326820"
+    }
+  },
+  "cameras": {
+    "canon": {
+      "count": 1000,
+      "splits": {
+        "train": 832,
+        "val": 92,
+        "test": 76
+      },
+      "eight_arithmetic_means": {
+        "psnr": 26.707356438407885,
+        "ssim": 0.8435157579481601,
+        "lpips": 0.3243558964841068,
+        "delta_e2000_mean": 4.5753878543685405,
+        "delta_e2000_p95": 8.16935391163826,
+        "lightness_mae": 4.433653626739979,
+        "saturation_mae": 0.037258740944322195,
+        "hue_error_degrees": 11.887846645748445
+      },
+      "packaged_statistics_verified": true,
+      "frozen_source_count": 8,
+      "frozen_source_hashes_match": true
+    },
+    "sony": {
+      "count": 1000,
+      "splits": {
+        "train": 822,
+        "val": 91,
+        "test": 87
+      },
+      "eight_arithmetic_means": {
+        "psnr": 26.721838080611242,
+        "ssim": 0.8532759628295898,
+        "lpips": 0.4139315472096205,
+        "delta_e2000_mean": 4.9380319822564545,
+        "delta_e2000_p95": 9.034038529634476,
+        "lightness_mae": 4.250405464172363,
+        "saturation_mae": 0.054278667868115006,
+        "hue_error_degrees": 17.91118228518459
+      },
+      "packaged_statistics_verified": true,
+      "frozen_source_count": 7,
+      "frozen_source_hashes_match": true
+    }
+  },
+  "fresh_cli_help": {
+    "canon": true,
+    "sony": true
+  },
+  "original_five_canon_weights_byte_identical": true,
+  "weights": {
+    "canon_naf_phase4.pt": "337acc11705e8ae1f170d22263161b210a0ed0d4272a647db4e82ccbb611f2d8",
+    "canon_color_lut_1250.pt": "2cfd72ec81addd4a091ea199c613c4bc47e27e562a098971db7302510a1db609",
+    "ablation_global3d_750.pt": "47580a832b66a43bcedf6276678f11a3a1969b47d15c9e2568bad1238f472323",
+    "ablation_pairwise_rank4_1000.pt": "7ab0c534f3b353adf919d35529679d1d27874a98d5bbdf0b9697c6f7cbfebda9",
+    "photometric_v2.pt": "0428cdb082979ed960cfd5925a78ae558a635dfd8eaf0f783023272f65b27afa",
+    "sony_color_lut_selected.pt": "13bce17147874633d9b7618d75f8f6b201825d04dab43a89a9a5181ac36c5f01",
+    "sony_ablation_control_1250.pt": "0c52e3be2e642c111ef8cfa81b93240d33923b73b36f6527184016958b8e458b",
+    "sony_ablation_gtmean_1250.pt": "8fdbb6f93a565c864365649fcdd04134d54f963fafd9c2c4b4911a82a31831e0"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "included_in_weight_release": {
+  "files": {
     "canon_naf_phase4.pt": {
       "source": "checkpoints/sied30_resume_snapshot/final/best.pt",
       "bytes": 36230265,
@@ -24,9 +24,27 @@
       "source": "reports/assets/enhancement/refiner_v2/best.pt",
       "bytes": 193785,
       "sha256": "0428cdb082979ed960cfd5925a78ae558a635dfd8eaf0f783023272f65b27afa"
+    },
+    "sony_color_lut_selected.pt": {
+      "source": "outputs/sony1000_20261025/research/sony_lut/best.pt",
+      "bytes": 316693,
+      "sha256": "13bce17147874633d9b7618d75f8f6b201825d04dab43a89a9a5181ac36c5f01",
+      "camera": "sony"
+    },
+    "sony_ablation_control_1250.pt": {
+      "source": "outputs/sony1000_20261025/research/gtmean_deadline/control.pt",
+      "bytes": 316549,
+      "sha256": "0c52e3be2e642c111ef8cfa81b93240d33923b73b36f6527184016958b8e458b",
+      "camera": "sony"
+    },
+    "sony_ablation_gtmean_1250.pt": {
+      "source": "outputs/sony1000_20261025/research/gtmean_deadline/gtmean.pt",
+      "bytes": 316469,
+      "sha256": "8fdbb6f93a565c864365649fcdd04134d54f963fafd9c2c4b4911a82a31831e0",
+      "camera": "sony"
     }
   },
-  "official_sied_separate": {
+  "official_required": {
     "source": "checkpoints/sied30_resume_snapshot/official/canon_0.0001.pt",
     "bytes": 2610348582,
     "sha256": "40014f1f71dfdcd9a8969074097f675a54d2598aec26b183c0874bfcd5c26238",
@@ -34,9 +52,12 @@
     "obtain_from": "https://github.com/JianghaiSCU/SIED",
     "reason": "Author checkpoint, obtain from original publisher and verify SHA256"
   },
-  "page_mask_unet": {
-    "included": false,
-    "status": "not found in current workspace",
-    "recorded_sha256": "250789695f3c92b3acaa2c373fb6a51083cf0dfa54093ed3acd3c2cd084eccc6"
-  }
+  "missing_geometry_checkpoint_sha256": "250789695f3c92b3acaa2c373fb6a51083cf0dfa54093ed3acd3c2cd084eccc6",
+  "official_sony_required": {
+    "bytes": 2610974590,
+    "sha256": "7379cdec9401b92ea28b26568a5b33f7e72be06a0e7c12d1c76f76e3499f693d",
+    "obtain_from": "https://github.com/JianghaiSCU/SIED",
+    "redistributed": false
+  },
+  "verification_script_passed": true
 }

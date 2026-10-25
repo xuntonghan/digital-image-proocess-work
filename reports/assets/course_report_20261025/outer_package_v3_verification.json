@@ -1,0 +1,10 @@
+{
+  "zip_crc_passed": true,
+  "file_count": 11,
+  "bytes": 124484682,
+  "sha256": "a28d27186005be1aa82d119264b89f6171d04cfec909f82accd0ce288d871db4",
+  "required_filename": "韩勋同-2025312132086-数字图像处理课程实习.zip",
+  "code_and_weights_independently_unpacked": true,
+  "metrics_required_by_original_assignment_present": true,
+  "standalone_deployment_document_included": true
+}
