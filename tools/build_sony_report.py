@@ -166,7 +166,7 @@ python3 cloud/verify_sony1000.py
         b, a = example['official_metrics'], example['final_metrics']
         examples.append('\\begin{center}\n' + '\\Panel{'+example['views']['official']['display_file']+'}{官方Sony}\\hfill\n' +
                         '\\Panel{'+example['views']['final']['display_file']+'}{最终Sony}\\hfill\n' +
-                        '\\begin{minipage}[t]{0.318\\linewidth}\\vspace{0pt}\\small '+
+                        '\\begin{minipage}[t]{0.318\\linewidth}\\vspace{0pt}\\raggedright\\small '+
                         f"PSNR由{b['psnr']:.4f}变为{a['psnr']:.4f}\\,dB。\\par SSIM由{b['ssim']:.6f}变为{a['ssim']:.6f}。\\par LPIPS由{b['lpips']:.6f}变为{a['lpips']:.6f}。"+
                         '\\end{minipage}\n\\end{center}\n')
         examples.append('\\begin{center}\n' + '\\hfill\n'.join('\\Panel{'+example['views'][v]['display_file']+'}{'+label+'}' for v,label in [('official_crop','官方局部'),('final_crop','最终局部'),('gt_crop','参考局部')]) + '\n\\end{center}\n')
