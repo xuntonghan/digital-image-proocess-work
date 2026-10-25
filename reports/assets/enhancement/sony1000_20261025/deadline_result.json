@@ -1,0 +1,75 @@
+{
+  "arms": {
+    "control": {
+      "pilot": {
+        "count": 12,
+        "psnr_mean": 27.495771632224418,
+        "ssim_mean": 0.8319329718748728,
+        "delta_e2000_mean": 4.96598165461857,
+        "delta_e2000_p95_mean": 8.446512401103973,
+        "lightness_mae_mean": 4.364374404152234,
+        "saturation_mae_mean": 0.05203764451046785,
+        "hue_error_degrees_mean": 15.492555793824344,
+        "lpips_mean": 0.42695579181114834
+      },
+      "checkpoint": "research/gtmean_deadline/control.pt",
+      "checkpoint_sha256": "0c52e3be2e642c111ef8cfa81b93240d33923b73b36f6527184016958b8e458b",
+      "training_seconds": 2.0567152574658394,
+      "pilot_qualified": false
+    },
+    "gtmean": {
+      "pilot": {
+        "count": 12,
+        "psnr_mean": 27.49560099137793,
+        "ssim_mean": 0.8319339454174042,
+        "delta_e2000_mean": 4.9659201988746995,
+        "delta_e2000_p95_mean": 8.446408669153849,
+        "lightness_mae_mean": 4.36438225209713,
+        "saturation_mae_mean": 0.05203391487399737,
+        "hue_error_degrees_mean": 15.492398297908368,
+        "lpips_mean": 0.4269553596774737
+      },
+      "checkpoint": "research/gtmean_deadline/gtmean.pt",
+      "checkpoint_sha256": "8fdbb6f93a565c864365649fcdd04134d54f963fafd9c2c4b4911a82a31831e0",
+      "training_seconds": 2.009836118668318,
+      "pilot_qualified": false
+    }
+  },
+  "selected_followup": null,
+  "test_used": false,
+  "previous_full_val": {
+    "count": 91,
+    "psnr_mean": 27.00013386711808,
+    "ssim_mean": 0.8533573471582853,
+    "delta_e2000_mean": 4.691610091350634,
+    "delta_e2000_p95_mean": 8.425323255769499,
+    "lightness_mae_mean": 3.9992687106132507,
+    "saturation_mae_mean": 0.05200516231931173,
+    "hue_error_degrees_mean": 17.46984875904309,
+    "lpips_mean": 0.3977747873945551
+  },
+  "declaration": {
+    "max_steps_per_arm": 250,
+    "arms": [
+      "control",
+      "gtmean"
+    ],
+    "seed": 202610251840,
+    "learning_rate": 3e-05,
+    "batch_size": 16,
+    "precision": "float32",
+    "gtmean_coefficient": 5.0,
+    "sigma": 0.1,
+    "regularization": 0.1,
+    "training_and_all_validations_max_minutes": 20,
+    "train_count": 822,
+    "warm_start_sha256": "13bce17147874633d9b7618d75f8f6b201825d04dab43a89a9a5181ac36c5f01",
+    "test_used": false,
+    "reference_paper": "https://openaccess.thecvf.com/content/ICCV2025/html/Liao_GT-Mean_Loss_A_Simple_Yet_Effective_Solution_for_Brightness_Mismatch_ICCV_2025_paper.html",
+    "reference_code_commit": "1a09e2e077613c195ae7890005ffdfc8ce01dd4d",
+    "method": "Warm-start LUT; log-MSE plus independently implemented GT-Mean L1. Not a full paper reproduction.",
+    "executor_sha256": "7e2ac8a27b33eca76b8086e76815dd08f0ef233d0b97b7f83abb4988f913e5da"
+  },
+  "complete": true,
+  "selection_uses_all_91_native_validation_images": true
+}

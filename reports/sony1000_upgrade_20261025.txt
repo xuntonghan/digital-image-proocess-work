@@ -198,3 +198,75 @@ Sony1000尚未完成，v2 PDF和提交附件保持原状。
 核对新预测与封存前3张的PNG和8项指标，保存检查证据。然后尽快完成异机备份和关机。
 该入口及Sony保护检查共18项已在本机和云机通过，目前尚未执行GPU全新复现检查。
 这个入口、导出工具及新测试都需加入最终代码包。原4个Sony流程入口和冻结源码字节不变。
+
+18时35分例行检查
+远端18时33分实查最终评价64/1000，唯一Sony最终评价进程持续运行，日志刚更新。
+本次同步结束于18时34分49秒，本机已备份并独立校验66张最终原生PNG与逐图记录。
+66张的模型绑定、原清单编号、划分内种子、全部8项有限指标、PNG哈希及3840乘2160尺寸均通过。
+未满1000，不计算部分总体，也未改写v2提交附件或给出新的Sony总体分数。
+云盘余37GiB，本机余17GiB。Mac使用电池，60%，本次caffeinate身份仍一致。
+已在此前提醒接电，当前没有新的需用户处理事项，不重复通知。
+
+18时40分用户追加授权覆盖旧单轮限制
+用户要求继续参考ICCV改进算法和效率，并尽量在两到三个小时内完成。
+以21时40分作为本次收尾时间目标，优先完整1000张、必要备份、PDF和提交包，不追加长训。
+不扩容或另开机器，仍只使用26592，不改动几何和压缩，不删除原始资料。
+18时42分正常中断原串行最终评价，完整保留已完成120张和原选择及绑定。
+此时尚未读取87张留出测试的参考图。部分训练图评分不参与新模型选择。
+原screen sony_pipeline已经退出，其FAILED字样由本次受控SIGINT触发，证据在logs/deadline_authorization.json。
+新流程使用screen sony_deadline和cloud/run_sony_deadline.sh，不能再启动旧run_sony1000.sh。
+原cloud/sony1000_pipeline.py的SHA055744645fd3bbd460bc8a8a76bb0c212e85ed63b381e962e9494662b337f036未变。
+
+18时48分原生输出等价和速度小试
+新独立执行器为cloud/sony_deadline.py，SHA7e2ac8a27b33eca76b8086e76815dd08f0ef233d0b97b7f83abb4988f913e5da。
+同前4张训练图，四个CPU指标与写图线程用时13.959106秒，原串行为39.685440秒，短测比为2.842979。
+PNG的SHA完全相同，全部8项浮点指标的最大差为0。双线程先前短测为20.816046秒。
+这是4张缓存训练图的执行短测，不能宣称完整实验或训练加快2.84倍。
+已采用四线程，单GPU仍只负责同一套盲预测和色彩表。LPIPS共享模型有锁，待处理任务有上限。
+新execution_receipt.json单独记录执行器、等价小试和原冻结源码的SHA，并进入最终核验。
+同一模型和协议的旧行可继续使用，不能静默修改旧binding或混入另一个模型。
+新执行器及GT-Mean数学保护检查共20项在本机和云机通过。
+
+限时论文方法对照
+参考ICCV2025 GT-Mean Loss及作者固定提交1a09e2e077613c195ae7890005ffdfc8ce01dd4d。
+论文 https://openaccess.thecvf.com/content/ICCV2025/html/Liao_GT-Mean_Loss_A_Simple_Yet_Effective_Solution_for_Brightness_Mismatch_ICCV_2025_paper.html
+代码 https://github.com/jingxiLiao/GT-mean-loss
+独立实现灰度均值的高斯散度权重和加权L1，只在训练使用822张训练参考图。
+推理仍只读取RAW，不用测试GT均值调亮度。本轮为在Sony色彩表上的方法对照，不称完整论文复现。
+从原1000步Sony色彩表分别进行control和gtmean两个分支，各250步。
+两个分支使用同一初值、私有批次随机序列、FP32、batch16、fused AdamW、学习率3e-5、正则0.1。
+control延续逐图log-MSE，gtmean在此基础上加5倍GT-Mean L1，sigma为0.1。
+两分支训练加所有原生验证合计最多20分钟，不追加第三组或超预算重训。
+12张快速验证和91张完整验证都要相对当前已验证Sony模型再提高至少0.02dB，并满足SSIM和颜色门槛。
+若都不通过，保留原Sony权重及120张结果。若选中新模型，将整个旧partial目录改名保留，再从同一新模型计算全部1000张。
+新选择必须在87张测试计分前冻结。不能根据部分1000分数挑模型。
+
+最新监测入口
+看logs/deadline.log、status.txt、progress.json、final_execution_equivalence.json。
+研究看research/gtmean_deadline/{started,partial_result,result,failure}.json、各分支训练日志和full_val图数。
+研究失败则保存证据，停止加训，继续现有合格模型，不能将失败写成成功。
+研究结束由同一个控制器自动进入四线程最终1000评价，不能另起GPU作业。
+若产生新选择，旧云端partial位于historical_sony_partial_before_followup，绝不删除。
+在同步新final前先比较远端与本机binding，若不同，将本机旧final也改名保留再同步，不能把新旧行混在一起。
+原tmp/verify_sony_final_partial.py硬编码旧LUT SHA，若换模型要改为核对新selection和其权重，不能因此伪报备份失败或改回旧绑定。
+最终复现3张、导出6组、异机备份、核验并关闭云机的要求继续有效。复现CLI的LUT路径按最新selection读取，不再硬编码旧best.pt。
+PDF本次Sony更新尚未开始，已读pdf技能，实际编辑前只标记一次。原v2 PDF与附件保留。
+
+18时57分有界研究已完成并恢复最终评价
+追加control与GTmean各250步均正常结束，固定12张验证PSNR为27.495772和27.495601。
+原模型同12张为27.491202，两臂收益都不足0.02dB，所以都未采用，也未扩展91张新验证。
+两臂训练更新各用2.056715和2.009836秒，不含预载和验证，不能把它们称作整组实验用时。
+selected_followup为null，Sony原13bce171色彩表及原selection保持不变，120张旧行仍属于同一模型。
+新增损失为负结果，不宣称论文方法已提高本项目指标。两臂权重与训练证据均已备份。
+18时57分实查四线程续算为257/1000，续算137张实际约371秒，仍无Sony1000总体成绩。
+唯一GPU作业为sony_deadline.py --phase finalize --workers 4，CPU约369%，云盘余36GiB。
+当前执行器和8个Canon核心冻结源码没有更改，仍须在满1000后独立核验。
+
+PDF更新准备
+已读取pdf技能，并成功执行本次Sony PDF编辑标记一次，证据sony_pdf_operation.json。
+不要再次标记。实际PDF和原8个TeX目前尚未改动，v2附件完整保留。
+新增tools/build_sony_report.py只在Sony1000指标、6组48图、模型SHA全部校验通过后生成Sony正文。
+它会补两个相机各1000的封面和主表，Sony全部8指标、三个划分、必要参数、负结果、权重SHA与6组对比。
+它保留Canon、几何和压缩的其他TeX及原145图的字节。已检查未满1000时会拒绝写任何TeX。
+最终满1000并完成本机备份后运行该入口，再在浏览器Overleaf上传新增/更新文件、编译并导出真正PDF。
+完成全部页渲染QA后更新本机提交包和v3附件。报告编写期间不继续占用已完成作业的云GPU。

@@ -1,0 +1,9 @@
+{
+  "operation": "edit",
+  "format": "pdf",
+  "marker_successful": true,
+  "marked_at": "2026-10-25T18:57:54.686956+08:00",
+  "expected_output_count": 1,
+  "actual_pdf_or_tex_changed": false,
+  "current_authoring": "tools/build_sony_report.py prepared; guard refuses partial1000 before any TeX writes"
+}

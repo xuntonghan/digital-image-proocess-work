@@ -1,0 +1,36 @@
+{
+  "control": {
+    "pilot": {
+      "count": 12,
+      "psnr_mean": 27.495771632224418,
+      "ssim_mean": 0.8319329718748728,
+      "delta_e2000_mean": 4.96598165461857,
+      "delta_e2000_p95_mean": 8.446512401103973,
+      "lightness_mae_mean": 4.364374404152234,
+      "saturation_mae_mean": 0.05203764451046785,
+      "hue_error_degrees_mean": 15.492555793824344,
+      "lpips_mean": 0.42695579181114834
+    },
+    "checkpoint": "research/gtmean_deadline/control.pt",
+    "checkpoint_sha256": "0c52e3be2e642c111ef8cfa81b93240d33923b73b36f6527184016958b8e458b",
+    "training_seconds": 2.0567152574658394,
+    "pilot_qualified": false
+  },
+  "gtmean": {
+    "pilot": {
+      "count": 12,
+      "psnr_mean": 27.49560099137793,
+      "ssim_mean": 0.8319339454174042,
+      "delta_e2000_mean": 4.9659201988746995,
+      "delta_e2000_p95_mean": 8.446408669153849,
+      "lightness_mae_mean": 4.36438225209713,
+      "saturation_mae_mean": 0.05203391487399737,
+      "hue_error_degrees_mean": 15.492398297908368,
+      "lpips_mean": 0.4269553596774737
+    },
+    "checkpoint": "research/gtmean_deadline/gtmean.pt",
+    "checkpoint_sha256": "8fdbb6f93a565c864365649fcdd04134d54f963fafd9c2c4b4911a82a31831e0",
+    "training_seconds": 2.009836118668318,
+    "pilot_qualified": false
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "equivalent": true,
+  "train_only_count": 4,
+  "all_8_metric_max_difference": {
+    "psnr": 0.0,
+    "ssim": 0.0,
+    "delta_e2000_mean": 0.0,
+    "delta_e2000_p95": 0.0,
+    "lightness_mae": 0.0,
+    "saturation_mae": 0.0,
+    "hue_error_degrees": 0.0,
+    "lpips": 0.0
+  },
+  "png_sha256_equal": true,
+  "serial_four_seconds": 39.68544031307101,
+  "parallel_four_seconds": 13.959106393158436,
+  "short_run_ratio": 2.8429785686368456,
+  "workers": 4,
+  "executor_sha256": "7e2ac8a27b33eca76b8086e76815dd08f0ef233d0b97b7f83abb4988f913e5da",
+  "note": "Four train images only. Not an end-to-end speed guarantee."
+}

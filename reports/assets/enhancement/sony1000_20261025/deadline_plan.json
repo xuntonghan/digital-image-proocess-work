@@ -1,0 +1,16 @@
+{
+  "latest_user_request": "继续改进算法，加快训练速度与训练效率，同时一步一步参考iccv相关顶刊做出提高，尽量在两到三个小时内完成",
+  "target_deadline_local": "2026-10-25T21:40:00+08:00",
+  "maximum_followup_research_minutes": 20,
+  "additional_steps_per_arm": 250,
+  "arms": [
+    "control",
+    "gtmean"
+  ],
+  "test_for_selection": false,
+  "paper_urls": [
+    "https://openaccess.thecvf.com/content/ICCV2025/html/Liao_GT-Mean_Loss_A_Simple_Yet_Effective_Solution_for_Brightness_Mismatch_ICCV_2025_paper.html",
+    "https://github.com/jingxiLiao/GT-mean-loss/tree/1a09e2e077613c195ae7890005ffdfc8ce01dd4d"
+  ],
+  "code_frozen_core_unchanged": true
+}
