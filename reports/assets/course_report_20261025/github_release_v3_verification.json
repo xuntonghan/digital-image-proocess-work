@@ -1,0 +1,32 @@
+{
+  "release_url": "https://github.com/xuntonghan/digital-image-proocess-work/releases/tag/course-submission-20261025-v3",
+  "release_id": 423392323,
+  "report_commit": "2033cbf5b14b9e212ac4a119d1ec41246f9846fa",
+  "tag_commit": "2033cbf5b14b9e212ac4a119d1ec41246f9846fa",
+  "all_remote_asset_sha256_match": true,
+  "assets": [
+    {
+      "name": "han-xuntong-2025312132086-dip-course-report-v3.pdf",
+      "bytes": 43898363,
+      "sha256": "4cb6e791f7817f646b4bfaf16b8c2bc1aa993002ad2adf711a7f94d222f46fc0",
+      "github_asset_id": 675005336,
+      "matched": true
+    },
+    {
+      "name": "han-xuntong-2025312132086-dip-course-submission-v3.zip",
+      "bytes": 124484682,
+      "sha256": "a28d27186005be1aa82d119264b89f6171d04cfec909f82accd0ce288d871db4",
+      "github_asset_id": 675005335,
+      "matched": true
+    },
+    {
+      "name": "release_sha256.txt",
+      "bytes": 238,
+      "sha256": "805dac4b931ab58359ff0d599970cd3d5ca64dce5c836f265bd9f07d8e909756",
+      "github_asset_id": 675005332,
+      "matched": true
+    }
+  ],
+  "v2_release_and_assets_preserved": true,
+  "private_repository": true
+}
