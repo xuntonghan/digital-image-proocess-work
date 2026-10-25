@@ -1,0 +1,26 @@
+{
+  "release_url": "https://github.com/xuntonghan/digital-image-proocess-work/releases/tag/course-submission-20261025",
+  "target_commit": "6acca3ef9bce815ac3224a52aded00174109de6d",
+  "private_repository": true,
+  "all_remote_asset_sizes_and_sha256_match": true,
+  "assets": [
+    {
+      "name": "han-xuntong-2025312132086-dip-course-submission.zip",
+      "size": 85733847,
+      "digest": "sha256:e6d267d885d89c856731fc70de0881cfb5ce8cfddd16b34107345a31aa488930",
+      "browser_download_url": "https://github.com/xuntonghan/digital-image-proocess-work/releases/download/course-submission-20261025/han-xuntong-2025312132086-dip-course-submission.zip"
+    },
+    {
+      "name": "release_sha256.txt",
+      "size": 218,
+      "digest": "sha256:01b2f53badb06a718d37c6453725885118ee6db8c61864d59782276b0bd17359",
+      "browser_download_url": "https://github.com/xuntonghan/digital-image-proocess-work/releases/download/course-submission-20261025/release_sha256.txt"
+    },
+    {
+      "name": "sied-trained-weights-20261025.zip",
+      "size": 34140051,
+      "digest": "sha256:e86ff2ec24ff6dbe994f2bca8e8ca047d4772aab6202f32168e0c9c24c72a7bd",
+      "browser_download_url": "https://github.com/xuntonghan/digital-image-proocess-work/releases/download/course-submission-20261025/sied-trained-weights-20261025.zip"
+    }
+  ]
+}
