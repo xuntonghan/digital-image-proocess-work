@@ -194,6 +194,7 @@ python3 cloud/verify_sony1000.py
         content = content.replace(r'\input{geometry_compression}', '\\input{sony_section}\n\n\\input{geometry_compression}')
     if r'\bibitem{gtmean}' not in content:
         content = content.replace(r'\bibitem{uvdoc}', r'\bibitem{gtmean} Jingxi Liao, Shijie Hao, Richang Hong, Meng Wang. GT-Mean Loss: A Simple Yet Effective Solution for Brightness Mismatch in Low-Light Image Enhancement. ICCV, 2025, 6112--6121. \url{https://github.com/jingxiLiao/GT-mean-loss}.' + '\n' + r'\bibitem{uvdoc}')
+    content = content.replace(r'\begin{thebibliography}{9}', r'\begin{thebibliography}{99}')
     main_path.write_text(content)
     metadata = {'camera': 'sony', 'statistics': verified, 'summary': summary, 'binding': binding,
                 'visualizations': visual, 'followup_research': research, 'execution_equivalence': speed,
